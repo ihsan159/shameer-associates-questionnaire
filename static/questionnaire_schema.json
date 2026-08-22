@@ -1,0 +1,3501 @@
+{
+  "title": "SHAMEER ASSOCIATES — RESIDENTIAL DESIGN QUESTIONNAIRE",
+  "brand": {
+    "name": "SHAMEER ASSOCIATES",
+    "tagline": "ARCHITECTURE • INTERIORS • LANDSCAPE",
+    "motto": "YOUR HOME. YOUR STORY. YOUR DESIGN.",
+    "philosophy_title": "ICREATE",
+    "values": [
+      {
+        "letter": "I",
+        "word": "Integrity",
+        "desc": "in our commitments"
+      },
+      {
+        "letter": "C",
+        "word": "Creativity",
+        "desc": "in every design solution"
+      },
+      {
+        "letter": "R",
+        "word": "Relationships",
+        "desc": "built through listening and respect"
+      },
+      {
+        "letter": "E",
+        "word": "Excellence",
+        "desc": "in quality and execution"
+      },
+      {
+        "letter": "A",
+        "word": "Attention to Detail",
+        "desc": "meticulous in every line and finish"
+      },
+      {
+        "letter": "T",
+        "word": "Timeliness",
+        "desc": "respecting timelines and budgets"
+      },
+      {
+        "letter": "E",
+        "word": "Evolution",
+        "desc": "through continuous learning and innovation"
+      }
+    ],
+    "vision": "To create emotionally intelligent, climate-responsive and fully integrated homes for conscious families, NRIs and business leaders, bringing architecture, interiors, landscape, lighting, materials, craftsmanship and thoughtfully curated furniture together as one complete design experience."
+  },
+  "before_you_begin": {
+    "title": "A Gentle Reminder Before You Begin",
+    "subtitle": "Building a home is one of life’s most significant decisions—the culmination of years of hard work, savings, dreams and emotion. Every member of your family carries their own hopes, routines, needs and quiet preferences. A truly meaningful home should thoughtfully hold space for all of them.",
+    "thoughts": [
+      {
+        "title": "You Matter in This Too",
+        "content": "While thinking about everyone else’s comfort, do not forget your own. Your peace of mind, daily rhythms and quiet vision of what 'home' should feel like matter just as much as anyone else’s."
+      },
+      {
+        "title": "Tell Us How You Want to Feel",
+        "content": "As you describe your spaces, think beyond function, furniture and dimensions. Tell us how you want to feel the moment you walk in—calm, connected, protected, energised, inspired, welcomed or at peace. A feeling is as real a design requirement as a measurement."
+      },
+      {
+        "title": "Speak Honestly About How You Live",
+        "content": "There are no right or wrong answers here. Tell us about your family’s real routines, habits, celebrations, work patterns, storage needs and everyday frustrations—not an idealised version of your lifestyle, but the life you genuinely live."
+      },
+      {
+        "title": "Let Your Heart Choose, Not the Trend",
+        "content": "Trends fade, but the way a space makes you feel can stay with you for a lifetime. Choose what genuinely feels like you—not simply what appears fashionable, impressive or familiar from someone else’s home."
+      },
+      {
+        "title": "Hold On to What Your Family Truly Wants",
+        "content": "Along the way, relatives and friends may offer plenty of well-meaning advice. Listen with respect, but remember that they will not live in this home or move through its spaces every day. The final decisions should primarily reflect the people who will actually live, grow, rest and gather here."
+      }
+    ]
+  },
+  "technical_glossary": {
+    "natural_light": "A design that brings sufficient daylight into the home through well-positioned windows, skylights, courtyards, and open spaces. Good natural light improves mood, supports a healthy sleep–wake cycle, reduces eye strain, and makes everyday activities more comfortable while reducing dependence on artificial lighting.",
+    "skylight": "A glazed opening provided in the roof or ceiling to bring daylight into the central areas of the home where regular windows may not reach. When properly positioned and shaded, it can make interior spaces feel brighter, more open, and welcoming without causing excessive heat.",
+    "natural_ventilation": "A design that allows fresh air to move naturally through the home using properly placed windows, ventilators, courtyards, and open passages. Continuous airflow helps remove indoor heat, odours, excess moisture, carbon dioxide, and pollutants, supporting better breathing, concentration, sleep quality, and overall comfort.",
+    "cross_ventilation": "A method of placing openings on opposite or adjacent sides of a room so that fresh air enters through one opening and warm or stale air exits through another. This continuous air movement helps keep the room cooler, fresher, and more comfortable naturally.",
+    "passive_cooling": "A climate-responsive design approach that reduces indoor heat through proper building orientation, shaded openings, deep roof overhangs, suitable materials, greenery, and natural airflow. It keeps the home naturally cooler, improves daily comfort, reduces excessive dependence on air-conditioning, lowers energy consumption, and creates a healthier living environment.",
+    "cavity_wall": "A wall constructed with an air gap between two layers. This gap acts as a thermal barrier, slowing the transfer of outdoor heat into the interior and helping rooms remain cooler. Proper waterproofing and moisture detailing are essential, especially in Kerala’s hot and humid climate.",
+    "louvers_sunshades": "Horizontal or vertical shading elements placed outside windows to block harsh direct sunlight while still allowing fresh air and soft, diffused daylight to enter. They reduce heat gain, improve indoor comfort, protect windows from rain, and reduce the need for air-conditioning.",
+    "zoning": "Dividing the house into three types of areas — private zones (bedrooms), social zones (living, dining), and service zones (kitchen, utility) — so each area functions without disturbing the others.",
+    "mep": "Mechanical, Electrical and Plumbing — the complete engineering design of your electrical wiring, water supply, drainage, and any HVAC (air conditioning) systems.",
+    "layered_lighting": "A design approach using four complementary layers — ambient (general room light), task (focused light for reading, cooking, work), accent (highlighting art, niches, textures) and decorative (statement fixtures) — combined so each space feels balanced, functional and visually rich rather than flatly lit by a single source.",
+    "home_automation": "The use of connected systems — lighting, climate, curtains, security and audio — controlled centrally through an app, touch panel or voice assistant, either as a fully integrated whole-home system or selectively for specific functions.",
+    "tensile_structure": "A shading canopy made of stretched PVC or PTFE fabric supported by cables and columns — lightweight, modern-looking, and drains rainwater easily."
+  },
+  "chapters": [
+    {
+      "id": "chapter-1",
+      "number": "01",
+      "title": "Project Foundation & Family Life",
+      "description": "Essential contact details, plot conditions, family members, daily habits, and project scope.",
+      "sections": [
+        {
+          "id": "sec-1-1",
+          "number": "1.1",
+          "title": "Contact & Site Information",
+          "questions": [
+            {
+              "id": "client_name",
+              "label": "Client Name",
+              "type": "text",
+              "required": true,
+              "placeholder": "e.g. Mr. Danish"
+            },
+            {
+              "id": "contact_number",
+              "label": "Contact / WhatsApp Number",
+              "type": "tel",
+              "required": true,
+              "placeholder": "+91 98765 43210"
+            },
+            {
+              "id": "email_address",
+              "label": "Email Address",
+              "type": "email",
+              "required": true,
+              "placeholder": "client@example.com"
+            },
+            {
+              "id": "alt_contact",
+              "label": "Alternative Contact",
+              "type": "text",
+              "required": false,
+              "placeholder": "Name / Phone (optional)"
+            },
+            {
+              "id": "project_location",
+              "label": "Project Location / Full Address",
+              "type": "textarea",
+              "required": true,
+              "placeholder": "City, District, Landmark"
+            },
+            {
+              "id": "plot_size",
+              "label": "Plot Size & Dimensions",
+              "type": "text",
+              "required": false,
+              "placeholder": "e.g. 15 Cents / 30m x 20m"
+            },
+            {
+              "id": "road_vs_plot_level",
+              "label": "Road Level vs Plot Level",
+              "type": "text",
+              "required": false,
+              "placeholder": "e.g. Plot is 2 ft above road level"
+            },
+            {
+              "id": "site_condition",
+              "label": "Site Condition",
+              "type": "single-select",
+              "options": [
+                "Flat",
+                "Slight slope",
+                "Steep slope",
+                "Multi-level"
+              ]
+            },
+            {
+              "id": "existing_structures",
+              "label": "Existing structures on site?",
+              "type": "single-select",
+              "options": [
+                "Yes — describe below",
+                "No, completely clear"
+              ]
+            },
+            {
+              "id": "existing_structure_desc",
+              "label": "If yes, describe existing structure",
+              "type": "textarea",
+              "placeholder": "Describe any building, well, trees, or structures on site...",
+              "dependsOn": {
+                "id": "existing_structures",
+                "value": "Yes — describe below"
+              }
+            },
+            {
+              "id": "site_survey_available",
+              "label": "Site survey / levels drawing available?",
+              "type": "single-select",
+              "options": [
+                "Yes, we have it",
+                "No — needs to be arranged"
+              ]
+            },
+            {
+              "id": "site_documents_upload",
+              "label": "Project Documents & Site Photographs",
+              "type": "file-upload",
+              "helpText": "Upload site photos, contour survey, levels drawing, or existing floor plans (PDF/JPEG/PNG)."
+            }
+          ]
+        },
+        {
+          "id": "sec-1-2",
+          "number": "1.2",
+          "title": "Project Overview",
+          "questions": [
+            {
+              "id": "project_type",
+              "label": "Project Type",
+              "type": "single-select",
+              "options": [
+                "New Residence",
+                "Renovation / Extension"
+              ]
+            },
+            {
+              "id": "number_of_floors",
+              "label": "Number of Floors",
+              "type": "single-select",
+              "options": [
+                "Ground floor only",
+                "G + 1",
+                "G + 2"
+              ]
+            },
+            {
+              "id": "expected_builtup_area",
+              "label": "Expected built-up area (approximate sq. ft.)",
+              "type": "number",
+              "placeholder": "e.g. 3500"
+            },
+            {
+              "id": "future_expansion",
+              "label": "Future floor expansion planned?",
+              "type": "single-select",
+              "options": [
+                "Current need only",
+                "Provision for future floors"
+              ]
+            },
+            {
+              "id": "expected_start",
+              "label": "Expected project start",
+              "type": "single-select",
+              "options": [
+                "Within 2 months",
+                "3–6 months",
+                "Flexible"
+              ]
+            },
+            {
+              "id": "desired_timeline",
+              "label": "Desired completion timeline",
+              "type": "single-select",
+              "options": [
+                "12–18 months",
+                "Over 18 months",
+                "Flexible"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "sec-1-3",
+          "number": "1.3",
+          "title": "Family & Household Composition",
+          "questions": [
+            {
+              "id": "total_people",
+              "label": "Total number of people living in the house",
+              "type": "number",
+              "placeholder": "e.g. 5"
+            },
+            {
+              "id": "family_members_builder",
+              "label": "Family Member Builder",
+              "type": "family-builder",
+              "helpText": "Add family members by user group (Children, Teenagers, Adults, Elderly/Senior, Other), count, gender, age range, and special notes."
+            },
+            {
+              "id": "accessibility_requirements",
+              "label": "Accessibility or safety requirements",
+              "type": "multi-select",
+              "options": [
+                "Elder-friendly design",
+                "Child safety features",
+                "Wheelchair access",
+                "Easy-access bathrooms",
+                "None required"
+              ]
+            },
+            {
+              "id": "frequent_guests",
+              "label": "Frequent guests or visiting extended family?",
+              "type": "single-select",
+              "options": [
+                "Yes, very regularly",
+                "Occasionally",
+                "Rarely"
+              ]
+            },
+            {
+              "id": "live_in_staff",
+              "label": "Live-in staff or caretaker required?",
+              "type": "single-select",
+              "options": [
+                "Yes",
+                "No",
+                "Possibly in future"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "sec-1-4",
+          "number": "1.4",
+          "title": "Lifestyle & Daily Habits",
+          "questions": [
+            {
+              "id": "living_style",
+              "label": "Overall preferred living style",
+              "type": "single-select",
+              "options": [
+                "Private & calm",
+                "Family-oriented",
+                "Social & guest-friendly"
+              ]
+            },
+            {
+              "id": "daily_pace",
+              "label": "General daily pace at home",
+              "type": "single-select",
+              "options": [
+                "Quiet and slow",
+                "Busy and active",
+                "Varies day to day"
+              ]
+            },
+            {
+              "id": "home_atmosphere",
+              "label": "Home atmosphere you love",
+              "type": "multi-select",
+              "options": [
+                "Cozy & warm",
+                "Bright & airy",
+                "Elegant & premium",
+                "Simple & clutter-free"
+              ]
+            },
+            {
+              "id": "main_priorities",
+              "label": "Main priorities for this home",
+              "type": "multi-select",
+              "options": [
+                "Comfort",
+                "Aesthetics",
+                "Low maintenance",
+                "Sustainability",
+                "Future flexibility"
+              ]
+            },
+            {
+              "id": "work_from_home",
+              "label": "Do you work from home?",
+              "type": "single-select",
+              "options": [
+                "Yes, regularly",
+                "Occasionally",
+                "No"
+              ]
+            },
+            {
+              "id": "wfh_needs_desc",
+              "label": "If yes — describe your work-from-home needs (dedicated room, calls, video meetings, etc.)",
+              "type": "textarea",
+              "placeholder": "Describe work setup, video call privacy, dual monitors, desk requirements...",
+              "dependsOn": {
+                "id": "work_from_home",
+                "values": [
+                  "Yes, regularly",
+                  "Occasionally"
+                ]
+              }
+            },
+            {
+              "id": "prayer_practices",
+              "label": "Prayer or religious practices at home?",
+              "type": "single-select",
+              "options": [
+                "Daily prayer room required",
+                "Small prayer corner is enough",
+                "Not required"
+              ]
+            },
+            {
+              "id": "outdoor_habits",
+              "label": "Outdoor habits",
+              "type": "multi-select",
+              "options": [
+                "Morning Walk in compound / garden",
+                "Evening sit-out time",
+                "Gardening",
+                "Outdoor exercise"
+              ]
+            },
+            {
+              "id": "entertainment_pattern",
+              "label": "Entertainment pattern at home",
+              "type": "single-select",
+              "options": [
+                "Regular guests and gatherings",
+                "Occasional celebrations",
+                "Mostly private family use"
+              ]
+            },
+            {
+              "id": "hobbies_dedicated_space",
+              "label": "Any hobbies needing dedicated space? (music, art, gym, reading, craft, etc.)",
+              "type": "textarea",
+              "placeholder": "e.g. Piano corner, home gym equipment, reading nook, painting studio..."
+            }
+          ]
+        },
+        {
+          "id": "sec-1-5",
+          "number": "1.5",
+          "title": "Decision-Making & Communication",
+          "questions": [
+            {
+              "id": "decision_making_style",
+              "label": "Decision-making style",
+              "type": "single-select",
+              "options": [
+                "Single person decides",
+                "Husband & wife jointly",
+                "Joint family decisions"
+              ]
+            },
+            {
+              "id": "final_approval",
+              "label": "Final approval for design changes",
+              "type": "single-select",
+              "options": [
+                "Primary decision-maker alone",
+                "Joint approval",
+                "Discuss and agree"
+              ]
+            },
+            {
+              "id": "final_say_differ",
+              "label": "If opinions differ, who has final say?",
+              "type": "single-select",
+              "options": [
+                "Primary decision-maker",
+                "Mutually agreed",
+                "Architect mediates"
+              ]
+            },
+            {
+              "id": "preferred_comm_method",
+              "label": "Preferred communication method",
+              "type": "multi-select",
+              "options": [
+                "WhatsApp message",
+                "Email",
+                "Phone call",
+                "In-person meeting"
+              ]
+            },
+            {
+              "id": "meeting_frequency",
+              "label": "Preferred meeting frequency",
+              "type": "single-select",
+              "options": [
+                "Weekly updates",
+                "Fortnightly",
+                "Monthly"
+              ]
+            },
+            {
+              "id": "involvement_level",
+              "label": "Level of involvement you prefer",
+              "type": "single-select",
+              "options": [
+                "High — I want to be part of every decision",
+                "Moderate — major decisions only",
+                "Minimal — trust the architect fully"
+              ]
+            },
+            {
+              "id": "open_to_suggestions",
+              "label": "Open to professional suggestions beyond initial ideas?",
+              "type": "single-select",
+              "options": [
+                "Yes, very open",
+                "Yes, but explain reasoning",
+                "Prefer to stay with my ideas"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "sec-1-6",
+          "number": "1.6",
+          "title": "Budget & Services Required",
+          "questions": [
+            {
+              "id": "total_budget",
+              "label": "Approximate total project budget (₹)",
+              "type": "text",
+              "placeholder": "e.g. ₹ 1.5 Cr – 2 Cr"
+            },
+            {
+              "id": "budget_flexibility",
+              "label": "Budget flexibility",
+              "type": "single-select",
+              "options": [
+                "Fixed — no changes",
+                "Slightly flexible",
+                "Flexible if well justified"
+              ]
+            },
+            {
+              "id": "quality_level",
+              "label": "Overall quality level preferred",
+              "type": "single-select",
+              "options": [
+                "Basic & functional",
+                "Good standard quality",
+                "Premium finishes throughout"
+              ]
+            },
+            {
+              "id": "top_priority",
+              "label": "Your top priority in this project",
+              "type": "single-select",
+              "options": [
+                "Design quality",
+                "Budget control",
+                "Speed of completion",
+                "Balanced approach"
+              ]
+            },
+            {
+              "id": "services_required",
+              "label": "Services required from Shameer Associates",
+              "type": "multi-select",
+              "hasTooltip": "mep",
+              "options": [
+                "Architectural Design",
+                "Structural Design",
+                "MEP Design",
+                "3D Visualisation",
+                "Interior Design",
+                "Soft Furnishings",
+                "Landscape Design",
+                "Site Supervision"
+              ]
+            },
+            {
+              "id": "contractor_status",
+              "label": "Contractor status",
+              "type": "single-select",
+              "options": [
+                "Already finalized",
+                "Looking for one",
+                "Prefer architect recommendation",
+                "Open to competitive quotes"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chapter-2",
+      "number": "02",
+      "title": "Climate, Light, Ventilation & Zoning",
+      "description": "Climate-responsive architecture, daylight strategies, natural ventilation, zoning, and exterior direction.",
+      "sections": [
+        {
+          "id": "sec-2-1",
+          "number": "2.1",
+          "title": "Climate, Light & Ventilation",
+          "questions": [
+            {
+              "id": "natural_light_importance",
+              "label": "Importance of natural light",
+              "type": "single-select",
+              "hasTooltip": "natural_light",
+              "options": [
+                "Very important — maximum daylight everywhere",
+                "Important in key spaces",
+                "Less important — prefer controlled light"
+              ]
+            },
+            {
+              "id": "skylights_required",
+              "label": "Skylights required?",
+              "type": "single-select",
+              "hasTooltip": "skylight",
+              "options": [
+                "Yes",
+                "No",
+                "Only in specific areas"
+              ]
+            },
+            {
+              "id": "skylight_type",
+              "label": "Skylight type if required",
+              "type": "multi-select",
+              "options": [
+                "Fixed (sealed)",
+                "Openable for ventilation",
+                "Shaded / tinted",
+                "Motorized"
+              ]
+            },
+            {
+              "id": "natural_ventilation_importance",
+              "label": "Importance of natural ventilation",
+              "type": "single-select",
+              "hasTooltip": "natural_ventilation",
+              "options": [
+                "Very high — prefer to minimise AC use",
+                "Medium — hybrid approach",
+                "Low — rely mainly on AC"
+              ]
+            },
+            {
+              "id": "vastu_requirements",
+              "label": "Vastu requirements?",
+              "type": "single-select",
+              "options": [
+                "Yes — strict adherence required",
+                "Preferred but flexible",
+                "Not required"
+              ]
+            },
+            {
+              "id": "cooling_strategy",
+              "label": "Preferred cooling strategy",
+              "type": "single-select",
+              "hasTooltip": "passive_cooling",
+              "options": [
+                "Natural ventilation first",
+                "Passive cooling features",
+                "AC-focused rooms",
+                "Hybrid of both"
+              ]
+            },
+            {
+              "id": "passive_cooling_features",
+              "label": "Passive cooling features interested in",
+              "type": "multi-select",
+              "options": [
+                "Insulated roof",
+                "Double / cavity wall",
+                "Louvers / Sunshades",
+                "Courtyard cooling",
+                "Landscape shading",
+                "Clay / terracotta elements"
+              ]
+            },
+            {
+              "id": "window_strategy",
+              "label": "Window strategy preference",
+              "type": "single-select",
+              "options": [
+                "Large openings — maximum light and air",
+                "Controlled moderate openings",
+                "Shaded and protected openings"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "sec-2-2",
+          "number": "2.2",
+          "title": "Space Zoning & Privacy",
+          "questions": [
+            {
+              "id": "zone_separation",
+              "label": "Zone separation preference",
+              "type": "single-select",
+              "hasTooltip": "zoning",
+              "options": [
+                "Clear separation between private / guest / service zones",
+                "Partially connected zones",
+                "Open and fluid throughout"
+              ]
+            },
+            {
+              "id": "overall_privacy",
+              "label": "Privacy level overall",
+              "type": "single-select",
+              "options": [
+                "High privacy — each space self-contained",
+                "Balanced — some connection",
+                "Open family interaction preferred"
+              ]
+            },
+            {
+              "id": "kitchen_visibility_guest",
+              "label": "Kitchen visibility from guest areas",
+              "type": "single-select",
+              "options": [
+                "Fully hidden from guests",
+                "Semi-open — partially visible",
+                "Fully open — no problem"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "sec-2-3",
+          "number": "2.3",
+          "title": "Exterior Design Direction",
+          "questions": [
+            {
+              "id": "exterior_visual_gallery",
+              "label": "Preferred Exterior Architectural Style",
+              "type": "visual-gallery",
+              "category": "exterior",
+              "helpText": "Select the architectural exterior direction that resonates most with your aesthetic vision. Click any image to view in high resolution."
+            },
+            {
+              "id": "ref_images_available",
+              "label": "Reference images available?",
+              "type": "single-select",
+              "options": [
+                "Yes — will share before meeting",
+                "No — open to suggestions"
+              ]
+            },
+            {
+              "id": "exterior_notes",
+              "label": "Exterior Design Notes & Specific Wishes",
+              "type": "textarea",
+              "placeholder": "Any specific roof, elevation, balcony, or material preferences..."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chapter-3",
+      "number": "03",
+      "title": "Social & Public Spaces",
+      "description": "Car porch, sit-out, formal living, dining room, family lounge, staircase, home theatre, ablution and prayer space.",
+      "sections": [
+        {
+          "id": "sec-3-1",
+          "number": "3.1",
+          "title": "Car Porch",
+          "questions": [
+            {
+              "id": "porch_vehicles",
+              "label": "Number of vehicles to accommodate",
+              "type": "single-select",
+              "options": [
+                "1 car",
+                "2 cars",
+                "Bike parking also required"
+              ]
+            },
+            {
+              "id": "porch_structure",
+              "label": "Porch structure type",
+              "type": "single-select",
+              "hasTooltip": "tensile_structure",
+              "options": [
+                "Concrete roof slab porch",
+                "Industrial / steel porch",
+                "Tensile / fabric shade structure"
+              ]
+            },
+            {
+              "id": "porch_features",
+              "label": "Additional porch features needed",
+              "type": "multi-select",
+              "options": [
+                "EV charging point",
+                "Storage cabinet"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "sec-3-2",
+          "number": "3.2",
+          "title": "Sit out / Verandah",
+          "questions": [
+            {
+              "id": "sitout_required",
+              "label": "Sit-out required?",
+              "type": "multi-select",
+              "options": [
+                "Yes — front entrance",
+                "Yes — rear or garden",
+                "Yes — Balcony",
+                "Not required"
+              ]
+            },
+            {
+              "id": "sitout_primary_use",
+              "label": "Primary use",
+              "type": "multi-select",
+              "options": [
+                "Morning tea and relaxation",
+                "Guest seating",
+                "Family gathering",
+                "Nature and garden connection"
+              ]
+            },
+            {
+              "id": "sitout_shape",
+              "label": "Sit-out shape",
+              "type": "single-select",
+              "options": [
+                "Straight linear",
+                "L-shaped",
+                "Courtyard style",
+                "Wrap-around verandah"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "sec-3-3",
+          "number": "3.3",
+          "title": "Formal Living",
+          "questions": [
+            {
+              "id": "formal_living_arrangement",
+              "label": "Drawing room arrangement",
+              "type": "single-select",
+              "options": [
+                "Completely separate room",
+                "Semi-separated with divider",
+                "Separated and connected to the foyer"
+              ]
+            },
+            {
+              "id": "formal_living_purpose",
+              "label": "Primary purpose",
+              "type": "single-select",
+              "options": [
+                "Formal guest reception",
+                "Family showcase space",
+                "Both guest and daily use"
+              ]
+            },
+            {
+              "id": "formal_living_seating",
+              "label": "Seating capacity needed",
+              "type": "single-select",
+              "options": [
+                "4–6 persons",
+                "6–8 persons",
+                "8–10 persons",
+                "10 or more"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "sec-3-4",
+          "number": "3.4",
+          "title": "Dining Room",
+          "questions": [
+            {
+              "id": "dining_arrangement",
+              "label": "Dining arrangement",
+              "type": "single-select",
+              "options": [
+                "Dedicated separate dining room",
+                "Open dining with living area",
+                "Semi-open with partition"
+              ]
+            },
+            {
+              "id": "dining_usage",
+              "label": "Usage pattern",
+              "type": "single-select",
+              "options": [
+                "Daily family meals",
+                "Formal guest entertaining",
+                "Both daily and entertaining"
+              ]
+            },
+            {
+              "id": "dining_seating_capacity",
+              "label": "Dining seating capacity",
+              "type": "single-select",
+              "options": [
+                "6 persons",
+                "8 persons",
+                "10 persons"
+              ]
+            },
+            {
+              "id": "dining_connections",
+              "label": "Preferred connections",
+              "type": "multi-select",
+              "options": [
+                "Direct from kitchen",
+                "Near sit-out or verandah",
+                "Near courtyard or garden"
+              ]
+            },
+            {
+              "id": "dining_furniture",
+              "label": "Additional dining furniture",
+              "type": "multi-select",
+              "options": [
+                "Crockery / display unit",
+                "Buffet / serving counter",
+                "Wash basin nearby"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "sec-formal-living-dining-gallery",
+          "number": "Visual Reference",
+          "title": "Formal Living & Dining Design Styles",
+          "questions": [
+            {
+              "id": "formal_living_dining_visual_gallery",
+              "label": "Selected Formal Living & Dining Style",
+              "type": "visual-gallery",
+              "category": "formal_living_dining",
+              "helpText": "Each style includes both a Formal Living reference and a Dining reference. Select the design style pair that best reflects your preferred entertaining atmosphere."
+            }
+          ]
+        },
+        {
+          "id": "sec-3-5",
+          "number": "3.5",
+          "title": "Family Living",
+          "questions": [
+            {
+              "id": "family_living_arrangement",
+              "label": "Drawing room arrangement",
+              "type": "single-select",
+              "options": [
+                "Completely separate room",
+                "Semi-open with partial divider",
+                "Connected to staircase / central family zone",
+                "Near kitchen",
+                "Away from formal guest areas",
+                "Designer to recommend"
+              ]
+            },
+            {
+              "id": "family_living_purpose",
+              "label": "Primary purpose",
+              "type": "single-select",
+              "options": [
+                "Daily family relaxation",
+                "TV / Entertainment",
+                "Family conversation and gathering"
+              ]
+            },
+            {
+              "id": "family_living_seating",
+              "label": "Seating capacity needed",
+              "type": "single-select",
+              "options": [
+                "4–6 persons",
+                "6–8 persons",
+                "8–10 persons",
+                "10 or more",
+                "Flexible seating for gatherings"
+              ]
+            },
+            {
+              "id": "family_living_mood",
+              "label": "Desired Mood / Feeling",
+              "type": "multi-select",
+              "options": [
+                "Warm and cosy",
+                "Calm and relaxing",
+                "Bright and airy",
+                "Casual and comfortable",
+                "Natural & connected to outdoors",
+                "Elegant but informal"
+              ]
+            },
+            {
+              "id": "family_living_elements",
+              "label": "Additional Elements Needed",
+              "type": "multi-select",
+              "options": [
+                "TV / Media unit",
+                "Large comfortable sofa",
+                "Lounge / Reading chair",
+                "Bookshelf",
+                "Display unit",
+                "Bay window seating",
+                "Courtyard / Garden view",
+                "Balcony / Sit-out connection",
+                "Prayer / Quiet corner"
+              ]
+            },
+            {
+              "id": "family_living_privacy",
+              "label": "Privacy Preference",
+              "type": "single-select",
+              "options": [
+                "Private from guests",
+                "Partially visible from dining",
+                "Open family interaction"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "sec-3-6",
+          "number": "3.6",
+          "title": "Upper Living / Lounge (if applicable)",
+          "questions": [
+            {
+              "id": "upper_living_required",
+              "label": "Upper living area required?",
+              "type": "single-select",
+              "options": [
+                "Yes",
+                "No"
+              ]
+            },
+            {
+              "id": "upper_living_use",
+              "label": "Primary use",
+              "type": "multi-select",
+              "options": [
+                "Family relaxation lounge",
+                "Kids and teen zone",
+                "Reading and library area",
+                "TV and entertainment",
+                "multi-purpose"
+              ],
+              "dependsOn": {
+                "id": "upper_living_required",
+                "value": "Yes"
+              }
+            },
+            {
+              "id": "upper_living_double_height",
+              "label": "Double-height / visual connection to lower floor?",
+              "type": "single-select",
+              "options": [
+                "Yes — I like the openness",
+                "No — prefer enclosed feel"
+              ],
+              "dependsOn": {
+                "id": "upper_living_required",
+                "value": "Yes"
+              }
+            },
+            {
+              "id": "upper_living_outdoor",
+              "label": "Outdoor connection from upper level",
+              "type": "multi-select",
+              "options": [
+                "Balcony",
+                "Terrace",
+                "Garden-view window"
+              ],
+              "dependsOn": {
+                "id": "upper_living_required",
+                "value": "Yes"
+              }
+            },
+            {
+              "id": "upper_living_elements",
+              "label": "Additional elements needed",
+              "type": "multi-select",
+              "options": [
+                "Bay window",
+                "Balcony",
+                "Book shelf",
+                "Study table"
+              ],
+              "dependsOn": {
+                "id": "upper_living_required",
+                "value": "Yes"
+              }
+            }
+          ]
+        },
+        {
+          "id": "sec-3-7",
+          "number": "3.7",
+          "title": "Staircase",
+          "questions": [
+            {
+              "id": "staircase_location",
+              "label": "Staircase Location Preference",
+              "type": "single-select",
+              "options": [
+                "Near Entrance",
+                "Central/Focal Point",
+                "Family Living",
+                "Designer to recommend",
+                "No Preference"
+              ]
+            },
+            {
+              "id": "staircase_configuration",
+              "label": "Staircase configuration",
+              "type": "single-select",
+              "options": [
+                "Straight",
+                "L-Shape",
+                "U-Shape",
+                "Curved",
+                "Floating",
+                "Split staircase"
+              ]
+            },
+            {
+              "id": "staircase_fabrication",
+              "label": "Staircase Fabrication Material",
+              "type": "multi-select",
+              "options": [
+                "RCC Structure",
+                "MS Structure with wood",
+                "MS structure with stone",
+                "RCC and steel combinations",
+                "Designer to recommend"
+              ]
+            },
+            {
+              "id": "staircase_railing",
+              "label": "Railing and Handrail Material",
+              "type": "multi-select",
+              "options": [
+                "Mild Steel",
+                "Stainless steel",
+                "Toughened glass",
+                "Wood",
+                "Wood with glass",
+                "Wood with Steel rode",
+                "Combination of Materials",
+                "Steel plate with CNC design",
+                "Designer to recommend"
+              ]
+            },
+            {
+              "id": "staircase_design_intent",
+              "label": "Design Intent for the Staircase",
+              "type": "single-select",
+              "options": [
+                "Purely functional",
+                "Clean and minimal",
+                "Warm and understated",
+                "Visually light and open",
+                "Sculptural feature",
+                "Grand statement element",
+                "Combination of Materials",
+                "Steel plate with CNC design",
+                "Designer to recommend"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "sec-3-8",
+          "number": "3.8",
+          "title": "Home Theatre Preferences",
+          "questions": [
+            {
+              "id": "home_theatre_required",
+              "label": "Home Theatre Required?",
+              "type": "single-select",
+              "options": [
+                "Yes — dedicated room",
+                "Multipurpose media room",
+                "Not required"
+              ]
+            },
+            {
+              "id": "ht_primary_use",
+              "label": "Primary Use",
+              "type": "multi-select",
+              "options": [
+                "Movies / OTT",
+                "Sports / TV",
+                "Music",
+                "Gaming",
+                "Family entertainment",
+                "Mixed use"
+              ],
+              "dependsOn": {
+                "id": "home_theatre_required",
+                "values": [
+                  "Yes — dedicated room",
+                  "Multipurpose media room"
+                ]
+              }
+            },
+            {
+              "id": "ht_mood",
+              "label": "Desired Mood / Feeling",
+              "type": "multi-select",
+              "options": [
+                "Dark and immersive",
+                "Luxurious and cinematic",
+                "Warm and cosy",
+                "Modern and minimal",
+                "Fun and energetic",
+                "Designer recommendation"
+              ],
+              "dependsOn": {
+                "id": "home_theatre_required",
+                "values": [
+                  "Yes — dedicated room",
+                  "Multipurpose media room"
+                ]
+              }
+            },
+            {
+              "id": "ht_seating_capacity",
+              "label": "Seating Capacity",
+              "type": "single-select",
+              "options": [
+                "4 persons",
+                "6 persons",
+                "8 persons",
+                "10 or more",
+                "Flexible family seating"
+              ],
+              "dependsOn": {
+                "id": "home_theatre_required",
+                "values": [
+                  "Yes — dedicated room",
+                  "Multipurpose media room"
+                ]
+              }
+            },
+            {
+              "id": "ht_seating_preference",
+              "label": "Seating Preference",
+              "type": "single-select",
+              "options": [
+                "Cinema recliners",
+                "Large sectional sofa",
+                "Sofa + recliner combination",
+                "Tiered seating",
+                "Lounge-style seating",
+                "Designer recommendation"
+              ],
+              "dependsOn": {
+                "id": "home_theatre_required",
+                "values": [
+                  "Yes — dedicated room",
+                  "Multipurpose media room"
+                ]
+              }
+            },
+            {
+              "id": "ht_screen_preference",
+              "label": "Screen Preference",
+              "type": "single-select",
+              "options": [
+                "Large TV",
+                "Projector + Screen",
+                "Concealed / Motorised screen",
+                "Not decided",
+                "Designer to recommend"
+              ],
+              "dependsOn": {
+                "id": "home_theatre_required",
+                "values": [
+                  "Yes — dedicated room",
+                  "Multipurpose media room"
+                ]
+              }
+            },
+            {
+              "id": "ht_audio",
+              "label": "Audio Experience",
+              "type": "single-select",
+              "options": [
+                "Good basic surround sound",
+                "Premium home-theatre audio",
+                "High-end immersive audio",
+                "Music-focused system",
+                "Designer / AV consultant recommendation"
+              ],
+              "dependsOn": {
+                "id": "home_theatre_required",
+                "values": [
+                  "Yes — dedicated room",
+                  "Multipurpose media room"
+                ]
+              }
+            },
+            {
+              "id": "ht_acoustics",
+              "label": "Acoustic Preference",
+              "type": "multi-select",
+              "options": [
+                "Basic sound control",
+                "Good acoustic treatment",
+                "Maximum sound isolation",
+                "Avoid sound reaching bedrooms",
+                "Avoid external noise entering",
+                "Designer recommendation"
+              ],
+              "dependsOn": {
+                "id": "home_theatre_required",
+                "values": [
+                  "Yes — dedicated room",
+                  "Multipurpose media room"
+                ]
+              }
+            },
+            {
+              "id": "ht_lighting",
+              "label": "Lighting Mood",
+              "type": "multi-select",
+              "options": [
+                "Very dark during movies",
+                "Soft ambient lighting",
+                "Cinematic layered lighting",
+                "Dimmable lighting",
+                "Step / Pathway lights",
+                "Star-ceiling / Feature lighting"
+              ],
+              "dependsOn": {
+                "id": "home_theatre_required",
+                "values": [
+                  "Yes — dedicated room",
+                  "Multipurpose media room"
+                ]
+              }
+            },
+            {
+              "id": "ht_wall_ceiling",
+              "label": "Wall / Ceiling Character",
+              "type": "multi-select",
+              "options": [
+                "Simple and minimal",
+                "Acoustic fabric panels",
+                "Timber / Slatted panels",
+                "Dark textured walls",
+                "Decorative feature ceiling",
+                "Designer recommendation"
+              ],
+              "dependsOn": {
+                "id": "home_theatre_required",
+                "values": [
+                  "Yes — dedicated room",
+                  "Multipurpose media room"
+                ]
+              }
+            },
+            {
+              "id": "ht_flooring",
+              "label": "Flooring Preference",
+              "type": "single-select",
+              "options": [
+                "Carpet flooring",
+                "Large area rug",
+                "Wood / Wood-finish flooring",
+                "Tile with acoustic treatment",
+                "Designer recommendation"
+              ],
+              "dependsOn": {
+                "id": "home_theatre_required",
+                "values": [
+                  "Yes — dedicated room",
+                  "Multipurpose media room"
+                ]
+              }
+            },
+            {
+              "id": "ht_tech_controls",
+              "label": "Technology & Controls",
+              "type": "multi-select",
+              "options": [
+                "Smart lighting scenes",
+                "Universal remote control",
+                "Voice / App control",
+                "Motorised curtains",
+                "Motorised screen",
+                "Integrated home automation"
+              ],
+              "dependsOn": {
+                "id": "home_theatre_required",
+                "values": [
+                  "Yes — dedicated room",
+                  "Multipurpose media room"
+                ]
+              }
+            },
+            {
+              "id": "ht_ac_ventilation",
+              "label": "Air-Conditioning & Ventilation",
+              "type": "multi-select",
+              "options": [
+                "Split AC",
+                "Concealed / Ducted AC",
+                "Designer to recommend",
+                "Fresh-air provision",
+                "Quiet AC operation important",
+                "Dehumidification required"
+              ],
+              "dependsOn": {
+                "id": "home_theatre_required",
+                "values": [
+                  "Yes — dedicated room",
+                  "Multipurpose media room"
+                ]
+              }
+            },
+            {
+              "id": "ht_privacy_location",
+              "label": "Privacy / Location Preference",
+              "type": "single-select",
+              "options": [
+                "Near family living",
+                "Upper floor / Private zone"
+              ],
+              "dependsOn": {
+                "id": "home_theatre_required",
+                "values": [
+                  "Yes — dedicated room",
+                  "Multipurpose media room"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "sec-3-9",
+          "number": "3.9",
+          "title": "Common Toilet / Powder Room",
+          "questions": [
+            {
+              "id": "powder_primary_use",
+              "label": "Primary Use",
+              "type": "single-select",
+              "options": [
+                "Guest powder room",
+                "Common family toilet",
+                "Toilet with shower"
+              ]
+            },
+            {
+              "id": "powder_design_character",
+              "label": "Preferred Design Character",
+              "type": "single-select",
+              "options": [
+                "Modern / Minimal",
+                "Luxury Contemporary",
+                "Natural / Earthy",
+                "Kerala-inspired",
+                "Neoclassical",
+                "Designer recommendation"
+              ]
+            },
+            {
+              "id": "powder_mood",
+              "label": "Desired Mood / Feeling",
+              "type": "multi-select",
+              "options": [
+                "Fresh and bright",
+                "Calm and minimal",
+                "Warm and elegant",
+                "Luxurious and refined",
+                "Natural and earthy",
+                "Dark and dramatic"
+              ]
+            },
+            {
+              "id": "powder_vanity_mirror",
+              "label": "Vanity & Mirror",
+              "type": "multi-select",
+              "options": [
+                "Compact vanity",
+                "Floating vanity",
+                "Statement vanity",
+                "Countertop basin",
+                "Integrated basin",
+                "Backlit mirror"
+              ]
+            },
+            {
+              "id": "powder_features",
+              "label": "Toilet / Shower Features",
+              "type": "multi-select",
+              "options": [
+                "Wall-hung WC",
+                "Rain shower",
+                "Cleaning storage"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "sec-3-10",
+          "number": "3.10",
+          "title": "Ablution / Wudu Area",
+          "questions": [
+            {
+              "id": "wudu_location",
+              "label": "Preferred Location",
+              "type": "single-select",
+              "options": [
+                "Attached to prayer room",
+                "Near prayer room",
+                "Within common washroom",
+                "Separate dedicated area",
+                "Courtyard / Outdoor side"
+              ]
+            },
+            {
+              "id": "wudu_arrangement",
+              "label": "Ablution Arrangement",
+              "type": "single-select",
+              "options": [
+                "Seated ablution",
+                "Standing arrangement",
+                "Combination"
+              ]
+            },
+            {
+              "id": "wudu_water",
+              "label": "Water Provision",
+              "type": "multi-select",
+              "options": [
+                "Low-level tap",
+                "Hand shower",
+                "Tap + Hand shower",
+                "Hot and cold water",
+                "Cold water only",
+                "Mixer control"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "sec-3-11",
+          "number": "3.11",
+          "title": "Prayer Room",
+          "questions": [
+            {
+              "id": "prayer_space_type",
+              "label": "Prayer Space Type",
+              "type": "single-select",
+              "options": [
+                "Dedicated enclosed room",
+                "Semi-open prayer space",
+                "Prayer corner"
+              ]
+            },
+            {
+              "id": "prayer_feeling",
+              "label": "How Should It Feel?",
+              "type": "multi-select",
+              "options": [
+                "Calm and peaceful",
+                "Spiritual and reflective",
+                "Warm and intimate",
+                "Simple and uncluttered",
+                "Natural and serene",
+                "Elegant and refined"
+              ]
+            },
+            {
+              "id": "prayer_character",
+              "label": "Preferred Design Character",
+              "type": "single-select",
+              "options": [
+                "Minimal Contemporary",
+                "Traditional Islamic",
+                "Kerala-Islamic Fusion",
+                "Natural / Earthy",
+                "Contemporary Luxury",
+                "Designer recommendation"
+              ]
+            },
+            {
+              "id": "prayer_capacity",
+              "label": "Capacity",
+              "type": "single-select",
+              "options": [
+                "1–2 persons",
+                "3–5 persons",
+                "6 or more persons"
+              ]
+            },
+            {
+              "id": "prayer_qibla_wall",
+              "label": "Qibla Wall Character",
+              "type": "multi-select",
+              "options": [
+                "Simple plain wall",
+                "Subtle feature wall",
+                "Mihrab-inspired feature",
+                "Timber detailing",
+                "Textured / Stone finish",
+                "Islamic geometric pattern"
+              ]
+            },
+            {
+              "id": "prayer_flooring",
+              "label": "Flooring",
+              "type": "single-select",
+              "options": [
+                "Prayer carpet",
+                "Individual prayer rugs",
+                "Soft carpet flooring",
+                "Timber / Wood finish",
+                "Tile / Stone with rug",
+                "Designer recommendation"
+              ]
+            },
+            {
+              "id": "prayer_storage",
+              "label": "Storage",
+              "type": "multi-select",
+              "options": [
+                "Qur'an / Book shelf",
+                "Prayer-mat storage",
+                "Prayer-clothing storage",
+                "Tasbih / Accessories drawer",
+                "Prayer-chair storage"
+              ]
+            },
+            {
+              "id": "prayer_lighting",
+              "label": "Lighting & Atmosphere",
+              "type": "multi-select",
+              "options": [
+                "Soft indirect lighting",
+                "Warm pendant / Wall light",
+                "Dimmable lighting",
+                "Natural daylight",
+                "Maximum privacy"
+              ]
+            },
+            {
+              "id": "prayer_additional_features",
+              "label": "Additional Features",
+              "type": "multi-select",
+              "options": [
+                "Ablution nearby",
+                "Elderly prayer chair",
+                "Qur'an reading chair",
+                "Audio / Speaker provision",
+                "Acoustic privacy"
+              ]
+            },
+            {
+              "id": "prayer_notes",
+              "label": "Additional Notes on Prayer Area",
+              "type": "textarea",
+              "placeholder": "Specific traditions, Mihrab orientation, family customs..."
+            }
+          ]
+        },
+        {
+          "id": "sec-3-12",
+          "number": "3.12",
+          "title": "Courtyard",
+          "questions": [
+            {
+              "id": "courtyard_required",
+              "label": "Courtyard required?",
+              "type": "single-select",
+              "options": [
+                "Yes",
+                "No"
+              ]
+            },
+            {
+              "id": "courtyard_type",
+              "label": "Courtyard type",
+              "type": "single-select",
+              "options": [
+                "Fully open to sky",
+                "Semi-covered",
+                "Skylight-covered"
+              ],
+              "dependsOn": {
+                "id": "courtyard_required",
+                "value": "Yes"
+              }
+            },
+            {
+              "id": "courtyard_purpose",
+              "label": "Primary purpose",
+              "type": "multi-select",
+              "options": [
+                "Natural light and ventilation",
+                "Passive cooling of house",
+                "Aesthetic focal point",
+                "Relaxation Garden"
+              ],
+              "dependsOn": {
+                "id": "courtyard_required",
+                "value": "Yes"
+              }
+            },
+            {
+              "id": "courtyard_elements",
+              "label": "Courtyard elements desired",
+              "type": "multi-select",
+              "options": [
+                "Plants and trees",
+                "Water feature",
+                "Seating area",
+                "Pebbles and stones",
+                "Sculpture or art piece"
+              ],
+              "dependsOn": {
+                "id": "courtyard_required",
+                "value": "Yes"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chapter-4",
+      "number": "04",
+      "title": "Bedrooms & Private Spaces",
+      "description": "Master suite, parent's bedroom, additional family and guest bedrooms, wardrobes, and private ensuite configurations.",
+      "sections": [
+        {
+          "id": "sec-bedroom-config",
+          "number": "3.13",
+          "title": "Bedroom Overview & Dynamic Rooms",
+          "questions": [
+            {
+              "id": "bedroom_visual_gallery",
+              "label": "Overall Bedroom & Wardrobe Style Preference",
+              "type": "visual-gallery",
+              "category": "bedroom",
+              "helpText": "Each bedroom style includes both a Bedroom reference and a Wardrobe/Dressing reference. Select the design style pair that resonates with your private retreat."
+            },
+            {
+              "id": "has_parent_room",
+              "label": "Include dedicated Parent’s Room?",
+              "type": "single-select",
+              "options": [
+                "Yes",
+                "No"
+              ]
+            },
+            {
+              "id": "additional_bedrooms_count",
+              "label": "How many additional bedrooms are required?",
+              "type": "single-select",
+              "options": [
+                "0",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5+"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "sec-master-bedroom",
+          "number": "3.13.1",
+          "title": "Master Bedroom",
+          "questions": [
+            {
+              "id": "mb_floor",
+              "label": "Preferred floor location",
+              "type": "single-select",
+              "options": [
+                "Ground floor",
+                "First floor"
+              ]
+            },
+            {
+              "id": "mb_style",
+              "label": "Preferred Design Style",
+              "type": "single-select",
+              "options": [
+                "Modern / Minimal",
+                "Luxury Contemporary",
+                "Kerala Traditional",
+                "Neoclassical",
+                "Colonial",
+                "English Country",
+                "Scandinavian",
+                "Japandi",
+                "Mediterranean",
+                "Industrial",
+                "Tropical Contemporary",
+                "Futuristic",
+                "Parisian",
+                "Italian Contemporary",
+                "Spanish",
+                "Art Deco",
+                "Rustic",
+                "Fusion",
+                "Any other design",
+                "Designer to recommend"
+              ]
+            },
+            {
+              "id": "mb_mood",
+              "label": "Desired Mood / Feeling",
+              "type": "multi-select",
+              "options": [
+                "Calm and restful",
+                "Romantic and intimate",
+                "Luxurious and indulgent",
+                "Bright and energising",
+                "Cosy and warm",
+                "Sophisticated and refined",
+                "Serene and minimal",
+                "Soft and relaxing",
+                "Dark and cocoon-like",
+                "Natural and earthy",
+                "Elegant hotel-like luxury"
+              ]
+            },
+            {
+              "id": "mb_bed_size",
+              "label": "Bed size",
+              "type": "single-select",
+              "options": [
+                "Queen (5×6 ft)",
+                "King (6×6 ft)",
+                "Custom size"
+              ]
+            },
+            {
+              "id": "mb_elements",
+              "label": "Additional elements needed",
+              "type": "multi-select",
+              "options": [
+                "Bay window",
+                "Verandah/Balcony",
+                "Private Yard",
+                "Work desk",
+                "Two-seater sofa",
+                "Lounge chair or reading corner",
+                "TV unit",
+                "CCTV monitor point",
+                "Book shelf",
+                "Blackout curtains",
+                "Sheer curtains",
+                "Smart lighting scenes"
+              ]
+            },
+            {
+              "id": "mb_wardrobe_type",
+              "label": "Wardrobe and Dressing type",
+              "type": "single-select",
+              "options": [
+                "Integrated wardrobe",
+                "wardrobe in dressing room",
+                "Walk-in wardrobe",
+                "Full-length mirror with shelf",
+                "Seated dressing counter"
+              ]
+            },
+            {
+              "id": "mb_wardrobe_acc",
+              "label": "Wardrobe accessories",
+              "type": "multi-select",
+              "options": [
+                "Long Hanging section",
+                "Short Hanging section",
+                "Trouser rack",
+                "Saree rack",
+                "Jewellery drawer",
+                "Internal drawer",
+                "Locker/Safe storage",
+                "Laundry basket",
+                "Luggage storage"
+              ]
+            },
+            {
+              "id": "mb_bathroom_features",
+              "label": "Bathroom features desired",
+              "type": "multi-select",
+              "options": [
+                "Compact and practical",
+                "Spacious",
+                "Luxury spa-like",
+                "Natural and earthy",
+                "Clean and minimal",
+                "Fresh and bright",
+                "Hot-water provision",
+                "Rain shower",
+                "Shower with glass partition",
+                "Bathtub",
+                "Open shower area",
+                "Hand shower",
+                "Body jets",
+                "Vanity counter",
+                "Integrated basin",
+                "Premium fittings",
+                "Skylight",
+                "Niches",
+                "Cleaning-material storage",
+                "Large-format tile",
+                "Small textured tile"
+              ]
+            },
+            {
+              "id": "mb_notes",
+              "label": "Additional Notes on Master Bedroom",
+              "type": "textarea",
+              "placeholder": "Special requirements, mattress preferences, storage details..."
+            }
+          ]
+        },
+        {
+          "id": "sec-parent-bedroom",
+          "number": "3.13.2",
+          "title": "Parent’s Room",
+          "dependsOn": {
+            "id": "has_parent_room",
+            "value": "Yes"
+          },
+          "questions": [
+            {
+              "id": "pb_floor",
+              "label": "Preferred floor location",
+              "type": "single-select",
+              "options": [
+                "Ground floor",
+                "First floor"
+              ]
+            },
+            {
+              "id": "pb_style",
+              "label": "Preferred Design Style",
+              "type": "single-select",
+              "options": [
+                "Modern / Minimal",
+                "Luxury Contemporary",
+                "Kerala Traditional",
+                "Neoclassical",
+                "Colonial",
+                "English Country",
+                "Scandinavian",
+                "Japandi",
+                "Mediterranean",
+                "Industrial",
+                "Tropical Contemporary",
+                "Futuristic",
+                "Parisian",
+                "Italian Contemporary",
+                "Spanish",
+                "Art Deco",
+                "Rustic",
+                "Fusion",
+                "Any other design",
+                "Designer to recommend"
+              ]
+            },
+            {
+              "id": "pb_mood",
+              "label": "Desired Mood / Feeling",
+              "type": "multi-select",
+              "options": [
+                "Calm and restful",
+                "Bright and energising",
+                "Luxurious and indulgent",
+                "Sophisticated and refined",
+                "Cosy and warm",
+                "Serene and minimal",
+                "Natural and earthy",
+                "Soft and relaxing",
+                "Elegant hotel-like luxury"
+              ]
+            },
+            {
+              "id": "pb_bed_size",
+              "label": "Bed size",
+              "type": "single-select",
+              "options": [
+                "Queen (5×6 ft)",
+                "King (6×6 ft)",
+                "2 Single (3×6 ft)"
+              ]
+            },
+            {
+              "id": "pb_elements",
+              "label": "Additional elements needed",
+              "type": "multi-select",
+              "options": [
+                "Bay window",
+                "Work desk",
+                "Prayer chair",
+                "Lounge chair or reading corner",
+                "Two-seater sofa",
+                "Prayer corner in room",
+                "TV unit",
+                "CCTV monitor point",
+                "Book shelf",
+                "Emergency call bell provision",
+                "Blackout curtains",
+                "Sheer curtains",
+                "Smart lighting scenes"
+              ]
+            },
+            {
+              "id": "pb_wardrobe_type",
+              "label": "Wardrobe and Dressing type",
+              "type": "single-select",
+              "options": [
+                "Integrated wardrobe",
+                "wardrobe in dressing room",
+                "Walk-in wardrobe",
+                "Full-length mirror with shelf"
+              ]
+            },
+            {
+              "id": "pb_wardrobe_acc",
+              "label": "Wardrobe accessories",
+              "type": "multi-select",
+              "options": [
+                "Long Hanging section",
+                "Short Hanging section",
+                "Trouser rack",
+                "Saree rack",
+                "Jewellery drawer",
+                "Internal drawer",
+                "Locker/Safe storage",
+                "Laundry basket",
+                "Luggage storage"
+              ]
+            },
+            {
+              "id": "pb_bathroom_features",
+              "label": "Bathroom features desired",
+              "type": "multi-select",
+              "options": [
+                "Compact and practical",
+                "Spacious",
+                "Natural and earthy",
+                "Clean and minimal",
+                "Fresh and bright",
+                "Hot-water provision",
+                "Hand shower",
+                "Rain shower",
+                "Shower with glass partition",
+                "Vanity counter",
+                "Integrated basin",
+                "Niches",
+                "Premium fittings",
+                "Skylight",
+                "Cleaning-material storage",
+                "Large-format tile",
+                "Small textured tile"
+              ]
+            },
+            {
+              "id": "pb_mobility",
+              "label": "Mobility considerations",
+              "type": "multi-select",
+              "options": [
+                "No special needs",
+                "Wider doorways needed",
+                "Step-free access required",
+                "Grab bars in bathroom"
+              ]
+            },
+            {
+              "id": "pb_notes",
+              "label": "Additional Notes on Parent's Room",
+              "type": "textarea",
+              "placeholder": "Medication storage, emergency alarm, accessibility notes..."
+            }
+          ]
+        },
+        {
+          "id": "sec-dynamic-bedrooms",
+          "number": "3.13.3",
+          "title": "Additional Bedrooms (Dynamic)",
+          "type": "dynamic-bedroom-container"
+        }
+      ]
+    },
+    {
+      "id": "chapter-5",
+      "number": "05",
+      "title": "Kitchen & Service Areas",
+      "description": "Main show kitchen, working/heavy kitchen, storage pantry, utility area, and store room.",
+      "sections": [
+        {
+          "id": "sec-kitchen-gallery",
+          "number": "Visual Reference",
+          "title": "Kitchen Design Styles",
+          "questions": [
+            {
+              "id": "kitchen_visual_gallery",
+              "label": "Preferred Kitchen Style",
+              "type": "visual-gallery",
+              "category": "kitchen",
+              "helpText": "Select the kitchen aesthetic that matches your culinary lifestyle and entertaining preferences."
+            }
+          ]
+        },
+        {
+          "id": "sec-3-14-main",
+          "number": "3.14.1",
+          "title": "Main Kitchen",
+          "questions": [
+            {
+              "id": "mk_visibility",
+              "label": "Kitchen visibility from living / dining",
+              "type": "single-select",
+              "options": [
+                "Fully open — no problem",
+                "Semi-open with partial screen",
+                "Fully closed and separate"
+              ]
+            },
+            {
+              "id": "mk_layout",
+              "label": "Kitchen layout",
+              "type": "single-select",
+              "options": [
+                "L-shape",
+                "U-shape",
+                "Parallel / galley",
+                "Island",
+                "Peninsula"
+              ]
+            },
+            {
+              "id": "mk_breakfast_counter",
+              "label": "Breakfast counter or bar seating?",
+              "type": "single-select",
+              "options": [
+                "Yes",
+                "No"
+              ]
+            },
+            {
+              "id": "mk_seatings",
+              "label": "Number of seatings?",
+              "type": "single-select",
+              "options": [
+                "3",
+                "4",
+                "6"
+              ],
+              "dependsOn": {
+                "id": "mk_breakfast_counter",
+                "value": "Yes"
+              }
+            },
+            {
+              "id": "mk_storage",
+              "label": "Storage requirement",
+              "type": "single-select",
+              "options": [
+                "Minimal",
+                "Moderate",
+                "Maximum (as much as possible)"
+              ]
+            },
+            {
+              "id": "mk_appliances",
+              "label": "Planned appliances",
+              "type": "multi-select",
+              "options": [
+                "Hob and chimney",
+                "Oven",
+                "Microwave",
+                "Single-door fridge",
+                "Large double-door fridge",
+                "Washing machine",
+                "Dishwasher",
+                "Mixer-grinder",
+                "Appliance garage / Shutter unit"
+              ]
+            },
+            {
+              "id": "mk_pantry_acc",
+              "label": "Special kitchen accessories — Pantry & Provisions",
+              "type": "multi-select",
+              "options": [
+                "Tall pantry unit",
+                "Pull-out pantry / Provisions trolley",
+                "Bottle and spice pull-out",
+                "Vegetable drawer",
+                "Grain storage unit"
+              ]
+            },
+            {
+              "id": "mk_utensil_acc",
+              "label": "Special kitchen accessories — Utensil Organisation",
+              "type": "multi-select",
+              "options": [
+                "Cutlery organiser tray",
+                "Cup and saucer organiser",
+                "Plate / Thali organiser",
+                "Cutting-board and tray holder",
+                "Deep drawers for pots and vessels",
+                "Dish-drainer basket"
+              ]
+            },
+            {
+              "id": "mk_corner_acc",
+              "label": "Special kitchen accessories — Corner & Cabinet Accessories",
+              "type": "multi-select",
+              "options": [
+                "Pull-out baskets",
+                "Corner carousel / Magic corner",
+                "Lift-up upper cabinet shutters",
+                "Drawer-in-drawer storage",
+                "Tall-unit internal drawers",
+                "Open display shelves"
+              ]
+            },
+            {
+              "id": "mk_sink_acc",
+              "label": "Special kitchen accessories — Sink, Cleaning & Waste",
+              "type": "multi-select",
+              "options": [
+                "Plate-drying rack",
+                "Under-sink storage organiser",
+                "Built-in waste-bin unit",
+                "Waste-segregation bins",
+                "Cleaning-material organiser",
+                "Kitchen towel holder",
+                "RO water-purifier provision"
+              ]
+            },
+            {
+              "id": "mk_cooking_intensity",
+              "label": "Cooking intensity / type",
+              "type": "single-select",
+              "options": [
+                "Light daily cooking",
+                "Heavy traditional cooking daily"
+              ]
+            },
+            {
+              "id": "mk_countertop",
+              "label": "Countertop Material",
+              "type": "multi-select",
+              "options": [
+                "Granite",
+                "Quartz",
+                "Sintered stone",
+                "Porcelain slab",
+                "Concrete finish"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "sec-3-14-working",
+          "number": "3.14.2",
+          "title": "Working Kitchen",
+          "questions": [
+            {
+              "id": "wk_required",
+              "label": "Separate heavy cooking / work area required?",
+              "type": "single-select",
+              "options": [
+                "Yes",
+                "No"
+              ]
+            },
+            {
+              "id": "wk_layout",
+              "label": "Working Kitchen layout",
+              "type": "single-select",
+              "options": [
+                "L-shape",
+                "U-shape",
+                "Parallel / galley",
+                "Island",
+                "Peninsula"
+              ],
+              "dependsOn": {
+                "id": "wk_required",
+                "value": "Yes"
+              }
+            },
+            {
+              "id": "wk_breakfast_counter",
+              "label": "Breakfast counter or bar seating?",
+              "type": "single-select",
+              "options": [
+                "Yes",
+                "No"
+              ],
+              "dependsOn": {
+                "id": "wk_required",
+                "value": "Yes"
+              }
+            },
+            {
+              "id": "wk_seatings",
+              "label": "Number of seatings?",
+              "type": "single-select",
+              "options": [
+                "3",
+                "4",
+                "6"
+              ],
+              "dependsOn": {
+                "id": "wk_breakfast_counter",
+                "value": "Yes"
+              }
+            },
+            {
+              "id": "wk_storage",
+              "label": "Storage requirement",
+              "type": "single-select",
+              "options": [
+                "Minimal",
+                "Moderate",
+                "Maximum (as much as possible)"
+              ],
+              "dependsOn": {
+                "id": "wk_required",
+                "value": "Yes"
+              }
+            },
+            {
+              "id": "wk_appliances",
+              "label": "Planned appliances",
+              "type": "multi-select",
+              "options": [
+                "Hob and chimney",
+                "Oven",
+                "Microwave",
+                "Single-door fridge",
+                "Large double-door fridge",
+                "Washing machine",
+                "Dishwasher",
+                "Mixer-grinder",
+                "Appliance garage / Shutter unit"
+              ],
+              "dependsOn": {
+                "id": "wk_required",
+                "value": "Yes"
+              }
+            },
+            {
+              "id": "wk_pantry_acc",
+              "label": "Special kitchen accessories — Pantry & Provisions",
+              "type": "multi-select",
+              "options": [
+                "Tall pantry unit",
+                "Pull-out pantry / Provisions trolley",
+                "Bottle and spice pull-out",
+                "Vegetable drawer",
+                "Grain storage unit"
+              ],
+              "dependsOn": {
+                "id": "wk_required",
+                "value": "Yes"
+              }
+            },
+            {
+              "id": "wk_utensil_acc",
+              "label": "Special kitchen accessories — Utensil Organisation",
+              "type": "multi-select",
+              "options": [
+                "Cutlery organiser tray",
+                "Cup and saucer organiser",
+                "Plate / Thali organiser",
+                "Cutting-board and tray holder",
+                "Deep drawers for pots and vessels",
+                "Dish-drainer basket"
+              ],
+              "dependsOn": {
+                "id": "wk_required",
+                "value": "Yes"
+              }
+            },
+            {
+              "id": "wk_corner_acc",
+              "label": "Special kitchen accessories — Corner & Cabinet Accessories",
+              "type": "multi-select",
+              "options": [
+                "Pull-out baskets",
+                "Corner carousel / Magic corner",
+                "Lift-up upper cabinet shutters",
+                "Drawer-in-drawer storage",
+                "Tall-unit internal drawers",
+                "Open display shelves"
+              ],
+              "dependsOn": {
+                "id": "wk_required",
+                "value": "Yes"
+              }
+            },
+            {
+              "id": "wk_sink_acc",
+              "label": "Special kitchen accessories — Sink, Cleaning & Waste",
+              "type": "multi-select",
+              "options": [
+                "Plate-drying rack",
+                "Under-sink storage organiser",
+                "Built-in waste-bin unit",
+                "Waste-segregation bins",
+                "Cleaning-material organiser",
+                "Kitchen towel holder",
+                "RO water-purifier provision"
+              ],
+              "dependsOn": {
+                "id": "wk_required",
+                "value": "Yes"
+              }
+            },
+            {
+              "id": "wk_cooking_intensity",
+              "label": "Cooking intensity / type",
+              "type": "single-select",
+              "options": [
+                "Light daily cooking",
+                "Heavy traditional cooking daily",
+                "Occasional festive heavy cooking"
+              ],
+              "dependsOn": {
+                "id": "wk_required",
+                "value": "Yes"
+              }
+            },
+            {
+              "id": "wk_countertop",
+              "label": "Countertop Material",
+              "type": "multi-select",
+              "options": [
+                "Granite",
+                "Quartz",
+                "Sintered stone",
+                "Porcelain slab",
+                "Concrete finish"
+              ],
+              "dependsOn": {
+                "id": "wk_required",
+                "value": "Yes"
+              }
+            }
+          ]
+        },
+        {
+          "id": "sec-3-14-utility",
+          "number": "3.14.3",
+          "title": "Utility Room",
+          "questions": [
+            {
+              "id": "utility_required",
+              "label": "Separate Utility room required?",
+              "type": "single-select",
+              "options": [
+                "Yes",
+                "No"
+              ]
+            },
+            {
+              "id": "utility_functions",
+              "label": "Functions needed in work area",
+              "type": "multi-select",
+              "options": [
+                "Cloth drying provision",
+                "Washing machine",
+                "Dryer",
+                "Sewing Machine",
+                "Ironing station"
+              ],
+              "dependsOn": {
+                "id": "utility_required",
+                "value": "Yes"
+              }
+            },
+            {
+              "id": "utility_cloth_drying",
+              "label": "Cloth drying preference",
+              "type": "single-select",
+              "options": [
+                "Indoor drying rack or rod",
+                "Outdoor drying area",
+                "Concealed / hidden drying"
+              ],
+              "dependsOn": {
+                "id": "utility_required",
+                "value": "Yes"
+              }
+            }
+          ]
+        },
+        {
+          "id": "sec-3-14-store",
+          "number": "3.14.4",
+          "title": "Store Room",
+          "questions": [
+            {
+              "id": "store_required",
+              "label": "Separate store room required?",
+              "type": "single-select",
+              "options": [
+                "Yes",
+                "No"
+              ]
+            },
+            {
+              "id": "store_purpose",
+              "label": "Primary storage purpose",
+              "type": "multi-select",
+              "options": [
+                "Groceries and kitchen supplies",
+                "Cleaning and utility items",
+                "Bulk and seasonal storage",
+                "multi-purpose"
+              ],
+              "dependsOn": {
+                "id": "store_required",
+                "value": "Yes"
+              }
+            },
+            {
+              "id": "store_system",
+              "label": "Storage system preference",
+              "type": "multi-select",
+              "options": [
+                "Open adjustable shelves",
+                "Closed cabinets",
+                "Combination of both",
+                "Tall heavy-duty storage racks"
+              ],
+              "dependsOn": {
+                "id": "store_required",
+                "value": "Yes"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chapter-6",
+      "number": "06",
+      "title": "Systems, Finishes & Styling Preferences",
+      "description": "Lighting design, flooring, material finishes, soft furnishings, security, and smart home automation.",
+      "sections": [
+        {
+          "id": "sec-4-1",
+          "number": "4.1",
+          "title": "Lighting Design Preferences",
+          "questions": [
+            {
+              "id": "lighting_mood",
+              "label": "Overall lighting mood preferred",
+              "type": "single-select",
+              "options": [
+                "Warm & cozy",
+                "Bright & functional",
+                "Dramatic & layered",
+                "Mix per space"
+              ]
+            },
+            {
+              "id": "lighting_control",
+              "label": "Lighting control preference",
+              "type": "single-select",
+              "options": [
+                "Manual switches",
+                "App-controlled smart lighting",
+                "Voice-controlled",
+                "Mixed"
+              ]
+            },
+            {
+              "id": "layered_lighting_approach",
+              "label": "Layered lighting approach (ambient + task + accent + decorative)",
+              "type": "single-select",
+              "hasTooltip": "layered_lighting",
+              "options": [
+                "Yes, fully layered lighting",
+                "Basic ambient lighting only",
+                "Let designer recommend"
+              ]
+            },
+            {
+              "id": "smart_lighting_scenes",
+              "label": "Smart lighting scenes desired",
+              "type": "single-select",
+              "options": [
+                "Yes — mood scenes (entertaining / relaxing / movie)",
+                "Basic on-off automation only",
+                "Not required"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "sec-4-2",
+          "number": "4.2",
+          "title": "Flooring & Material Finishes Preferences",
+          "questions": [
+            {
+              "id": "flooring_living",
+              "label": "Flooring — living & common areas",
+              "type": "multi-select",
+              "options": [
+                "Italian / imported marble",
+                "Indian marble",
+                "Natural stone (granite / Kota)",
+                "Vitrified tiles",
+                "Engineered wood",
+                "Polished concrete / IPS"
+              ]
+            },
+            {
+              "id": "flooring_bedrooms",
+              "label": "Flooring — bedrooms",
+              "type": "multi-select",
+              "options": [
+                "Italian / imported marble",
+                "Indian marble",
+                "Natural stone (granite / Kota)",
+                "Vitrified tiles",
+                "Engineered wood flooring",
+                "Natural stone"
+              ]
+            },
+            {
+              "id": "flooring_verandah",
+              "label": "Verandah / sit-out flooring",
+              "type": "multi-select",
+              "options": [
+                "Natural stone",
+                "Wood-look tiles",
+                "Concrete finish"
+              ]
+            },
+            {
+              "id": "tile_slab_size",
+              "label": "Tile / slab size preference",
+              "type": "single-select",
+              "options": [
+                "Large-format slabs",
+                "Standard-size tiles",
+                "Mix of both by zone"
+              ]
+            },
+            {
+              "id": "overall_flooring_tone",
+              "label": "Overall flooring tone",
+              "type": "single-select",
+              "options": [
+                "As per interior design style",
+                "Warm earthy tones",
+                "Dark & bold tones",
+                "Mixed by zone",
+                "Light & bright tones"
+              ]
+            },
+            {
+              "id": "false_ceiling_material",
+              "label": "False-ceiling material",
+              "type": "multi-select",
+              "options": [
+                "Gypsum board",
+                "POP (Plaster of Paris)",
+                "Wood / veneer panels",
+                "Minimal — no false ceiling"
+              ]
+            },
+            {
+              "id": "wall_finish_preference",
+              "label": "Wall finish preference",
+              "type": "multi-select",
+              "options": [
+                "Smooth painted finish",
+                "Textured finish",
+                "Exposed brick or laterite",
+                "Wood / stone cladding accents",
+                "Breathable paint finish"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "sec-4-3",
+          "number": "4.3",
+          "title": "Soft Furnishings & Styling Preferences",
+          "questions": [
+            {
+              "id": "curtain_preference",
+              "label": "Curtain & drapery preference",
+              "type": "single-select",
+              "options": [
+                "Sheer only",
+                "Blackout only",
+                "Layered — sheer + blackout",
+                "Blinds instead of curtains"
+              ]
+            },
+            {
+              "id": "upholstery_material",
+              "label": "Upholstery material",
+              "type": "multi-select",
+              "options": [
+                "Natural fabric (linen / cotton)",
+                "Leather",
+                "Performance/stain-resistant fabric",
+                "Mixed by space"
+              ]
+            },
+            {
+              "id": "colour_texture_palette",
+              "label": "Colour & texture palette",
+              "type": "single-select",
+              "options": [
+                "As per interior design style",
+                "Bold & contrasting",
+                "Soft pastel",
+                "Monochrome",
+                "Neutral & earthy"
+              ]
+            },
+            {
+              "id": "rugs_carpets",
+              "label": "Rugs & carpets",
+              "type": "single-select",
+              "options": [
+                "Yes, statement rugs in living / dining",
+                "Minimal, only in bedrooms",
+                "Not required"
+              ]
+            },
+            {
+              "id": "artwork_accessories",
+              "label": "Artwork & accessories",
+              "type": "single-select",
+              "options": [
+                "Curated by designer",
+                "Client's personal collection",
+                "Mix of both"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "sec-4-4",
+          "number": "4.4",
+          "title": "Security & Home Automation Preferences",
+          "questions": [
+            {
+              "id": "automation_interest",
+              "label": "Overall automation interest",
+              "type": "single-select",
+              "hasTooltip": "home_automation",
+              "options": [
+                "Fully integrated smart home",
+                "Selective automation (lighting + security)",
+                "Basic security only",
+                "Not required"
+              ]
+            },
+            {
+              "id": "cctv_coverage",
+              "label": "CCTV coverage",
+              "type": "single-select",
+              "options": [
+                "All Door entry+ Car porch & Gate",
+                "All Door entry+ Car porch",
+                "Full Exterior coverage"
+              ]
+            },
+            {
+              "id": "access_control",
+              "label": "Access control",
+              "type": "multi-select",
+              "options": [
+                "Video door phone",
+                "Smart lock (fingerprint / code)",
+                "Traditional lock & key",
+                "Combination"
+              ]
+            },
+            {
+              "id": "gate_security",
+              "label": "Gate & boundary security",
+              "type": "multi-select",
+              "options": [
+                "Automated sliding / swing gate",
+                "Intercom at gate",
+                "Manual gate",
+                "Security cabin for guard"
+              ]
+            },
+            {
+              "id": "alarm_sensors",
+              "label": "Alarm & sensors",
+              "type": "multi-select",
+              "options": [
+                "Motion sensors",
+                "Door-window sensors",
+                "Fire & smoke alarm",
+                "Not required"
+              ]
+            },
+            {
+              "id": "automation_scope",
+              "label": "Home automation scope",
+              "type": "multi-select",
+              "options": [
+                "Lighting control",
+                "AC / climate control",
+                "Curtain or blind automation",
+                "Music / audio system"
+              ]
+            },
+            {
+              "id": "automation_control_method",
+              "label": "Preferred control method",
+              "type": "multi-select",
+              "options": [
+                "Mobile app",
+                "Wall-mounted touch panel",
+                "Voice assistant",
+                "Combination"
+              ]
+            },
+            {
+              "id": "backup_power",
+              "label": "Backup power",
+              "type": "multi-select",
+              "options": [
+                "Generator provision",
+                "Solar backup",
+                "UPS / inverter for essentials",
+                "Not required"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chapter-7",
+      "number": "07",
+      "title": "Outdoor, Landscape & Swimming Pool",
+      "description": "Garden design, external works, gazebos, water features, swimming pool, and outdoor living.",
+      "sections": [
+        {
+          "id": "sec-5-1",
+          "number": "5.1",
+          "title": "Landscape & External Works",
+          "questions": [
+            {
+              "id": "landscape_areas",
+              "label": "Landscape areas to include",
+              "type": "multi-select",
+              "options": [
+                "Front yard",
+                "Backyard",
+                "Courtyard",
+                "Terrace Garden",
+                "Side setbacks"
+              ]
+            },
+            {
+              "id": "outdoor_use",
+              "label": "Intended outdoor use",
+              "type": "multi-select",
+              "options": [
+                "Daily relaxation and morning tea",
+                "Kids play area",
+                "Kitchen gardening",
+                "Guest and family gatherings",
+                "Family gathering",
+                "Entertaining guests",
+                "Morning / Evening Walk",
+                "Barbecue / Cooking",
+                "Celebrations / Events"
+              ]
+            },
+            {
+              "id": "outdoor_seating_gazebo",
+              "label": "Outdoor seating or gazebo required?",
+              "type": "single-select",
+              "options": [
+                "Yes",
+                "No"
+              ]
+            },
+            {
+              "id": "outdoor_feeling",
+              "label": "How Would You Like the Outdoor Spaces to Feel?",
+              "type": "multi-select",
+              "options": [
+                "Calm and peaceful",
+                "Fresh and connected to nature",
+                "Warm and welcoming",
+                "Private and protected",
+                "Luxurious and resort-like",
+                "Open and spacious",
+                "Natural and informal",
+                "Neat and well organised",
+                "Designer recommendation"
+              ]
+            },
+            {
+              "id": "landscape_style",
+              "label": "Preferred Landscape Style",
+              "type": "single-select",
+              "options": [
+                "Tropical Contemporary",
+                "Modern / Minimal",
+                "Luxury Resort-style",
+                "Natural / Organic",
+                "Rustic and Earthy",
+                "Kerala traditional",
+                "Mediterranean",
+                "Fusion",
+                "Designer recommendation"
+              ]
+            },
+            {
+              "id": "greenery_balance",
+              "label": "Balanced greenery and open space",
+              "type": "multi-select",
+              "options": [
+                "Minimal planting",
+                "Colourful flowering garden",
+                "Mostly foliage plants",
+                "Natural and free-growing",
+                "Low-maintenance landscape"
+              ]
+            },
+            {
+              "id": "outdoor_elements_desired",
+              "label": "Outdoor Seating & Feature Requirements",
+              "type": "multi-select",
+              "options": [
+                "Gazebo",
+                "Garden seating",
+                "Pergola seating",
+                "Outdoor dining area",
+                "Family gathering",
+                "Entertaining guests",
+                "Swing / Hammock",
+                "Swimming pool",
+                "Poolside seating",
+                "Natural swimming pool",
+                "Badminton court",
+                "Cascading water feature",
+                "Lily / Lotus Pond",
+                "Water wall",
+                "Small decorative fountain",
+                "Sculpture / Artwork",
+                "Security cabin",
+                "Pedestrian gate"
+              ]
+            },
+            {
+              "id": "front_yard_privacy",
+              "label": "Front-Yard Privacy",
+              "type": "multi-select",
+              "options": [
+                "Open and visually connected",
+                "Partially screened",
+                "Maximum privacy",
+                "Green screening",
+                "Solid compound wall",
+                "Screen wall / Louvres",
+                "Fencing wall"
+              ]
+            },
+            {
+              "id": "paving_character",
+              "label": "Preferred Paving Character",
+              "type": "multi-select",
+              "options": [
+                "Natural stone",
+                "Concrete pavers",
+                "Gravel",
+                "Grass-joint paving",
+                "Large-format slabs",
+                "Combination of materials",
+                "Grass pavers"
+              ]
+            },
+            {
+              "id": "drainage_irrigation",
+              "label": "Rain, Drainage & Irrigation",
+              "type": "multi-select",
+              "options": [
+                "Recharge pit",
+                "Existing well recharge",
+                "Rain Garden",
+                "Manual watering",
+                "Automatic sprinkler system",
+                "Drip irrigation"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "sec-5-2",
+          "number": "5.2",
+          "title": "Swimming Pool",
+          "questions": [
+            {
+              "id": "pool_requirement",
+              "label": "Pool Requirement",
+              "type": "single-select",
+              "options": [
+                "Essential",
+                "If budget allows",
+                "Not required"
+              ]
+            },
+            {
+              "id": "pool_primary_use",
+              "label": "Primary Use",
+              "type": "multi-select",
+              "options": [
+                "Family recreation",
+                "Exercise / Swimming",
+                "Relaxation",
+                "Children’s play",
+                "Guest entertainment",
+                "Landscape feature"
+              ],
+              "dependsOn": {
+                "id": "pool_requirement",
+                "values": [
+                  "Essential",
+                  "If budget allows"
+                ]
+              }
+            },
+            {
+              "id": "pool_type",
+              "label": "Preferred Pool Type",
+              "type": "single-select",
+              "options": [
+                "Conventional pool",
+                "Infinity-edge pool",
+                "Natural-style pool",
+                "Plunge pool",
+                "Designer recommendation"
+              ],
+              "dependsOn": {
+                "id": "pool_requirement",
+                "values": [
+                  "Essential",
+                  "If budget allows"
+                ]
+              }
+            },
+            {
+              "id": "pool_location",
+              "label": "Preferred Location",
+              "type": "single-select",
+              "options": [
+                "Backyard",
+                "Side Garden",
+                "Courtyard",
+                "Near family living",
+                "Near outdoor lounge",
+                "Private Garden zone"
+              ],
+              "dependsOn": {
+                "id": "pool_requirement",
+                "values": [
+                  "Essential",
+                  "If budget allows"
+                ]
+              }
+            },
+            {
+              "id": "pool_feeling",
+              "label": "Desired Pool-Area Feeling",
+              "type": "multi-select",
+              "options": [
+                "Relaxed and resort-like",
+                "Private and peaceful",
+                "Fresh and tropical",
+                "Luxurious and sophisticated",
+                "Family-friendly",
+                "Natural and calming"
+              ],
+              "dependsOn": {
+                "id": "pool_requirement",
+                "values": [
+                  "Essential",
+                  "If budget allows"
+                ]
+              }
+            },
+            {
+              "id": "pool_privacy",
+              "label": "Privacy",
+              "type": "multi-select",
+              "options": [
+                "Maximum privacy",
+                "Partial privacy",
+                "Open Garden connection",
+                "Green screening",
+                "Screen wall / Louvres",
+                "Compound-wall screening"
+              ],
+              "dependsOn": {
+                "id": "pool_requirement",
+                "values": [
+                  "Essential",
+                  "If budget allows"
+                ]
+              }
+            },
+            {
+              "id": "pool_size",
+              "label": "Approximate Size",
+              "type": "single-select",
+              "options": [
+                "Compact",
+                "Medium family pool",
+                "Large pool"
+              ],
+              "dependsOn": {
+                "id": "pool_requirement",
+                "values": [
+                  "Essential",
+                  "If budget allows"
+                ]
+              }
+            },
+            {
+              "id": "pool_depth",
+              "label": "Depth",
+              "type": "multi-select",
+              "options": [
+                "Shallow throughout",
+                "Shallow + deep zones",
+                "Swimming depth",
+                "Separate kids' zone",
+                "Designer recommendation"
+              ],
+              "dependsOn": {
+                "id": "pool_requirement",
+                "values": [
+                  "Essential",
+                  "If budget allows"
+                ]
+              }
+            },
+            {
+              "id": "pool_finish",
+              "label": "Pool Finish",
+              "type": "multi-select",
+              "options": [
+                "Blue mosaic",
+                "Green / Natural tone",
+                "Large-format pool tile",
+                "Stone-look finish",
+                "Natural look",
+                "Designer recommendation"
+              ],
+              "dependsOn": {
+                "id": "pool_requirement",
+                "values": [
+                  "Essential",
+                  "If budget allows"
+                ]
+              }
+            },
+            {
+              "id": "poolside_amenities",
+              "label": "Poolside Amenities",
+              "type": "multi-select",
+              "options": [
+                "Sun loungers",
+                "Outdoor seating",
+                "Poolside shower",
+                "Gazebo / Pergola",
+                "Outdoor dining",
+                "Toilet"
+              ],
+              "dependsOn": {
+                "id": "pool_requirement",
+                "values": [
+                  "Essential",
+                  "If budget allows"
+                ]
+              }
+            },
+            {
+              "id": "pool_special_features",
+              "label": "Special Features",
+              "type": "multi-select",
+              "options": [
+                "Jacuzzi / Spa",
+                "Waterfall / Cascade",
+                "Children’s pool",
+                "Pool bench",
+                "Swim jet",
+                "Pool cover"
+              ],
+              "dependsOn": {
+                "id": "pool_requirement",
+                "values": [
+                  "Essential",
+                  "If budget allows"
+                ]
+              }
+            },
+            {
+              "id": "pool_lighting",
+              "label": "Lighting",
+              "type": "multi-select",
+              "options": [
+                "Underwater lighting",
+                "Warm landscape lighting",
+                "Path / Step lighting",
+                "Soft ambient lighting",
+                "Designer recommendation"
+              ],
+              "dependsOn": {
+                "id": "pool_requirement",
+                "values": [
+                  "Essential",
+                  "If budget allows"
+                ]
+              }
+            },
+            {
+              "id": "pool_safety",
+              "label": "Safety",
+              "type": "multi-select",
+              "options": [
+                "Child-safe barrier",
+                "Anti-skid deck",
+                "Safety cover",
+                "CCTV coverage",
+                "Handrail",
+                "Adequate night lighting"
+              ],
+              "dependsOn": {
+                "id": "pool_requirement",
+                "values": [
+                  "Essential",
+                  "If budget allows"
+                ]
+              }
+            },
+            {
+              "id": "pool_maintenance",
+              "label": "Maintenance Preference",
+              "type": "multi-select",
+              "options": [
+                "Low-maintenance priority",
+                "Moderate maintenance acceptable",
+                "Premium system acceptable",
+                "Automatic cleaning",
+                "Automatic dosing",
+                "Easy-access plant room"
+              ],
+              "dependsOn": {
+                "id": "pool_requirement",
+                "values": [
+                  "Essential",
+                  "If budget allows"
+                ]
+              }
+            },
+            {
+              "id": "pool_additional_notes",
+              "label": "Additional Notes on Pool",
+              "type": "textarea",
+              "placeholder": "Specific pool dimensions, safety rules, heating, filtration preferences...",
+              "dependsOn": {
+                "id": "pool_requirement",
+                "values": [
+                  "Essential",
+                  "If budget allows"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chapter-8",
+      "number": "08",
+      "title": "Final Notes & Review",
+      "description": "Additional notes, vision statement, review of all responses, and summary of your selected architectural design references.",
+      "sections": [
+        {
+          "id": "sec-final-notes",
+          "number": "6.1",
+          "title": "Additional Thoughts & Special Aspirations",
+          "questions": [
+            {
+              "id": "final_custom_notes",
+              "label": "Is there anything else you would like Shameer Associates to know before designing your home?",
+              "type": "textarea",
+              "placeholder": "Family traditions, sentimental elements, heirloom furniture to incorporate, specific fears or past home frustrations..."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "dynamic_bedroom_template": {
+    "questions": [
+      {
+        "id": "intended_user",
+        "label": "Intended User",
+        "type": "single-select",
+        "options": [
+          "Son",
+          "Daughter",
+          "Guest",
+          "Maternity / Guest",
+          "Other"
+        ]
+      },
+      {
+        "id": "floor_location",
+        "label": "Preferred floor location",
+        "type": "single-select",
+        "options": [
+          "Ground floor",
+          "First floor",
+          "No preference"
+        ]
+      },
+      {
+        "id": "design_style",
+        "label": "Preferred Design Style",
+        "type": "single-select",
+        "options": [
+          "Modern / Minimal",
+          "Luxury Contemporary",
+          "Kerala Traditional",
+          "Neoclassical",
+          "Colonial",
+          "English Country",
+          "Scandinavian",
+          "Japandi",
+          "Mediterranean",
+          "Industrial",
+          "Tropical Contemporary",
+          "Futuristic",
+          "Parisian",
+          "Italian Contemporary",
+          "Spanish",
+          "Art Deco",
+          "Rustic",
+          "Fusion",
+          "Any other design",
+          "Designer to recommend"
+        ]
+      },
+      {
+        "id": "mood_feeling",
+        "label": "Desired Mood / Feeling",
+        "type": "multi-select",
+        "options": [
+          "Calm and restful",
+          "Romantic and intimate",
+          "Luxurious and indulgent",
+          "Bright and energising",
+          "Cosy and warm",
+          "Sophisticated and refined",
+          "Serene and minimal",
+          "Soft and relaxing",
+          "Dark and cocoon-like",
+          "Natural and earthy",
+          "Elegant hotel-like luxury"
+        ]
+      },
+      {
+        "id": "bed_size",
+        "label": "Bed size",
+        "type": "single-select",
+        "options": [
+          "Queen (5×6 ft)",
+          "King (6×6 ft)",
+          "2 Single (3×6 ft)",
+          "Bunk bed",
+          "Custom size"
+        ]
+      },
+      {
+        "id": "colour_preference",
+        "label": "Colour Preference",
+        "type": "multi-select",
+        "options": [
+          "Warm neutrals",
+          "Soft pastel colours",
+          "Bright colours",
+          "Earthy natural tones",
+          "Cool calming colours",
+          "Dark accent colours",
+          "User’s Favourite colour",
+          "Designer recommendation",
+          "Other"
+        ]
+      },
+      {
+        "id": "additional_elements",
+        "label": "Additional elements needed",
+        "type": "multi-select",
+        "options": [
+          "Bay window",
+          "Work / Study desk",
+          "Prayer chair",
+          "Lounge chair or reading corner",
+          "Two-seater sofa",
+          "Balcony",
+          "TV unit",
+          "CCTV monitor point",
+          "Book shelf",
+          "Emergency call bell provision",
+          "Blackout curtains",
+          "Sheer curtains",
+          "Smart lighting scenes",
+          "Prayer corner",
+          "Trophies / Awards",
+          "Storage under bed",
+          "Personal collections",
+          "Hobby materials"
+        ]
+      },
+      {
+        "id": "wardrobe_type",
+        "label": "Wardrobe and Dressing type",
+        "type": "single-select",
+        "options": [
+          "Integrated wardrobe",
+          "wardrobe in dressing room",
+          "Walk-in wardrobe",
+          "Full-length mirror with shelf",
+          "Seated dressing counter"
+        ]
+      },
+      {
+        "id": "wardrobe_accessories",
+        "label": "Wardrobe accessories",
+        "type": "multi-select",
+        "options": [
+          "More shelves",
+          "More drawers",
+          "More hanging",
+          "Long Hanging section",
+          "Short Hanging section",
+          "Trouser rack",
+          "Saree rack",
+          "Jewellery drawer",
+          "Internal drawer",
+          "Locker/Safe storage",
+          "Laundry basket",
+          "Luggage storage"
+        ]
+      },
+      {
+        "id": "bathroom_features",
+        "label": "Bathroom features desired",
+        "type": "multi-select",
+        "options": [
+          "Compact and practical",
+          "Spacious",
+          "Luxury spa-like",
+          "Natural and earthy",
+          "Clean and minimal",
+          "Fresh and bright",
+          "Hot-water provision",
+          "Rain shower",
+          "Shower with glass partition",
+          "Bathtub",
+          "Open shower area",
+          "Hand shower",
+          "Body jets",
+          "Vanity counter",
+          "Integrated basin",
+          "Premium fittings",
+          "Skylight",
+          "Niches",
+          "Cleaning-material storage",
+          "Large-format tile",
+          "Small textured tile"
+        ]
+      },
+      {
+        "id": "special_notes",
+        "label": "Additional Notes on this Bedroom",
+        "type": "textarea",
+        "placeholder": "Specific requests, study arrangements, hobbies..."
+      }
+    ]
+  }
+}

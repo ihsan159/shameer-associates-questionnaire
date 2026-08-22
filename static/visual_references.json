@@ -1,0 +1,613 @@
+{
+  "exterior": [
+    {
+      "id": "ext-01",
+      "styleNumber": "01",
+      "category": "exterior",
+      "styleName": "Modern",
+      "description": "Clean lines, geometric forms, flat roofs, open spaces, contemporary feel.",
+      "image": "/static/references/exterior/01_modern.jpg",
+      "order": 1
+    },
+    {
+      "id": "ext-02",
+      "styleNumber": "02",
+      "category": "exterior",
+      "styleName": "Traditional / Kerala",
+      "description": "Sloping tiled roofs, wood details, verandahs, courtyards, rooted in Kerala tradition.",
+      "image": "/static/references/exterior/02_traditional_kerala.jpg",
+      "order": 2
+    },
+    {
+      "id": "ext-03",
+      "styleNumber": "03",
+      "category": "exterior",
+      "styleName": "Minimal",
+      "description": "Simple forms, clean surfaces, small coping slab, climate responsive, calm and uncluttered.",
+      "image": "/static/references/exterior/03_minimal.jpg",
+      "order": 3
+    },
+    {
+      "id": "ext-04",
+      "styleNumber": "04",
+      "category": "exterior",
+      "styleName": "Luxury Contemporary",
+      "description": "Premium materials, sophisticated design, warm lighting, landscaped spaces, modern luxury living.",
+      "image": "/static/references/exterior/04_luxury_contemporary.jpg",
+      "order": 4
+    },
+    {
+      "id": "ext-05",
+      "styleNumber": "05",
+      "category": "exterior",
+      "styleName": "Tropical / Kerala Contemporary",
+      "description": "Wide overhangs, sloped roofs, natural ventilation, greenery, seamless indoor-outdoor living.",
+      "image": "/static/references/exterior/05_tropical_kerala_contemporary.jpg",
+      "order": 5
+    },
+    {
+      "id": "ext-06",
+      "styleNumber": "06",
+      "category": "exterior",
+      "styleName": "Classical",
+      "description": "Symmetry, columns, ornate details, balanced proportions, timeless elegance.",
+      "image": "/static/references/exterior/06_classical.jpg",
+      "order": 6
+    },
+    {
+      "id": "ext-07",
+      "styleNumber": "07",
+      "category": "exterior",
+      "styleName": "Colonial",
+      "description": "Colonial architecture, high ceilings, verandahs, arches, timeless charm with tropical adaptability.",
+      "image": "/static/references/exterior/07_colonial.jpg",
+      "order": 7
+    },
+    {
+      "id": "ext-08",
+      "styleNumber": "08",
+      "category": "exterior",
+      "styleName": "Futuristic",
+      "description": "Modern technology, innovative forms, bold geometry, forward-thinking design.",
+      "image": "/static/references/exterior/08_futuristic.jpg",
+      "order": 8
+    },
+    {
+      "id": "ext-09",
+      "styleNumber": "09",
+      "category": "exterior",
+      "styleName": "Fusion",
+      "description": "Blend of styles, materials and elements to create a unique and personalized look.",
+      "image": "/static/references/exterior/09_fusion.jpg",
+      "order": 9
+    }
+  ],
+  "formal_living_dining": [
+    {
+      "id": "fld-01",
+      "styleNumber": "01",
+      "category": "formal_living_dining",
+      "styleName": "Modern / Minimal",
+      "designBrief": "Clean lines, simple furniture, neutral colours and limited decoration create calm, uncluttered formal living and dining spaces. The design prioritises comfort, functionality and a clear contemporary appearance.",
+      "howItFeels": "The soft neutral palette, smooth surfaces and clean geometric forms create a feeling of ease, clarity and quiet calm — a space where the mind can rest.",
+      "livingImage": "/static/references/formal_living_dining/01_modern_minimal_living.jpg",
+      "diningImage": "/static/references/formal_living_dining/01_modern_minimal_dining.jpg",
+      "order": 1
+    },
+    {
+      "id": "fld-02",
+      "styleNumber": "02",
+      "category": "formal_living_dining",
+      "styleName": "Luxury Contemporary",
+      "designBrief": "Premium materials, statement furniture, rich textures, bespoke details and elegant layered lighting create sophisticated formal living and dining spaces. The atmosphere feels luxurious and refined without excessive ornamentation.",
+      "howItFeels": "The rich material palette, layered lighting and refined forms create a feeling of quiet confidence — a space that feels special without ever being loud.",
+      "livingImage": "/static/references/formal_living_dining/02_luxury_contemporary_living.jpg",
+      "diningImage": "/static/references/formal_living_dining/02_luxury_contemporary_dining.jpg",
+      "order": 2
+    },
+    {
+      "id": "fld-03",
+      "styleNumber": "03",
+      "category": "formal_living_dining",
+      "styleName": "Kerala Traditional",
+      "designBrief": "Rich timber, carved woodwork, brass accents, traditional furniture and natural materials create warm spaces inspired by Kerala heritage. The design feels culturally rooted, handcrafted and welcoming.",
+      "howItFeels": "The warm timber tones, glowing brass and rounded forms create a feeling of belonging, tradition and heartfelt comfort.",
+      "livingImage": "/static/references/formal_living_dining/03_kerala_traditional_living.jpg",
+      "diningImage": "/static/references/formal_living_dining/03_kerala_traditional_dining.jpg",
+      "order": 3
+    },
+    {
+      "id": "fld-04",
+      "styleNumber": "04",
+      "category": "formal_living_dining",
+      "styleName": "Neoclassical",
+      "designBrief": "Symmetrical planning, light colours, refined wall mouldings, elegant furniture and restrained classical ornamentation create graceful and timeless spaces. It offers a formal character with a lighter contemporary feel.",
+      "howItFeels": "The light palette, symmetry and delicate details create a feeling of grace, order and quiet sophistication.",
+      "livingImage": "/static/references/formal_living_dining/04_neoclassical_living.jpg",
+      "diningImage": "/static/references/formal_living_dining/04_neoclassical_dining.jpg",
+      "order": 4
+    },
+    {
+      "id": "fld-05",
+      "styleNumber": "05",
+      "category": "formal_living_dining",
+      "styleName": "Colonial",
+      "designBrief": "High ceilings, arched openings, dark timber, cane details, patterned flooring and tropical features create dignified yet comfortable living and dining spaces. The style suits spacious, climate-responsive homes.",
+      "howItFeels": "The airy volumes, natural textures and tropical elements create a feeling of timeless ease and relaxed elegance.",
+      "livingImage": "/static/references/formal_living_dining/05_colonial_living.jpg",
+      "diningImage": "/static/references/formal_living_dining/05_colonial_dining.jpg",
+      "order": 5
+    },
+    {
+      "id": "fld-06",
+      "styleNumber": "06",
+      "category": "formal_living_dining",
+      "styleName": "English Country",
+      "designBrief": "Soft colours, natural timber, comfortable upholstered furniture, floral or checked fabrics and familiar decorative details create warm and welcoming spaces. The atmosphere feels relaxed, homely and elegant.",
+      "howItFeels": "The gentle colours, soft fabrics and familiar details create a feeling of homely warmth and everyday comfort.",
+      "livingImage": "/static/references/formal_living_dining/06_english_country_living.jpg",
+      "diningImage": "/static/references/formal_living_dining/06_english_country_dining.jpg",
+      "order": 6
+    },
+    {
+      "id": "fld-07",
+      "styleNumber": "07",
+      "category": "formal_living_dining",
+      "styleName": "Parisian",
+      "designBrief": "Decorative wall panelling, marble, brass accents, refined furniture and sophisticated lighting create graceful formal interiors. The style brings elegant European character to both entertaining and dining areas.",
+      "howItFeels": "The graceful details, soft palette and refined textures create a feeling of timeless romance and quiet sophistication.",
+      "livingImage": "/static/references/formal_living_dining/07_parisian_living.jpg",
+      "diningImage": "/static/references/formal_living_dining/07_parisian_dining.jpg",
+      "order": 7
+    },
+    {
+      "id": "fld-08",
+      "styleNumber": "08",
+      "category": "formal_living_dining",
+      "styleName": "Italian Contemporary",
+      "designBrief": "Sleek furniture, dramatic stone, premium materials, refined proportions and carefully controlled lighting create understated luxury. The spaces feel modern, polished and visually well composed.",
+      "howItFeels": "The refined materials and clean proportions create a feeling of effortless luxury and confident calm.",
+      "livingImage": "/static/references/formal_living_dining/08_italian_contemporary_living.jpg",
+      "diningImage": "/static/references/formal_living_dining/08_italian_contemporary_dining.jpg",
+      "order": 8
+    },
+    {
+      "id": "fld-09",
+      "styleNumber": "09",
+      "category": "formal_living_dining",
+      "styleName": "Mediterranean",
+      "designBrief": "Textured walls, earthy colours, arches, rustic timber, natural stone and handmade finishes create warm and relaxed spaces. The design feels sunlit, informal and connected to outdoor living.",
+      "howItFeels": "The sunny tones, natural textures and organic shapes create a feeling of warmth, relaxation and easy holiday living.",
+      "livingImage": "/static/references/formal_living_dining/09_mediterranean_living.jpg",
+      "diningImage": "/static/references/formal_living_dining/09_mediterranean_dining.jpg",
+      "order": 9
+    },
+    {
+      "id": "fld-10",
+      "styleNumber": "10",
+      "category": "formal_living_dining",
+      "styleName": "Spanish",
+      "designBrief": "Dark timber, arched details, patterned tiles, wrought-iron accents and warm earthy colours create bold and character-rich interiors. The atmosphere feels handcrafted, intimate and inviting.",
+      "howItFeels": "The rich textures, warm colours and handcrafted details create a feeling of intimacy, passion and old-world charm.",
+      "livingImage": "/static/references/formal_living_dining/10_spanish_living.jpg",
+      "diningImage": "/static/references/formal_living_dining/10_spanish_dining.jpg",
+      "order": 10
+    },
+    {
+      "id": "fld-11",
+      "styleNumber": "11",
+      "category": "formal_living_dining",
+      "styleName": "Scandinavian",
+      "designBrief": "Pale timber, light colours, simple furniture, natural light and minimal decoration create bright and practical spaces. The style supports comfort, functionality and an easy, uncluttered lifestyle.",
+      "howItFeels": "The light palette, natural materials and simple forms create a feeling of freshness, balance and everyday happiness.",
+      "livingImage": "/static/references/formal_living_dining/11_scandinavian_living.jpg",
+      "diningImage": "/static/references/formal_living_dining/11_scandinavian_dining.jpg",
+      "order": 11
+    },
+    {
+      "id": "fld-12",
+      "styleNumber": "12",
+      "category": "formal_living_dining",
+      "styleName": "Japandi",
+      "designBrief": "Japanese simplicity combined with Scandinavian warmth creates calm and balanced living and dining spaces. Natural materials, low-profile furniture and muted colours promote a peaceful atmosphere.",
+      "howItFeels": "The calm palette, natural textures and minimal details create a feeling of peace, grounding and quiet contentment.",
+      "livingImage": "/static/references/formal_living_dining/12_japandi_living.jpg",
+      "diningImage": "/static/references/formal_living_dining/12_japandi_dining.jpg",
+      "order": 12
+    },
+    {
+      "id": "fld-13",
+      "styleNumber": "13",
+      "category": "formal_living_dining",
+      "styleName": "Art Deco",
+      "designBrief": "Bold geometry, rich colours, metallic accents, luxurious fabrics and statement lighting create glamorous and memorable formal spaces. The style is dramatic, decorative and perfect for those who love a strong visual identity.",
+      "howItFeels": "The deep colours, golden accents and dramatic forms create a feeling of glamour, confidence and celebration — a space that truly stands out.",
+      "livingImage": "/static/references/formal_living_dining/13_art_deco_living.jpg",
+      "diningImage": "/static/references/formal_living_dining/13_art_deco_dining.jpg",
+      "order": 13
+    },
+    {
+      "id": "fld-14",
+      "styleNumber": "14",
+      "category": "formal_living_dining",
+      "styleName": "Industrial",
+      "designBrief": "Exposed brick or concrete, dark metal, timber, leather furniture and visible structural details create bold urban interiors. Warm lighting and comfortable furnishings help balance the raw material character.",
+      "howItFeels": "The raw textures, warm lights and honest materials create a feeling of strength, character and relaxed confidence — urban yet welcoming.",
+      "livingImage": "/static/references/formal_living_dining/14_industrial_living.jpg",
+      "diningImage": "/static/references/formal_living_dining/14_industrial_dining.jpg",
+      "order": 14
+    },
+    {
+      "id": "fld-15",
+      "styleNumber": "15",
+      "category": "formal_living_dining",
+      "styleName": "Rustic",
+      "designBrief": "Natural timber, stone, earthy colours, textured fabrics and handcrafted furniture create warm and grounded spaces. The design has a relaxed atmosphere and a strong connection to nature.",
+      "howItFeels": "The earthy materials, natural textures and handmade details create a feeling of warmth, comfort and belonging — close to nature, close to home.",
+      "livingImage": "/static/references/formal_living_dining/15_rustic_living.jpg",
+      "diningImage": "/static/references/formal_living_dining/15_rustic_dining.jpg",
+      "order": 15
+    },
+    {
+      "id": "fld-16",
+      "styleNumber": "16",
+      "category": "formal_living_dining",
+      "styleName": "Tropical Contemporary",
+      "designBrief": "Natural materials, greenery, wide openings, relaxed furniture and strong indoor-outdoor connections create fresh and breathable living and dining spaces. The style is perfectly suited to tropical climates and relaxed lifestyles.",
+      "howItFeels": "The greenery, natural textures and open connections create a feeling of freshness, freedom and everyday escape.",
+      "livingImage": "/static/references/formal_living_dining/16_tropical_contemporary_living.jpg",
+      "diningImage": "/static/references/formal_living_dining/16_tropical_contemporary_dining.jpg",
+      "order": 16
+    },
+    {
+      "id": "fld-17",
+      "styleNumber": "17",
+      "category": "formal_living_dining",
+      "styleName": "Futuristic",
+      "designBrief": "Sculptural furniture, advanced technology, bold forms, integrated lighting and unconventional materials create innovative and immersive interiors. The spaces feel sleek, experimental and forward-looking.",
+      "howItFeels": "The flowing forms, integrated lights and innovative details create a feeling of wonder, excitement and the joy of the future.",
+      "livingImage": "/static/references/formal_living_dining/17_futuristic_living.jpg",
+      "diningImage": "/static/references/formal_living_dining/17_futuristic_dining.jpg",
+      "order": 17
+    },
+    {
+      "id": "fld-18",
+      "styleNumber": "18",
+      "category": "formal_living_dining",
+      "styleName": "Fusion",
+      "designBrief": "Two or more styles are thoughtfully combined to create a personalised design — for example, traditional woodwork with modern furniture, lighting and planning. The combination is carefully balanced to maintain visual harmony across spaces.",
+      "howItFeels": "The blend of familiar warmth and modern ease creates a feeling of personal identity, comfort and timeless relevance.",
+      "livingImage": "/static/references/formal_living_dining/18_fusion_living.jpg",
+      "diningImage": "/static/references/formal_living_dining/18_fusion_dining.jpg",
+      "order": 18
+    }
+  ],
+  "bedroom": [
+    {
+      "id": "bed-01",
+      "styleNumber": "01",
+      "category": "bedroom",
+      "styleName": "Modern / Minimal",
+      "designBrief": "Clean lines, simple furniture, neutral colours and limited decoration create calm, uncluttered bedrooms. The design prioritises comfort, functionality and a clear contemporary appearance.",
+      "howItFeels": "The soft neutral palette, smooth surfaces and clean geometric forms create a feeling of ease, clarity and quiet calm — a space where the mind can rest.",
+      "bedroomImage": "/static/references/bedroom/01_modern_minimal_bedroom.jpg",
+      "wardrobeImage": "/static/references/bedroom/01_modern_minimal_wardrobe.jpg",
+      "order": 1
+    },
+    {
+      "id": "bed-02",
+      "styleNumber": "02",
+      "category": "bedroom",
+      "styleName": "Luxury Contemporary",
+      "designBrief": "Premium materials, statement furniture, rich textures, bespoke details and elegant layered lighting create sophisticated bedrooms. The atmosphere feels luxurious and refined without being loud.",
+      "howItFeels": "The rich material palette, layered lighting and refined forms create a feeling of quiet confidence — a space that feels special and personally indulgent.",
+      "bedroomImage": "/static/references/bedroom/02_luxury_contemporary_bedroom.jpg",
+      "wardrobeImage": "/static/references/bedroom/02_luxury_contemporary_wardrobe.jpg",
+      "order": 2
+    },
+    {
+      "id": "bed-03",
+      "styleNumber": "03",
+      "category": "bedroom",
+      "styleName": "Kerala Traditional",
+      "designBrief": "Rich timber, carved woodwork, brass accents and natural materials create warm bedrooms inspired by Kerala heritage. The design feels culturally rooted, handcrafted and welcoming.",
+      "howItFeels": "The warm timber tones, glowing brass and rounded forms create a feeling of belonging, tradition and heartfelt comfort.",
+      "bedroomImage": "/static/references/bedroom/03_kerala_traditional_bedroom.jpg",
+      "wardrobeImage": "/static/references/bedroom/03_kerala_traditional_wardrobe.jpg",
+      "order": 3
+    },
+    {
+      "id": "bed-04",
+      "styleNumber": "04",
+      "category": "bedroom",
+      "styleName": "Neoclassical",
+      "designBrief": "Symmetrical planning, light colours, refined wall mouldings, elegant furniture and restrained classical ornamentation create graceful and timeless bedrooms.",
+      "howItFeels": "The light palette, symmetry and delicate details create a feeling of grace, order and quiet sophistication.",
+      "bedroomImage": "/static/references/bedroom/04_neoclassical_bedroom.jpg",
+      "wardrobeImage": "/static/references/bedroom/04_neoclassical_wardrobe.jpg",
+      "order": 4
+    },
+    {
+      "id": "bed-05",
+      "styleNumber": "05",
+      "category": "bedroom",
+      "styleName": "Colonial",
+      "designBrief": "High ceilings, arched openings, dark timber, cane details and tropical features create dignified yet comfortable bedrooms. The style works beautifully in spacious, climate-responsive homes.",
+      "howItFeels": "The airy volumes, natural textures and tropical elements create a feeling of timeless ease and relaxed elegance.",
+      "bedroomImage": "/static/references/bedroom/05_colonial_bedroom.jpg",
+      "wardrobeImage": "/static/references/bedroom/05_colonial_wardrobe.jpg",
+      "order": 5
+    },
+    {
+      "id": "bed-06",
+      "styleNumber": "06",
+      "category": "bedroom",
+      "styleName": "English Country",
+      "designBrief": "Soft colours, natural timber, comfortable upholstered furniture, floral or checked fabrics and familiar decorative details create warm and welcoming bedrooms. The atmosphere feels relaxed, homely and elegant.",
+      "howItFeels": "The gentle colours, soft fabrics and familiar details create a feeling of comfort, warmth and everyday joy.",
+      "bedroomImage": "/static/references/bedroom/06_english_country_bedroom.jpg",
+      "wardrobeImage": "/static/references/bedroom/06_english_country_wardrobe.jpg",
+      "order": 6
+    },
+    {
+      "id": "bed-07",
+      "styleNumber": "07",
+      "category": "bedroom",
+      "styleName": "Scandinavian",
+      "designBrief": "Pale timber, light colours, simple furniture and minimal decoration create bright and practical bedrooms. The style supports comfort, functionality and a calm, uncluttered lifestyle.",
+      "howItFeels": "The light palette, natural materials and simple forms create a feeling of freshness, balance and everyday happiness.",
+      "bedroomImage": "/static/references/bedroom/07_scandinavian_bedroom.jpg",
+      "wardrobeImage": "/static/references/bedroom/07_scandinavian_wardrobe.jpg",
+      "order": 7
+    },
+    {
+      "id": "bed-08",
+      "styleNumber": "08",
+      "category": "bedroom",
+      "styleName": "Japandi",
+      "designBrief": "Japanese simplicity combined with Scandinavian warmth creates calm and balanced bedrooms. Natural materials, low-profile furniture and muted colours promote a peaceful atmosphere.",
+      "howItFeels": "The calm palette, natural textures and minimal details create a feeling of peace, clarity and mindful living.",
+      "bedroomImage": "/static/references/bedroom/08_japandi_bedroom.jpg",
+      "wardrobeImage": "/static/references/bedroom/08_japandi_wardrobe.jpg",
+      "order": 8
+    },
+    {
+      "id": "bed-09",
+      "styleNumber": "09",
+      "category": "bedroom",
+      "styleName": "Mediterranean",
+      "designBrief": "Textured walls, earthy colours, arches and natural materials create warm and relaxed bedrooms. The design feels sunlit, informal and connected to outdoor living.",
+      "howItFeels": "The sunny tones, natural textures and organic shapes create a feeling of warmth, relaxation and holiday living.",
+      "bedroomImage": "/static/references/bedroom/09_mediterranean_bedroom.jpg",
+      "wardrobeImage": "/static/references/bedroom/09_mediterranean_wardrobe.jpg",
+      "order": 9
+    },
+    {
+      "id": "bed-10",
+      "styleNumber": "10",
+      "category": "bedroom",
+      "styleName": "Industrial",
+      "designBrief": "Exposed materials, metal accents and raw finishes create bold and urban bedrooms. Warm lighting and functional furniture bring comfort and balance to the strong character.",
+      "howItFeels": "The raw textures, warm lights and honest materials create a feeling of strength, character and relaxed confidence.",
+      "bedroomImage": "/static/references/bedroom/10_industrial_bedroom.jpg",
+      "wardrobeImage": "/static/references/bedroom/10_industrial_wardrobe.jpg",
+      "order": 10
+    },
+    {
+      "id": "bed-11",
+      "styleNumber": "11",
+      "category": "bedroom",
+      "styleName": "Tropical Contemporary",
+      "designBrief": "Natural materials, greenery and wide openings create fresh and breathable bedrooms. The style is relaxed and perfectly suited to tropical climates and lifestyles.",
+      "howItFeels": "The greenery, natural textures and open connections create a feeling of freshness, freedom and everyday escape.",
+      "bedroomImage": "/static/references/bedroom/11_tropical_contemporary_bedroom.jpg",
+      "wardrobeImage": "/static/references/bedroom/11_tropical_contemporary_wardrobe.jpg",
+      "order": 11
+    },
+    {
+      "id": "bed-12",
+      "styleNumber": "12",
+      "category": "bedroom",
+      "styleName": "Futuristic",
+      "designBrief": "Sculptural furniture, advanced technology and bold forms create innovative and immersive bedrooms. The spaces feel sleek, experimental and forward-looking.",
+      "howItFeels": "The flowing forms, integrated lights and innovative details create a feeling of wonder, excitement and the joy of the future.",
+      "bedroomImage": "/static/references/bedroom/12_futuristic_bedroom.jpg",
+      "wardrobeImage": "/static/references/bedroom/12_futuristic_wardrobe.jpg",
+      "order": 12
+    },
+    {
+      "id": "bed-13",
+      "styleNumber": "13",
+      "category": "bedroom",
+      "styleName": "Parisian",
+      "designBrief": "Elegant mouldings, soft colours, tall windows and classic furniture create timeless Parisian bedrooms. The style blends old-world charm with refined, comfortable living.",
+      "howItFeels": "The soft tones, graceful details and natural light create a feeling of romance, refinement and effortless elegance.",
+      "bedroomImage": "/static/references/bedroom/13_parisian_bedroom.jpg",
+      "wardrobeImage": "/static/references/bedroom/13_parisian_wardrobe.jpg",
+      "order": 13
+    },
+    {
+      "id": "bed-14",
+      "styleNumber": "14",
+      "category": "bedroom",
+      "styleName": "Italian Contemporary",
+      "designBrief": "Clean lines, premium materials, subtle luxury and refined details define Italian contemporary bedrooms. The design focuses on proportion, quality and sophisticated minimalism.",
+      "howItFeels": "The refined materials, warm neutrals and perfect balance create a feeling of quiet luxury, comfort and timeless sophistication.",
+      "bedroomImage": "/static/references/bedroom/14_italian_contemporary_bedroom.jpg",
+      "wardrobeImage": "/static/references/bedroom/14_italian_contemporary_wardrobe.jpg",
+      "order": 14
+    },
+    {
+      "id": "bed-15",
+      "styleNumber": "15",
+      "category": "bedroom",
+      "styleName": "Spanish",
+      "designBrief": "Warm earthy colours, arches, wrought iron, terracotta and handcrafted details create vibrant Spanish-style bedrooms. The design feels rustic yet elegant and full of character.",
+      "howItFeels": "The warm colours, textures and curves create a feeling of warmth, passion and relaxed Mediterranean living.",
+      "bedroomImage": "/static/references/bedroom/15_spanish_bedroom.jpg",
+      "wardrobeImage": "/static/references/bedroom/15_spanish_wardrobe.jpg",
+      "order": 15
+    },
+    {
+      "id": "bed-16",
+      "styleNumber": "16",
+      "category": "bedroom",
+      "styleName": "Art Deco",
+      "designBrief": "Bold geometry, rich colours, metallic accents and luxurious materials define Art Deco bedrooms. The design is glamorous, symmetrical and visually striking.",
+      "howItFeels": "The rich colours, patterns and metallic details create a feeling of glamour, confidence and timeless luxury.",
+      "bedroomImage": "/static/references/bedroom/16_art_deco_bedroom.jpg",
+      "wardrobeImage": "/static/references/bedroom/16_art_deco_wardrobe.jpg",
+      "order": 16
+    },
+    {
+      "id": "bed-17",
+      "styleNumber": "17",
+      "category": "bedroom",
+      "styleName": "Rustic",
+      "designBrief": "Natural wood, stone textures, warm colours and handcrafted furniture create cozy rustic bedrooms. The style celebrates natural materials and simple, honest living.",
+      "howItFeels": "The raw textures, earthy colours and natural materials create a feeling of comfort, warmth and grounded living.",
+      "bedroomImage": "/static/references/bedroom/17_rustic_bedroom.jpg",
+      "wardrobeImage": "/static/references/bedroom/17_rustic_wardrobe.jpg",
+      "order": 17
+    },
+    {
+      "id": "bed-18",
+      "styleNumber": "18",
+      "category": "bedroom",
+      "styleName": "Fusion",
+      "designBrief": "A blend of different styles, materials and textures creates unique, personalised bedrooms. The design combines modern comfort with cultural and artistic elements.",
+      "howItFeels": "The mix of textures, colours and details creates a feeling of harmony, identity and meaningful comfort.",
+      "bedroomImage": "/static/references/bedroom/18_fusion_bedroom.jpg",
+      "wardrobeImage": "/static/references/bedroom/18_fusion_wardrobe.jpg",
+      "order": 18
+    }
+  ],
+  "kitchen": [
+    {
+      "id": "kit-01",
+      "styleNumber": "01",
+      "category": "kitchen",
+      "styleName": "Modern / Minimal",
+      "description": "Clean geometric cabinetry, smooth surfaces, neutral colours and a practical contemporary look.",
+      "image": "/static/references/kitchen/01_modern_minimal.jpg",
+      "order": 1
+    },
+    {
+      "id": "kit-02",
+      "styleNumber": "02",
+      "category": "kitchen",
+      "styleName": "Luxury Contemporary",
+      "description": "Premium stone, veneers, metallic accents, bespoke cabinetry and sophisticated lighting.",
+      "image": "/static/references/kitchen/02_luxury_contemporary.jpg",
+      "order": 2
+    },
+    {
+      "id": "kit-03",
+      "styleNumber": "03",
+      "category": "kitchen",
+      "styleName": "Kerala Traditional",
+      "description": "Rich timber, carved details, brass hardware, natural stone and Kerala-inspired craftsmanship.",
+      "image": "/static/references/kitchen/03_kerala_traditional.jpg",
+      "order": 3
+    },
+    {
+      "id": "kit-04",
+      "styleNumber": "04",
+      "category": "kitchen",
+      "styleName": "Modern Kerala Fusion",
+      "description": "Modern cabinetry and appliances combined with Kerala woodwork, screens, brass or patterns.",
+      "image": "/static/references/kitchen/04_modern_kerala_fusion.jpg",
+      "order": 4
+    },
+    {
+      "id": "kit-05",
+      "styleNumber": "05",
+      "category": "kitchen",
+      "styleName": "Neoclassical",
+      "description": "Classical proportions with lighter colours, refined mouldings and restrained ornamentation.",
+      "image": "/static/references/kitchen/05_neoclassical.jpg",
+      "order": 5
+    },
+    {
+      "id": "kit-06",
+      "styleNumber": "06",
+      "category": "kitchen",
+      "styleName": "English Country",
+      "description": "Painted inset cabinetry, natural wood, open shelves, farmhouse sink and a welcoming atmosphere.",
+      "image": "/static/references/kitchen/06_english_country.jpg",
+      "order": 6
+    },
+    {
+      "id": "kit-07",
+      "styleNumber": "07",
+      "category": "kitchen",
+      "styleName": "Mediterranean",
+      "description": "Textured plaster, earthy colours, rustic timber, natural stone and warm handmade tiles.",
+      "image": "/static/references/kitchen/07_mediterranean.jpg",
+      "order": 7
+    },
+    {
+      "id": "kit-08",
+      "styleNumber": "08",
+      "category": "kitchen",
+      "styleName": "Italian Contemporary",
+      "description": "Sleek European cabinetry, dramatic stone and highly refined proportions.",
+      "image": "/static/references/kitchen/08_italian_contemporary.jpg",
+      "order": 8
+    },
+    {
+      "id": "kit-09",
+      "styleNumber": "09",
+      "category": "kitchen",
+      "styleName": "Contemporary Classical",
+      "description": "Modern planning combined with subtle mouldings and classical balance.",
+      "image": "/static/references/kitchen/09_contemporary_classical.jpg",
+      "order": 9
+    },
+    {
+      "id": "kit-10",
+      "styleNumber": "10",
+      "category": "kitchen",
+      "styleName": "Parisian",
+      "description": "Elegant panelling, marble, brass and sophisticated decorative lighting.",
+      "image": "/static/references/kitchen/10_parisian.jpg",
+      "order": 10
+    },
+    {
+      "id": "kit-11",
+      "styleNumber": "11",
+      "category": "kitchen",
+      "styleName": "Spanish",
+      "description": "Dark timber, arches, hand-painted tiles and wrought-iron accents.",
+      "image": "/static/references/kitchen/11_spanish.jpg",
+      "order": 11
+    },
+    {
+      "id": "kit-12",
+      "styleNumber": "12",
+      "category": "kitchen",
+      "styleName": "Scandinavian",
+      "description": "Pale wood, light colours, bright interiors and simple practical cabinetry.",
+      "image": "/static/references/kitchen/12_scandinavian.jpg",
+      "order": 12
+    },
+    {
+      "id": "kit-13",
+      "styleNumber": "13",
+      "category": "kitchen",
+      "styleName": "Japandi",
+      "description": "Japanese simplicity combined with Scandinavian warmth, natural wood and calm functional detailing.",
+      "image": "/static/references/kitchen/13_japandi.jpg",
+      "order": 13
+    },
+    {
+      "id": "kit-14",
+      "styleNumber": "14",
+      "category": "kitchen",
+      "styleName": "Futuristic",
+      "description": "Sculptural forms, advanced technology and unconventional lighting.",
+      "image": "/static/references/kitchen/14_futuristic.jpg",
+      "order": 14
+    }
+  ]
+}

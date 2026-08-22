@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: shameer-associates-questionnaire
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn server:app

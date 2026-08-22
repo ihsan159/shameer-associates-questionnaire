@@ -1,0 +1,106 @@
+/* ======================================================== */
+/* SHAMEER ASSOCIATES — ARCHITECTURAL DESIGN STYLES */
+/* ======================================================== */
+
+:root {
+  --color-brand-black: #121212;
+  --color-brand-charcoal: #1E1E1E;
+  --color-brand-bronze: #8C7355;
+  --color-brand-bronze-light: #A0825B;
+  --color-brand-offwhite: #FBFBF9;
+  --color-brand-border: #E5E3DC;
+}
+
+body {
+  background-color: var(--color-brand-offwhite);
+  color: var(--color-brand-black);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Typography Enhancements */
+.font-serif {
+  font-family: 'Cinzel', 'Cormorant Garamond', 'Georgia', serif;
+}
+
+.font-editorial {
+  font-family: 'Cormorant Garamond', 'Georgia', serif;
+}
+
+/* Subtle fade in animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Architectural Image Card Hover Zoom (Desktop only) */
+@media (hover: hover) and (pointer: fine) {
+  .visual-card-img-container {
+    overflow: hidden;
+  }
+  .visual-card-img {
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    transform-origin: center center;
+  }
+  .visual-card:hover .visual-card-img {
+    transform: scale(1.065);
+  }
+}
+
+/* Luxury Card Active States */
+.option-card {
+  transition: all 0.2s ease-in-out;
+}
+.option-card.selected {
+  border-color: var(--color-brand-black);
+  background-color: #FFFFFF;
+  box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.08);
+}
+
+.visual-card {
+  transition: all 0.25s ease-in-out;
+}
+.visual-card.selected {
+  border-color: var(--color-brand-black);
+  box-shadow: 0 0 0 2px var(--color-brand-black), 0 12px 30px -10px rgba(0,0,0,0.12);
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #F3F2EE;
+}
+::-webkit-scrollbar-thumb {
+  background: #C5B59E;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #8C7355;
+}
+
+/* Input Focus Rings */
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--color-brand-black) !important;
+  box-shadow: 0 0 0 1px var(--color-brand-black) !important;
+}
+
+/* Touch Friendly Mobile Targets */
+@media (max-width: 640px) {
+  .option-card, .btn-touch {
+    min-height: 48px;
+  }
+}

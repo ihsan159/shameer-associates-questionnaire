@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Environment variables / secrets
+.env
+.env.*
+!.env.example
+
+# Database - contains client data
+shameer_questionnaire
+shameer_questionnaire.db
+*.sqlite
+*.sqlite3
+
+# Client uploaded files
+uploads/*
+!uploads/.gitkeep
+
+# Generated/private files
+*.pdf
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test/cache
+.pytest_cache/
+.coverage

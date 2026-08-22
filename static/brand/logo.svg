@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 340" width="100%" height="100%">
+  <!-- Outer Square with architectural line weight -->
+  <rect x="25" y="25" width="250" height="250" fill="none" stroke="#121212" stroke-width="6.5" stroke-linejoin="miter"/>
+  <!-- Middle Horizontal Split -->
+  <line x1="25" y1="150" x2="275" y2="150" stroke="#121212" stroke-width="6.5"/>
+  <!-- Top Diagonal Line: bottom-left to top-right geometry -->
+  <line x1="25" y1="150" x2="190" y2="25" stroke="#121212" stroke-width="6.5"/>
+  <!-- Bottom Left Diagonal: bottom-left corner to middle point -->
+  <line x1="25" y1="275" x2="150" y2="150" stroke="#121212" stroke-width="6.5"/>
+  <!-- Bottom Right Inverted Diagonal: middle point to bottom right corner -->
+  <line x1="150" y1="150" x2="275" y2="275" stroke="#121212" stroke-width="6.5"/>
+  <!-- Bottom Intersecting Diagonal: middle right to lower point -->
+  <line x1="275" y1="150" x2="150" y2="275" stroke="#121212" stroke-width="6.5"/>
+  <!-- Brand Typography -->
+  <text x="150" y="306" font-family="'Cinzel', 'Playfair Display', 'Cormorant Garamond', 'Times New Roman', serif" font-size="21" font-weight="700" letter-spacing="12" fill="#121212" text-anchor="middle">SHAMEER</text>
+  <text x="150" y="330" font-family="'Plus Jakarta Sans', 'Inter', 'Helvetica Neue', sans-serif" font-size="10.5" font-weight="500" letter-spacing="8" fill="#4A4A4A" text-anchor="middle">ASSOCIATES</text>
+</svg>
