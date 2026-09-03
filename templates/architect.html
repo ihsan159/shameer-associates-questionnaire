@@ -1,0 +1,1533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Architect Management System | Shameer Associates</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/main.css">
+    <style>
+        :root {
+            --bg-dark: #0F0F11;
+            --bg-panel: #16161A;
+            --bg-card: #1E1E24;
+            --bg-input: #121215;
+            --border-color: #2D2D36;
+            --accent-gold: #A0825B;
+            --accent-gold-hover: #C5A070;
+            --text-primary: #F4F4F6;
+            --text-secondary: #A1A1AA;
+            --text-muted: #71717A;
+            
+            --status-new-bg: rgba(59, 130, 246, 0.15);
+            --status-new-txt: #60A5FA;
+            --status-review-bg: rgba(245, 158, 11, 0.15);
+            --status-review-txt: #FBBF24;
+            --status-progress-bg: rgba(168, 85, 247, 0.15);
+            --status-progress-txt: #C084FC;
+            --status-completed-bg: rgba(34, 197, 94, 0.15);
+            --status-completed-txt: #4ADE80;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* TOPBAR NAVIGATION */
+        .topbar {
+            background-color: var(--bg-panel);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 28px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand-container {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            cursor: pointer;
+        }
+
+        .brand-logo {
+            width: 38px;
+            height: 38px;
+            object-fit: contain;
+        }
+
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-title {
+            font-family: 'Cinzel', serif;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            color: var(--text-primary);
+        }
+
+        .brand-subtitle {
+            font-size: 9px;
+            letter-spacing: 0.22em;
+            color: var(--accent-gold);
+            text-transform: uppercase;
+        }
+
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .notif-wrapper {
+            position: relative;
+        }
+
+        .notif-bell-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            transition: border-color 0.2s;
+        }
+
+        .notif-bell-btn:hover {
+            border-color: var(--accent-gold);
+        }
+
+        .notif-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background-color: var(--accent-gold);
+            color: #000;
+            font-size: 10px;
+            font-weight: 700;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .notif-dropdown {
+            position: absolute;
+            right: 0;
+            top: 48px;
+            width: 340px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: 0 16px 32px rgba(0,0,0,0.5);
+            display: none;
+            z-index: 200;
+        }
+
+        .notif-dropdown.show {
+            display: block;
+        }
+
+        .notif-header {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .notif-list {
+            max-height: 320px;
+            overflow-y: auto;
+        }
+
+        .notif-item {
+            padding: 12px 18px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .notif-item:hover {
+            background-color: rgba(255,255,255,0.03);
+        }
+
+        .notif-item.unread {
+            border-left: 3px solid var(--accent-gold);
+        }
+
+        .notif-item-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .notif-item-sub {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        .notif-item-time {
+            font-size: 10px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-name {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .btn-logout {
+            padding: 7px 14px;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-logout:hover {
+            color: var(--text-primary);
+            border-color: var(--accent-gold);
+        }
+
+        /* MAIN LAYOUT CONTAINER */
+        .container {
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 28px;
+            flex: 1;
+        }
+
+        /* DASHBOARD METRICS */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .stat-card {
+            background-color: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        .stat-value {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--accent-gold);
+        }
+
+        /* CONTROLS: SEARCH & STATUS FILTERS */
+        .controls-bar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            max-width: 380px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 14px 10px 38px;
+            background-color: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 13px;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent-gold);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 6px;
+            background-color: var(--bg-panel);
+            padding: 4px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        .filter-tab {
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .filter-tab.active {
+            background-color: var(--bg-card);
+            color: var(--accent-gold);
+            font-weight: 600;
+        }
+
+        /* PROJECTS TABLE */
+        .table-card {
+            background-color: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .projects-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 13px;
+        }
+
+        .projects-table th {
+            background-color: var(--bg-card);
+            padding: 14px 20px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .projects-table td {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: middle;
+        }
+
+        .projects-table tbody tr {
+            transition: background 0.15s;
+        }
+
+        .projects-table tbody tr:hover {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        .client-info-cell {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .client-name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .client-contact {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .project-uid-badge {
+            font-family: monospace;
+            font-size: 11px;
+            padding: 3px 8px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            color: var(--accent-gold);
+
+        }
+
+        .status-pill {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .status-new_submission { background: var(--status-new-bg); color: var(--status-new-txt); }
+        .status-in_review { background: var(--status-review-bg); color: var(--status-review-txt); }
+        .status-consultation_pending { background: var(--status-review-bg); color: var(--status-review-txt); }
+        .status-design_brief_ready { background: var(--status-progress-bg); color: var(--status-progress-txt); }
+        .status-completed { background: var(--status-completed-bg); color: var(--status-completed-txt); }
+
+        .btn-action {
+            padding: 7px 14px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-action:hover {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+        }
+
+        /* PROJECT WORKSPACE DETAIL VIEW */
+        .workspace-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .btn-back {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-bottom: 8px;
+        }
+
+        .btn-back:hover { color: var(--accent-gold); }
+
+        .project-title-group h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 22px;
+            color: var(--text-primary);
+        }
+
+        .project-title-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 4px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .status-selector-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .status-select {
+            padding: 9px 14px;
+            background-color: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .status-select:focus { outline: none; border-color: var(--accent-gold); }
+
+        .btn-pdf {
+            padding: 9px 18px;
+            background: linear-gradient(135deg, var(--accent-gold), #8C7355);
+            border: none;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn-pdf:hover { opacity: 0.9; }
+
+        /* WORKSPACE SECTIONS / TABS */
+        .workspace-tabs {
+            display: flex;
+            gap: 8px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 24px;
+            overflow-x: auto;
+        }
+
+        .tab-item {
+            padding: 10px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .tab-item.active {
+            color: var(--accent-gold);
+            border-bottom-color: var(--accent-gold);
+            font-weight: 600;
+        }
+
+        .section-card {
+            background-color: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .section-card-title {
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            color: var(--accent-gold);
+            margin-bottom: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .qa-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .qa-item {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 14px 16px;
+            position: relative;
+        }
+
+        .qa-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 6px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .qa-value {
+            font-size: 13px;
+            color: var(--text-primary);
+            line-height: 1.4;
+            word-break: break-word;
+        }
+
+        .qa-modified-tag {
+            font-size: 9px;
+            background: rgba(160, 130, 91, 0.2);
+            color: var(--accent-gold);
+            padding: 2px 6px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .btn-edit-field {
+            background: none;
+            border: none;
+            color: var(--accent-gold);
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+        /* VISUAL REFERENCES GRID */
+        .visual-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .visual-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .visual-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            cursor: pointer;
+        }
+
+        .visual-body {
+            padding: 14px;
+        }
+
+        .visual-category {
+            font-size: 10px;
+            color: var(--accent-gold);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 4px;
+        }
+
+        .visual-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* ARCHITECT INTERNAL NOTES */
+        .note-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .note-textarea {
+            width: 100%;
+            min-height: 90px;
+            padding: 12px;
+            background-color: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 13px;
+            resize: vertical;
+        }
+
+        .note-textarea:focus { outline: none; border-color: var(--accent-gold); }
+
+        .note-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .note-select {
+            padding: 8px 12px;
+            background-color: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 12px;
+        }
+
+        .btn-add-note {
+            padding: 8px 18px;
+            background-color: var(--accent-gold);
+            border: none;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .notes-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .note-item {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .note-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .note-tag {
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            background-color: rgba(160, 130, 91, 0.2);
+            color: var(--accent-gold);
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .note-content {
+            font-size: 13px;
+            color: var(--text-primary);
+            line-height: 1.5;
+            white-space: pre-wrap;
+        }
+
+        .note-controls {
+            margin-top: 10px;
+            display: flex;
+            gap: 12px;
+            font-size: 11px;
+        }
+
+        .btn-note-action {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        .btn-note-action:hover { color: var(--accent-gold); }
+
+        /* MODAL DIALOGUE */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0,0,0,0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-overlay.show { display: flex; }
+
+        .modal-box {
+            background-color: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            width: 100%;
+            max-width: 500px;
+            padding: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        }
+
+        .modal-title {
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            color: var(--accent-gold);
+            margin-bottom: 16px;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .container { padding: 16px; }
+            .controls-bar { flex-direction: column; align-items: stretch; }
+            .search-box { max-width: 100%; }
+            .workspace-header { flex-direction: column; align-items: flex-start; }
+            .status-selector-group { width: 100%; justify-content: space-between; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- TOPBAR NAVIGATION -->
+<header class="topbar">
+    <div class="brand-container" onclick="showDashboard()">
+        <img src="/static/brand/shameer_associates_logo.png" alt="Logo" class="brand-logo" onerror="this.style.display='none'">
+        <div class="brand-text">
+            <div class="brand-title">SHAMEER ASSOCIATES</div>
+            <div class="brand-subtitle">ARCHITECT MANAGEMENT SYSTEM</div>
+        </div>
+    </div>
+
+    <div class="topbar-actions">
+        <div class="notif-wrapper">
+            <button class="notif-bell-btn" onclick="toggleNotifications()">
+                🔔
+                <span class="notif-badge" id="notifBadge" style="display:none;">0</span>
+            </button>
+
+            <div class="notif-dropdown" id="notifDropdown">
+                <div class="notif-header">
+                    <span>Notifications</span>
+                    <span style="font-size:11px; color:var(--text-muted);" id="notifCountText">0 Unread</span>
+                </div>
+                <div class="notif-list" id="notifList">
+                    <div style="padding:16px; text-align:center; color:var(--text-muted); font-size:12px;">No notifications.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="user-profile">
+            <span class="user-name" id="userName">{{ current_user.full_name }}</span>
+            <a href="/architect/logout" class="btn-logout">Logout</a>
+        </div>
+    </div>
+</header>
+
+<!-- MAIN CONTENT AREA -->
+<main class="container">
+
+    <!-- VIEW 1: ARCHITECT DASHBOARD -->
+    <div id="dashboardView">
+        <!-- STATS GRID -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">New Submissions</div>
+                <div class="stat-value" id="statNew">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">In Review</div>
+                <div class="stat-value" id="statReview">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Pending Consultation</div>
+                <div class="stat-value" id="statConsult">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Completed Briefs</div>
+                <div class="stat-value" id="statCompleted">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Total Submissions</div>
+                <div class="stat-value" id="statTotal">0</div>
+            </div>
+        </div>
+
+        <!-- CONTROLS -->
+        <div class="controls-bar">
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" class="search-input" placeholder="Search by Client Name, Project UID, Location..." oninput="handleSearch()">
+            </div>
+
+            <div class="filter-tabs">
+                <button class="filter-tab active" onclick="setFilter('all', this)">All Projects</button>
+                <button class="filter-tab" onclick="setFilter('new_submission', this)">New</button>
+                <button class="filter-tab" onclick="setFilter('in_review', this)">In Review</button>
+                <button class="filter-tab" onclick="setFilter('consultation', this)">Consultations</button>
+                <button class="filter-tab" onclick="setFilter('completed', this)">Completed</button>
+                <button class="filter-tab" onclick="setFilter('archived', this)">Archived</button>
+            </div>
+        </div>
+
+        <!-- PROJECTS TABLE -->
+        <div class="table-card">
+            <table class="projects-table">
+                <thead>
+                    <tr>
+                        <th>Client Details</th>
+                        <th>Project UID & Type</th>
+                        <th>Location</th>
+                        <th>Submission Date</th>
+                        <th>Current Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="projectsTbody">
+                    <tr>
+                        <td colspan="6" style="text-align:center; padding:32px; color:var(--text-muted);">
+                            Loading projects...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- VIEW 2: PROJECT DETAIL WORKSPACE -->
+    <div id="projectDetailView" style="display:none;">
+        <button class="btn-back" onclick="showDashboard()">← Back to Projects Dashboard</button>
+
+        <div class="workspace-header">
+            <div class="project-title-group">
+                <h1 id="projClientName">Client Name</h1>
+                <div class="project-title-meta">
+                    <span class="project-uid-badge" id="projUID">SA-2026-0000</span>
+                    <span id="projType">New Residence</span>
+                    <span>•</span>
+                    <span id="projLocation">Kerala, India</span>
+                </div>
+            </div>
+
+            <div class="status-selector-group">
+                <select id="projStatusSelect" class="status-select" onchange="updateProjectStatus(this.value)">
+                    <option value="new_submission">NEW SUBMISSION</option>
+                    <option value="in_review">IN REVIEW</option>
+                    <option value="client_contacted">CLIENT CONTACTED</option>
+                    <option value="consultation_pending">CONSULTATION PENDING</option>
+                    <option value="consultation_completed">CONSULTATION COMPLETED</option>
+                    <option value="design_brief_ready">DESIGN BRIEF READY</option>
+                    <option value="completed">COMPLETED</option>
+                </select>
+
+                <button class="btn-pdf" onclick="downloadArchitectPDF()">Download Architect PDF</button>
+            </div>
+        </div>
+
+        <!-- WORKSPACE TABS -->
+        <div class="workspace-tabs">
+            <div class="tab-item active" onclick="switchSection('overview', this)">Overview</div>
+            <div class="tab-item" onclick="switchSection('client', this)">Client Info</div>
+            <div class="tab-item" onclick="switchSection('project', this)">Project Specs</div>
+            <div class="tab-item" onclick="switchSection('kitchen', this)">Kitchen</div>
+            <div class="tab-item" onclick="switchSection('bedroom', this)">Bedrooms</div>
+            <div class="tab-item" onclick="switchSection('living', this)">Living & Dining</div>
+            <div class="tab-item" onclick="switchSection('exterior', this)">Exterior</div>
+            <div class="tab-item" onclick="switchSection('visuals', this)">Selected Visuals</div>
+            <div class="tab-item" onclick="switchSection('notes', this)">Architect Notes 📝</div>
+        </div>
+
+        <!-- SECTION 1: OVERVIEW -->
+        <div id="sec-overview" class="workspace-section">
+            <div class="section-card">
+                <div class="section-card-title">Project Overview & Timeline</div>
+                <div class="qa-grid" id="gridOverview"></div>
+            </div>
+
+            <div class="section-card">
+                <div class="section-card-title">Status Transition Audit Log</div>
+                <div id="statusHistoryList" style="display:flex; flex-direction:column; gap:8px; font-size:12px; color:var(--text-secondary);"></div>
+            </div>
+        </div>
+
+        <!-- SECTION 2: CLIENT INFO -->
+        <div id="sec-client" class="workspace-section" style="display:none;">
+            <div class="section-card">
+                <div class="section-card-title">Client Information</div>
+                <div class="qa-grid" id="gridClient"></div>
+            </div>
+
+            <div class="section-card">
+                <div class="section-card-title">Family Profile & Members</div>
+                <div id="familyMembersContainer"></div>
+            </div>
+        </div>
+
+        <!-- SECTION 3: PROJECT SPECS -->
+        <div id="sec-project" class="workspace-section" style="display:none;">
+            <div class="section-card">
+                <div class="section-card-title">Architectural Requirements & Site Specs</div>
+                <div class="qa-grid" id="gridProject"></div>
+            </div>
+        </div>
+
+        <!-- SECTION 4: KITCHEN -->
+        <div id="sec-kitchen" class="workspace-section" style="display:none;">
+            <div class="section-card">
+                <div class="section-card-title">Kitchen Design & Layout Preferences</div>
+                <div class="qa-grid" id="gridKitchen"></div>
+            </div>
+        </div>
+
+        <!-- SECTION 5: BEDROOM -->
+        <div id="sec-bedroom" class="workspace-section" style="display:none;">
+            <div class="section-card">
+                <div class="section-card-title">Master Bedroom Specifications</div>
+                <div class="qa-grid" id="gridMasterBedroom"></div>
+            </div>
+
+            <div class="section-card">
+                <div class="section-card-title">Dynamic Additional Bedrooms</div>
+                <div id="dynamicRoomsContainer"></div>
+            </div>
+        </div>
+
+        <!-- SECTION 6: LIVING & DINING -->
+        <div id="sec-living" class="workspace-section" style="display:none;">
+            <div class="section-card">
+                <div class="section-card-title">Formal Living & Dining Requirements</div>
+                <div class="qa-grid" id="gridLiving"></div>
+            </div>
+        </div>
+
+        <!-- SECTION 7: EXTERIOR -->
+        <div id="sec-exterior" class="workspace-section" style="display:none;">
+            <div class="section-card">
+                <div class="section-card-title">Exterior Architecture & Outdoor Living</div>
+                <div class="qa-grid" id="gridExterior"></div>
+            </div>
+        </div>
+
+        <!-- SECTION 8: VISUAL REFERENCES -->
+        <div id="sec-visuals" class="workspace-section" style="display:none;">
+            <div class="section-card">
+                <div class="section-card-title">Selected Design & Visual References</div>
+                <div class="visual-grid" id="visualGrid"></div>
+            </div>
+        </div>
+
+        <!-- SECTION 9: ARCHITECT NOTES (INTERNAL) -->
+        <div id="sec-notes" class="workspace-section" style="display:none;">
+            <div class="section-card">
+                <div class="section-card-title">Internal Architect Workspace Notes (Private)</div>
+                <div class="note-form">
+                    <textarea id="noteInput" class="note-textarea" placeholder="Add confidential internal architectural note, structural requirement, or client discussion summary..."></textarea>
+                    <div class="note-actions">
+                        <select id="noteTypeSelect" class="note-select">
+                            <option value="general">GENERAL</option>
+                            <option value="design">DESIGN & REVISION</option>
+                            <option value="client">CLIENT MEETING</option>
+                            <option value="site">SITE & STRUCTURAL</option>
+                            <option value="budget">BUDGET & COSTING</option>
+                            <option value="consultation">CONSULTATION</option>
+                        </select>
+                        <button class="btn-add-note" onclick="submitNote()">Save Internal Note</button>
+                    </div>
+                </div>
+
+                <div class="notes-list" id="notesList"></div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<!-- EDIT ANSWER MODAL -->
+<div class="modal-overlay" id="editModal">
+    <div class="modal-box">
+        <div class="modal-title">Edit Questionnaire Answer (Architect)</div>
+        <div style="font-size:12px; color:var(--text-muted); margin-bottom:14px;" id="modalQId">Question</div>
+        
+        <div style="margin-bottom:12px;">
+            <label class="form-label" style="font-size:11px; color:var(--text-muted);">CLIENT ORIGINAL VALUE</label>
+            <div id="modalOrigVal" style="font-size:12px; color:var(--text-secondary); background:var(--bg-input); padding:8px; border-radius:6px; border:1px solid var(--border-color);"></div>
+        </div>
+
+        <div style="margin-bottom:12px;">
+            <label class="form-label" style="font-size:11px; color:var(--text-muted);">ARCHITECT MODIFIED VALUE</label>
+            <input type="text" id="modalNewValInput" class="search-input" style="width:100%;">
+        </div>
+
+        <div style="margin-bottom:12px;">
+            <label class="form-label" style="font-size:11px; color:var(--text-muted);">REASON FOR MODIFICATION</label>
+            <input type="text" id="modalReasonInput" class="search-input" placeholder="e.g. Discussed with client during studio consultation" style="width:100%;">
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn-action" onclick="closeModal()">Cancel</button>
+            <button class="btn-add-note" onclick="saveAnswerEdit()">Save Changes</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let activeFilter = 'all';
+    let projectsData = [];
+    let currentProject = null;
+    let editingFieldQId = null;
+
+    document.addEventListener('DOMContentLoaded', () => {
+        loadStats();
+        loadProjects();
+        loadNotifications();
+        
+        // Auto-check URL for project ID query parameter e.g. /architect?project=1
+        const urlParams = new URLSearchParams(window.location.search);
+        const pid = urlParams.get('project');
+        if (pid) {
+            openProject(pid);
+        }
+    });
+
+    async function loadStats() {
+        try {
+            const res = await fetch('/api/architect/stats');
+            const data = await res.json();
+            if (data.success) {
+                const s = data.stats;
+                document.getElementById('statNew').textContent = s.new_submissions || 0;
+                document.getElementById('statReview').textContent = s.in_review || 0;
+                document.getElementById('statConsult').textContent = s.consultations || 0;
+                document.getElementById('statCompleted').textContent = s.completed || 0;
+                document.getElementById('statTotal').textContent = s.total || 0;
+            }
+        } catch (e) {
+            console.error('Stats error:', e);
+        }
+    }
+
+    async function loadProjects() {
+        try {
+            const search = document.getElementById('searchInput').value.trim();
+            const res = await fetch(`/api/architect/projects?status=${activeFilter}&search=${encodeURIComponent(search)}`);
+            const data = await res.json();
+            if (data.success) {
+                projectsData = data.projects;
+                renderProjectsTable(projectsData);
+            }
+        } catch (e) {
+            console.error('Load projects error:', e);
+        }
+    }
+
+    function renderProjectsTable(projects) {
+        const tbody = document.getElementById('projectsTbody');
+        if (!projects || projects.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:32px; color:var(--text-muted);">No projects found matching criteria.</td></tr>`;
+            return;
+        }
+
+        tbody.innerHTML = projects.map(p => {
+            const statusClass = `status-${p.status}`;
+            const statusLabel = p.status.replace('_', ' ').toUpperCase();
+            const subDate = p.submitted_at ? p.submitted_at.substring(0, 16) : 'In Progress';
+            
+            return `
+                <tr>
+                    <td>
+                        <div class="client-info-cell">
+                            <span class="client-name">${escapeHtml(p.client_name || 'Client')}</span>
+                            <span class="client-contact">${escapeHtml(p.location || 'Location N/A')}</span>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="project-uid-badge">${p.project_uid}</span>
+                        <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">${escapeHtml(p.project_type || 'Residential')}</div>
+                    </td>
+                    <td>${escapeHtml(p.location || '—')}</td>
+                    <td>${subDate}</td>
+                    <td><span class="status-pill ${statusClass}">${statusLabel}</span></td>
+                    <td>
+                        <button class="btn-action" onclick="openProject(${p.id})">Open Project</button>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    function setFilter(filter, el) {
+        activeFilter = filter;
+        document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+        el.classList.add('active');
+        loadProjects();
+    }
+
+    function handleSearch() {
+        loadProjects();
+    }
+
+    async function loadNotifications() {
+        try {
+            const res = await fetch('/api/architect/notifications');
+            const data = await res.json();
+            if (data.success) {
+                const notifs = data.notifications;
+                const unread = notifs.filter(n => !n.is_read).length;
+                const badge = document.getElementById('notifBadge');
+                if (unread > 0) {
+                    badge.textContent = unread;
+                    badge.style.display = 'flex';
+                } else {
+                    badge.style.display = 'none';
+                }
+                document.getElementById('notifCountText').textContent = `${unread} Unread`;
+
+                const nlist = document.getElementById('notifList');
+                if (notifs.length === 0) {
+                    nlist.innerHTML = `<div style="padding:16px; text-align:center; color:var(--text-muted); font-size:12px;">No notifications.</div>`;
+                } else {
+                    nlist.innerHTML = notifs.map(n => `
+                        <div class="notif-item ${!n.is_read ? 'unread' : ''}" onclick="clickNotification(${n.id}, ${n.project_id})">
+                            <div class="notif-item-title">New Questionnaire Submitted</div>
+                            <div class="notif-item-sub">Client: ${escapeHtml(n.client_name || 'Client')} (${n.project_uid})</div>
+                            <div class="notif-item-time">${n.created_at ? n.created_at.substring(0, 16) : ''}</div>
+                        </div>
+                    `).join('');
+                }
+            }
+        } catch (e) {
+            console.error('Notif error:', e);
+        }
+    }
+
+    function toggleNotifications() {
+        const drop = document.getElementById('notifDropdown');
+        drop.classList.toggle('show');
+    }
+
+    async function clickNotification(notifId, projectId) {
+        await fetch(`/api/architect/notifications/${notifId}/read`, { method: 'POST' });
+        document.getElementById('notifDropdown').classList.remove('show');
+        loadNotifications();
+        if (projectId) {
+            openProject(projectId);
+        }
+    }
+
+    function showDashboard() {
+        document.getElementById('projectDetailView').style.display = 'none';
+        document.getElementById('dashboardView').style.display = 'block';
+        currentProject = null;
+        loadStats();
+        loadProjects();
+    }
+
+    async function openProject(projectId) {
+        try {
+            const res = await fetch(`/api/architect/project/${projectId}`);
+            const data = await res.json();
+            if (data.success) {
+                currentProject = data.project;
+                renderProjectWorkspace(currentProject);
+                document.getElementById('dashboardView').style.display = 'none';
+                document.getElementById('projectDetailView').style.display = 'block';
+                window.scrollTo(0,0);
+            }
+        } catch (e) {
+            console.error('Open project error:', e);
+        }
+    }
+
+    function renderProjectWorkspace(p) {
+        const answers = p.answers || {};
+        document.getElementById('projClientName').textContent = p.client_name || answers.client_name || 'Client Workspace';
+        document.getElementById('projUID').textContent = p.project_uid;
+        document.getElementById('projType').textContent = p.project_type || answers.project_type || 'Residential Project';
+        document.getElementById('projLocation').textContent = p.location || answers.project_location || 'Kerala, India';
+        document.getElementById('projStatusSelect').value = p.status;
+
+        // Render Overview
+        const ovPairs = [
+            ["Client Name", p.client_name || answers.client_name],
+            ["Project Location", p.location || answers.project_location],
+            ["Project Type", p.project_type || answers.project_type],
+            ["Built-up Area", answers.expected_builtup_area ? answers.expected_builtup_area + " sq ft" : null],
+            ["Total Budget", answers.total_budget],
+            ["Submission Date", p.session ? p.session.submitted_at : null],
+            ["Assigned Architect", p.assigned_architect ? p.assigned_architect.full_name : 'Shameer Associates Team']
+        ];
+        renderGrid('gridOverview', ovPairs);
+
+        // Status History
+        const shList = document.getElementById('statusHistoryList');
+        if (p.status_history && p.status_history.length > 0) {
+            shList.innerHTML = p.status_history.map(sh => `
+                <div style="padding:8px 12px; background:var(--bg-card); border-radius:6px; border:1px solid var(--border-color);">
+                    <strong>${sh.from_status.toUpperCase()} → ${sh.to_status.toUpperCase()}</strong> by ${escapeHtml(sh.changed_by_name)} on ${sh.changed_at.substring(0,16)} ${sh.note ? '<i>(' + escapeHtml(sh.note) + ')</i>' : ''}
+                </div>
+            `).join('');
+        } else {
+            shList.innerHTML = `<div>No status transitions recorded.</div>`;
+        }
+
+        // Render Client Info
+        const clientPairs = [
+            ["Client Full Name", answers.client_name],
+            ["Contact Number", answers.contact_number],
+            ["Email Address", answers.email_address],
+            ["Primary Occupation", answers.occupation],
+            ["Current Residence City", answers.current_city]
+        ];
+        renderGrid('gridClient', clientPairs);
+
+        // Family Members Table
+        const famBox = document.getElementById('familyMembersContainer');
+        if (p.family_members && p.family_members.length > 0) {
+            famBox.innerHTML = `
+                <table class="projects-table" style="font-size:12px;">
+                    <thead>
+                        <tr><th>User Group</th><th>Count</th><th>Gender</th><th>Age Range</th><th>Special Notes</th></tr>
+                    </thead>
+                    <tbody>
+                        ${p.family_members.map(m => `
+                            <tr>
+                                <td><strong>${escapeHtml(m.user_group)}</strong></td>
+                                <td>${m.count}</td>
+                                <td>${escapeHtml(m.gender || '—')}</td>
+                                <td>${escapeHtml(m.age_range || '—')}</td>
+                                <td>${escapeHtml(m.special_note || '—')}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        } else {
+            famBox.innerHTML = `<div style="font-size:12px; color:var(--text-muted);">No family members profile saved.</div>`;
+        }
+
+        // Render Project Specs
+        const projPairs = [
+            ["Plot Area / Dimensions", answers.plot_area],
+            ["Orientation / Facing", answers.plot_facing],
+            ["Number of Floors", answers.number_of_floors],
+            ["Expected Built-up Area", answers.expected_builtup_area],
+            ["Vastu Compliance", answers.vastu_importance],
+            ["Natural Daylight", answers.natural_light_importance],
+            ["Architectural Style", answers.preferred_architectural_style],
+            ["Porch Vehicles", answers.porch_vehicles],
+            ["Swimming Pool", answers.pool_requirement]
+        ];
+        renderGrid('gridProject', projPairs);
+
+        // Render Kitchen
+        const kitchPairs = [
+            ["Main Kitchen Layout", answers.mk_layout],
+            ["Island Requirement", answers.mk_island_type],
+            ["Breakfast Counter", answers.mk_breakfast_counter],
+            ["Dry / Wet Kitchen", answers.kitchen_type],
+            ["Pantry & Storage", answers.mk_storage_needs],
+            ["Cooking Appliances", answers.cooking_hob_type]
+        ];
+        renderGrid('gridKitchen', kitchPairs);
+
+        // Render Bedroom (Master & Dynamic)
+        const masterPairs = [
+            ["Bed Size", answers.mb_bed_size],
+            ["Seating Area", answers.mb_seating],
+            ["Walk-in Wardrobe", answers.mb_wardrobe_type],
+            ["Attached Bathroom", answers.mb_bathroom_specs]
+        ];
+        renderGrid('gridMasterBedroom', masterPairs);
+
+        const roomBox = document.getElementById('dynamicRoomsContainer');
+        if (p.dynamic_rooms && p.dynamic_rooms.length > 0) {
+            roomBox.innerHTML = p.dynamic_rooms.map(r => `
+                <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:8px; padding:16px; margin-bottom:12px;">
+                    <div style="font-size:14px; font-weight:600; color:var(--accent-gold); margin-bottom:10px;">${escapeHtml(r.room_name)}</div>
+                    <div class="qa-grid">
+                        <div class="qa-item"><div class="qa-label">User</div><div class="qa-value">${escapeHtml(r.answers.intended_user || '—')}</div></div>
+                        <div class="qa-item"><div class="qa-label">Floor Location</div><div class="qa-value">${escapeHtml(r.answers.floor_location || '—')}</div></div>
+                        <div class="qa-item"><div class="qa-label">Design Style</div><div class="qa-value">${escapeHtml(r.answers.design_style || '—')}</div></div>
+                        <div class="qa-item"><div class="qa-label">Bed Size</div><div class="qa-value">${escapeHtml(r.answers.bed_size || '—')}</div></div>
+                    </div>
+                </div>
+            `).join('');
+        } else {
+            roomBox.innerHTML = `<div style="font-size:12px; color:var(--text-muted);">No additional dynamic bedrooms specified.</div>`;
+        }
+
+        // Render Living & Dining
+        const livPairs = [
+            ["Formal Living Arrangement", answers.formal_living_arrangement],
+            ["Living Seating Capacity", answers.formal_living_seating],
+            ["Dining Table Capacity", answers.dining_capacity],
+            ["Crockery Unit / Bar", answers.dining_crockery_unit]
+        ];
+        renderGrid('gridLiving', livPairs);
+
+        // Render Exterior
+        const extPairs = [
+            ["Exterior Elevation Style", answers.elevation_style],
+            ["Material Palette", answers.exterior_materials],
+            ["Porch Design", answers.porch_type],
+            ["Outdoor Landscaping", answers.landscape_preferences]
+        ];
+        renderGrid('gridExterior', extPairs);
+
+        // Selected Visual References Grid
+        renderVisualsGrid(p.selected_visuals || {});
+
+        // Internal Notes
+        renderNotes(p.notes || []);
+    }
+
+    function renderGrid(containerId, pairs) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = pairs.filter(p => p[1] !== undefined && p[1] !== null && p[1] !== '').map(p => `
+            <div class="qa-item">
+                <div class="qa-label">
+                    <span>${escapeHtml(p[0])}</span>
+                </div>
+                <div class="qa-value">${escapeHtml(String(p[1]))}</div>
+            </div>
+        `).join('');
+
+        if (container.innerHTML === '') {
+            container.innerHTML = `<div style="font-size:12px; color:var(--text-muted);">No answers provided for this section.</div>`;
+        }
+    }
+
+    function renderVisualsGrid(visuals) {
+        const container = document.getElementById('visualGrid');
+        const categories = ['exterior', 'formal_living_dining', 'bedroom', 'kitchen'];
+        const items = [];
+
+        categories.forEach(cat => {
+            if (visuals[cat]) {
+                const v = visuals[cat];
+                const catTitle = cat.replace(/_/g, ' ').toUpperCase();
+                const img = v.image_url || v.living_image_url || v.bedroom_image_url || '/static/brand/shameer_associates_logo.png';
+                items.push(`
+                    <div class="visual-card">
+                        <img src="${img}" alt="${escapeHtml(v.style_name)}" class="visual-img" onclick="window.open('${img}', '_blank')">
+                        <div class="visual-body">
+                            <div class="visual-category">${catTitle}</div>
+                            <div class="visual-name">${escapeHtml(v.style_name)} (Style #${v.style_number})</div>
+                        </div>
+                    </div>
+                `);
+            }
+        });
+
+        if (items.length > 0) {
+            container.innerHTML = items.join('');
+        } else {
+            container.innerHTML = `<div style="font-size:12px; color:var(--text-muted); grid-column: 1 / -1;">No visual reference selections made by client.</div>`;
+        }
+    }
+
+    function renderNotes(notes) {
+        const container = document.getElementById('notesList');
+        if (!notes || notes.length === 0) {
+            container.innerHTML = `<div style="font-size:12px; color:var(--text-muted);">No internal architect notes recorded for this project yet.</div>`;
+            return;
+        }
+
+        container.innerHTML = notes.map(n => `
+            <div class="note-item">
+                <div class="note-header">
+                    <div>
+                        <span class="note-tag">${n.note_type}</span>
+                        <strong style="color:var(--text-primary); margin-left:8px;">${escapeHtml(n.author_name)}</strong>
+                    </div>
+                    <div>${n.created_at ? n.created_at.substring(0, 16) : ''}</div>
+                </div>
+                <div class="note-content">${escapeHtml(n.content)}</div>
+                <div class="note-controls">
+                    <button class="btn-note-action" onclick="deleteNote(${n.id})">Delete Note</button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    async function submitNote() {
+        if (!currentProject) return;
+        const content = document.getElementById('noteInput').value.trim();
+        const note_type = document.getElementById('noteTypeSelect').value;
+        if (!content) return;
+
+        try {
+            const res = await fetch(`/api/architect/project/${currentProject.id}/note`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ content, note_type })
+            });
+            const data = await res.json();
+            if (data.success) {
+                document.getElementById('noteInput').value = '';
+                openProject(currentProject.id);
+            }
+        } catch (e) {
+            console.error('Note submit error:', e);
+        }
+    }
+
+    async function deleteNote(noteId) {
+        if (!currentProject || !confirm("Delete this internal architect note?")) return;
+        try {
+            await fetch(`/api/architect/project/${currentProject.id}/note/${noteId}`, { method: 'DELETE' });
+            openProject(currentProject.id);
+        } catch (e) {
+            console.error('Delete note error:', e);
+        }
+    }
+
+    async function updateProjectStatus(newStatus) {
+        if (!currentProject) return;
+        try {
+            const res = await fetch(`/api/architect/project/${currentProject.id}/status`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: newStatus, note: 'Updated via Architect Workspace' })
+            });
+            const data = await res.json();
+            if (data.success) {
+                openProject(currentProject.id);
+            }
+        } catch (e) {
+            console.error('Update status error:', e);
+        }
+    }
+
+    function switchSection(secId, el) {
+        document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+        el.classList.add('active');
+
+        document.querySelectorAll('.workspace-section').forEach(s => s.style.display = 'none');
+        document.getElementById(`sec-${secId}`).style.display = 'block';
+    }
+
+    function downloadArchitectPDF() {
+        if (!currentProject) return;
+        window.open(`/api/architect/project/${currentProject.id}/pdf?download=1`, '_blank');
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+</script>
+
+</body>
+</html>

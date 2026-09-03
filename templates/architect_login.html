@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Architect Sign In | Shameer Associates</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/main.css">
+    <style>
+        :root {
+            --bg-primary: #0F0F10;
+            --bg-surface: #171719;
+            --bg-card: #1E1E22;
+            --border-color: #2D2D35;
+            --accent-gold: #A0825B;
+            --accent-gold-light: #C5A070;
+            --text-main: #F4F4F5;
+            --text-muted: #A1A1AA;
+            --danger: #EF4444;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 24px;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 440px;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 40px 36px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+
+        .brand-logo {
+            width: 72px;
+            height: 72px;
+            object-fit: contain;
+            margin-bottom: 16px;
+        }
+
+        .brand-title {
+            font-family: 'Cinzel', serif;
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            color: var(--text-main);
+            margin-bottom: 6px;
+        }
+
+        .brand-sub {
+            font-size: 11px;
+            letter-spacing: 0.25em;
+            color: var(--accent-gold);
+            text-transform: uppercase;
+            margin-bottom: 32px;
+        }
+
+        .login-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            color: var(--text-main);
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-main);
+            font-size: 14px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 0 2px rgba(160, 130, 91, 0.2);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--accent-gold), #8C7355);
+            border: none;
+            border-radius: 6px;
+            color: #FFFFFF;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            opacity: 0.9;
+        }
+
+        .error-alert {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: var(--danger);
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .demo-hint {
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .demo-hint strong {
+            color: var(--accent-gold-light);
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-card">
+    <img src="/static/brand/shameer_associates_logo.png" alt="Shameer Associates Logo" class="brand-logo" onerror="this.style.display='none'">
+    <div class="brand-title">SHAMEER ASSOCIATES</div>
+    <div class="brand-sub">ARCHITECT MANAGEMENT SYSTEM</div>
+
+    {% if error %}
+    <div class="error-alert">
+        {{ error }}
+    </div>
+    {% endif %}
+
+    <form method="POST" action="/architect/login">
+        <div class="form-group">
+            <label class="form-label" for="email">Email Address</label>
+            <input type="email" id="email" name="email" class="form-input" placeholder="architect@shameerassociates.com" required autofocus>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="password">Password</label>
+            <input type="password" id="password" name="password" class="form-input" placeholder="••••••••" required>
+        </div>
+
+        <button type="submit" class="btn-submit">Sign In to Dashboard</button>
+    </form>
+
+    <div class="demo-hint">
+        Standard Architect Credentials:<br>
+        <strong>architect@shameerassociates.com</strong> / <strong>Architect123!</strong>
+    </div>
+</div>
+
+</body>
+</html>

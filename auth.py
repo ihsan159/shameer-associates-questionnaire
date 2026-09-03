@@ -11,7 +11,7 @@ from flask_login import current_user
 import architect_db
 
 login_manager = LoginManager()
-login_manager.login_view = 'architect_bp.login'
+login_manager.login_view = 'architect_login'
 login_manager.login_message = 'Please sign in to access the Architect Workspace.'
 login_manager.login_message_category = 'info'
 
@@ -54,7 +54,7 @@ def require_role(*roles):
         @wraps(f)
         def wrapped(*args, **kwargs):
             if not current_user.is_authenticated:
-                return redirect(url_for('architect_bp.login'))
+                return redirect(url_for('architect_login'))
             if current_user.role not in roles:
                 abort(403)
             return f(*args, **kwargs)

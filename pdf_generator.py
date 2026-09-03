@@ -914,3 +914,260 @@ def generate_pdf_bytes(session_data, schema):
     doc.build(story, canvasmaker=NumberedCanvas)
     buffer.seek(0)
     return buffer.getvalue()
+
+
+def generate_architect_pdf_bytes(project_data, schema):
+    """
+    Generate an Architect Project Workspace PDF including:
+    - Project UID, status, assigned architect
+    - Client answers & visual references
+    - Architect internal notes
+    - Status history & edit log
+    """
+    session_data = project_data.get('session') or {}
+    notes = project_data.get('notes', [])
+    status_history = project_data.get('status_history', [])
+    edit_history = project_data.get('edit_history', [])
+    status = project_data.get('status', 'new_submission')
+    status_label = status.replace('_', ' ').title()
+    project_uid = project_data.get('project_uid', 'SA-2026-0000')
+    assigned_architect = project_data.get('assigned_architect', {}) or {}
+    architect_name = assigned_architect.get('full_name', 'Shameer Associates Team')
+
+    buffer = io.BytesIO()
+    doc = SimpleDocTemplate(
+        buffer,
+        pagesize=A4,
+        leftMargin=54,
+        rightMargin=54,
+        topMargin=54,
+        bottomMargin=54
+    )
+
+    styles = get_custom_styles()
+    story = []
+
+    answers = session_data.get('answers', {})
+    family_members = session_data.get('family_members', [])
+    dynamic_rooms = session_data.get('dynamic_rooms', [])
+    selected_visuals = session_data.get('selected_visuals', {})
+    client_name = project_data.get('client_name') or answers.get('client_name', 'Client') or 'Client'
+    location = project_data.get('location') or answers.get('project_location', 'Kerala, India') or 'Kerala, India'
+    date_str = datetime.now().strftime('%d %B %Y')
+
+    # 1. COVER PAGE
+    story.append(Spacer(1, 15))
+    logo_path = 'static/brand/shameer_associates_logo.png'
+    if os.path.exists(logo_path):
+        story.append(RLImage(logo_path, width=100, height=100))
+        story.append(Spacer(1, 10))
+
+    story.append(Paragraph("SHAMEER ASSOCIATES", styles['CoverBrand']))
+    story.append(Paragraph("ARCHITECTURE • INTERIORS • LANDSCAPE", styles['CoverTagline']))
+    story.append(HRFlowable(width="30%", thickness=1.5, color=COLOR_ACCENT, spaceAfter=15, spaceBefore=5))
+    
+    story.append(Paragraph("ARCHITECT PROJECT BRIEF & SPECIFICATION", styles['CoverMotto']))
+    story.append(Paragraph(f"PROJECT ID: {project_uid}", styles['CoverDocTitle']))
+    story.append(Spacer(1, 10))
+
+    meta_text = (
+        f"<b>Client Name:</b> {client_name}<br/>"
+        f"<b>Project Location:</b> {location}<br/>"
+        f"<b>Project Status:</b> {status_label}<br/>"
+        f"<b>Assigned Architect:</b> {architect_name}<br/>"
+        f"<b>Generated Date:</b> {date_str}"
+    )
+    story.append(Paragraph(meta_text, styles['CoverMeta']))
+    story.append(Spacer(1, 25))
+
+    # Architectural Overview Card
+    overview_table_data = [
+        [
+            Paragraph("<b>Project UID</b>", styles['QuestionLabel']),
+            Paragraph(project_uid, styles['AnswerValue']),
+            Paragraph("<b>Current Status</b>", styles['QuestionLabel']),
+            Paragraph(status_label, styles['AnswerValue'])
+        ],
+        [
+            Paragraph("<b>Client Name</b>", styles['QuestionLabel']),
+            Paragraph(client_name, styles['AnswerValue']),
+            Paragraph("<b>Location</b>", styles['QuestionLabel']),
+            Paragraph(location, styles['AnswerValue'])
+        ],
+        [
+            Paragraph("<b>Assigned Architect</b>", styles['QuestionLabel']),
+            Paragraph(architect_name, styles['AnswerValue']),
+            Paragraph("<b>Submission Date</b>", styles['QuestionLabel']),
+            Paragraph(str(session_data.get('submitted_at', '—')), styles['AnswerValue'])
+        ]
+    ]
+    t_ov = Table(overview_table_data, colWidths=[110, 133, 110, 134])
+    t_ov.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, -1), COLOR_BG_LIGHT),
+        ('GRID', (0, 0), (-1, -1), 0.5, COLOR_BORDER),
+        ('PADDING', (0, 0), (-1, -1), 6),
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE')
+    ]))
+    story.append(t_ov)
+    story.append(PageBreak())
+
+    # Generate standard questionnaire contents
+    # Client Profile
+    story.append(Paragraph("01. CLIENT & PROJECT OVERVIEW", styles['ChapterHeading']))
+    story.append(HRFlowable(width="100%", thickness=1, color=COLOR_PRIMARY, spaceAfter=8, spaceBefore=2))
+    client_qa = [
+        ("Client Name", client_name),
+        ("Contact Number", answers.get('contact_number')),
+        ("Email Address", answers.get('email_address')),
+        ("Primary Occupation", answers.get('occupation')),
+        ("Project Location", location),
+        ("Project Type", answers.get('project_type')),
+        ("Expected Area (sq ft)", answers.get('expected_builtup_area')),
+        ("Total Budget", answers.get('total_budget'))
+    ]
+    t_c = create_qa_table(client_qa, styles)
+    if t_c:
+        story.append(t_c)
+    story.append(Spacer(1, 15))
+
+    # Dynamic family members if present
+    if family_members:
+        story.append(Paragraph("1.2 Family Profile", styles['SectionHeading']))
+        fam_headers = ["User Group", "Count", "Gender", "Age Range", "Special Notes"]
+        fam_rows = [[Paragraph(f"<b>{h}</b>", styles['QuestionLabel']) for h in fam_headers]]
+        for m in family_members:
+            fam_rows.append([
+                Paragraph(m.get('user_group', ''), styles['AnswerValue']),
+                Paragraph(str(m.get('count', 1)), styles['AnswerValue']),
+                Paragraph(m.get('gender', '—'), styles['AnswerValue']),
+                Paragraph(m.get('age_range', '—'), styles['AnswerValue']),
+                Paragraph(m.get('special_note', '—'), styles['AnswerValue'])
+            ])
+        t_fam = Table(fam_rows, colWidths=[100, 45, 90, 85, 167])
+        t_fam.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), COLOR_BG_LIGHT),
+            ('GRID', (0, 0), (-1, -1), 0.5, COLOR_BORDER),
+            ('PADDING', (0, 0), (-1, -1), 5),
+            ('VALIGN', (0, 0), (-1, -1), 'TOP')
+        ]))
+        story.append(t_fam)
+        story.append(Spacer(1, 15))
+
+    # Selected Visual References Summary
+    story.append(Paragraph("02. VISUAL REFERENCES SUMMARY", styles['ChapterHeading']))
+    story.append(HRFlowable(width="100%", thickness=1, color=COLOR_PRIMARY, spaceAfter=8, spaceBefore=2))
+    vis_summary_data = [
+        [
+            Paragraph("<b>Category</b>", styles['QuestionLabel']),
+            Paragraph("<b>Selected Style</b>", styles['QuestionLabel']),
+            Paragraph("<b>Style #</b>", styles['QuestionLabel'])
+        ],
+        [
+            Paragraph("Exterior Architecture", styles['AnswerValue']),
+            Paragraph(selected_visuals.get('exterior', {}).get('style_name', 'Not selected'), styles['AnswerValue']),
+            Paragraph(str(selected_visuals.get('exterior', {}).get('style_number', '—')), styles['AnswerValue'])
+        ],
+        [
+            Paragraph("Formal Living & Dining", styles['AnswerValue']),
+            Paragraph(selected_visuals.get('formal_living_dining', {}).get('style_name', 'Not selected'), styles['AnswerValue']),
+            Paragraph(str(selected_visuals.get('formal_living_dining', {}).get('style_number', '—')), styles['AnswerValue'])
+        ],
+        [
+            Paragraph("Bedrooms & Dressing", styles['AnswerValue']),
+            Paragraph(selected_visuals.get('bedroom', {}).get('style_name', 'Not selected'), styles['AnswerValue']),
+            Paragraph(str(selected_visuals.get('bedroom', {}).get('style_number', '—')), styles['AnswerValue'])
+        ],
+        [
+            Paragraph("Kitchen Design", styles['AnswerValue']),
+            Paragraph(selected_visuals.get('kitchen', {}).get('style_name', 'Not selected'), styles['AnswerValue']),
+            Paragraph(str(selected_visuals.get('kitchen', {}).get('style_number', '—')), styles['AnswerValue'])
+        ]
+    ]
+    t_vis_sum = Table(vis_summary_data, colWidths=[160, 260, 67])
+    t_vis_sum.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), COLOR_BG_LIGHT),
+        ('GRID', (0, 0), (-1, -1), 0.5, COLOR_BORDER),
+        ('PADDING', (0, 0), (-1, -1), 6),
+        ('VALIGN', (0, 0), (-1, -1), 'TOP')
+    ]))
+    story.append(t_vis_sum)
+    story.append(Spacer(1, 20))
+
+    # ARCHITECT INTERNAL NOTES SECTION
+    story.append(Paragraph("03. ARCHITECT INTERNAL NOTES", styles['ChapterHeading']))
+    story.append(HRFlowable(width="100%", thickness=1, color=COLOR_PRIMARY, spaceAfter=8, spaceBefore=2))
+
+    if notes:
+        note_headers = ["Category", "Note Content", "Author", "Date"]
+        note_rows = [[Paragraph(f"<b>{h}</b>", styles['QuestionLabel']) for h in note_headers]]
+        for n in notes:
+            n_type = n.get('note_type', 'general').upper()
+            n_content = n.get('content', '')
+            n_author = n.get('author_name', 'Architect')
+            n_date = str(n.get('created_at', ''))[:16]
+            note_rows.append([
+                Paragraph(n_type, styles['AnswerValue']),
+                Paragraph(n_content, styles['AnswerValue']),
+                Paragraph(n_author, styles['AnswerValue']),
+                Paragraph(n_date, styles['AnswerValue'])
+            ])
+        t_notes = Table(note_rows, colWidths=[80, 240, 87, 80])
+        t_notes.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), COLOR_BG_LIGHT),
+            ('GRID', (0, 0), (-1, -1), 0.5, COLOR_BORDER),
+            ('PADDING', (0, 0), (-1, -1), 6),
+            ('VALIGN', (0, 0), (-1, -1), 'TOP')
+        ]))
+        story.append(t_notes)
+    else:
+        story.append(Paragraph("No internal notes recorded.", styles['AnswerValue']))
+
+    story.append(Spacer(1, 20))
+
+    # STATUS & AUDIT HISTORY
+    if status_history:
+        story.append(Paragraph("04. STATUS WORKFLOW HISTORY", styles['ChapterHeading']))
+        story.append(HRFlowable(width="100%", thickness=1, color=COLOR_PRIMARY, spaceAfter=8, spaceBefore=2))
+        st_headers = ["From Status", "To Status", "Changed By", "Date & Note"]
+        st_rows = [[Paragraph(f"<b>{h}</b>", styles['QuestionLabel']) for h in st_headers]]
+        for sh in status_history:
+            f_st = sh.get('from_status', '').replace('_', ' ').title()
+            t_st = sh.get('to_status', '').replace('_', ' ').title()
+            c_by = sh.get('changed_by_name', 'Architect')
+            c_note = f"{sh.get('changed_at', '')[:16]} — {sh.get('note', '')}" if sh.get('note') else str(sh.get('changed_at', ''))[:16]
+            st_rows.append([
+                Paragraph(f_st, styles['AnswerValue']),
+                Paragraph(t_st, styles['AnswerValue']),
+                Paragraph(c_by, styles['AnswerValue']),
+                Paragraph(c_note, styles['AnswerValue'])
+            ])
+        t_sh = Table(st_rows, colWidths=[100, 100, 100, 187])
+        t_sh.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), COLOR_BG_LIGHT),
+            ('GRID', (0, 0), (-1, -1), 0.5, COLOR_BORDER),
+            ('PADDING', (0, 0), (-1, -1), 5),
+            ('VALIGN', (0, 0), (-1, -1), 'TOP')
+        ]))
+        story.append(t_sh)
+        story.append(Spacer(1, 25))
+
+    # Sign-off box
+    sign_data = [
+        [
+            Paragraph(f"<b>Architect Verification:</b><br/>{architect_name} (Shameer Associates)", styles['AnswerValue']),
+            Paragraph(f"<b>Project Status Confirmed:</b><br/>{status_label} ({date_str})", styles['AnswerValue'])
+        ]
+    ]
+    t_sign = Table(sign_data, colWidths=[240, 247])
+    t_sign.setStyle(TableStyle([
+        ('BOX', (0, 0), (-1, -1), 1, COLOR_BORDER),
+        ('BACKGROUND', (0, 0), (-1, -1), COLOR_BG_LIGHT),
+        ('PADDING', (0, 0), (-1, -1), 10),
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE')
+    ]))
+    story.append(t_sign)
+
+    doc.build(story, canvasmaker=NumberedCanvas)
+    buffer.seek(0)
+    return buffer.getvalue()
+
