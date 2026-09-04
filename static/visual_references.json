@@ -489,7 +489,7 @@
       "category": "kitchen",
       "styleName": "Modern / Minimal",
       "description": "Clean geometric cabinetry, smooth surfaces, neutral colours and a practical contemporary look.",
-      "image": "/static/references/kitchen/01_modern_minimal.jpg?v=20260905",
+      "image": "/static/references/kitchen/01_modern_minimal.jpg?v=20260905_hd",
       "order": 1
     },
     {
@@ -498,7 +498,7 @@
       "category": "kitchen",
       "styleName": "Luxury Contemporary",
       "description": "Premium stone, veneers, metallic accents, bespoke cabinetry and sophisticated lighting.",
-      "image": "/static/references/kitchen/02_luxury_contemporary.jpg?v=20260905",
+      "image": "/static/references/kitchen/02_luxury_contemporary.jpg?v=20260905_hd",
       "order": 2
     },
     {
@@ -507,7 +507,7 @@
       "category": "kitchen",
       "styleName": "Kerala Traditional",
       "description": "Rich timber, carved details, brass hardware, natural stone and Kerala-inspired craftsmanship.",
-      "image": "/static/references/kitchen/03_kerala_traditional.jpg?v=20260905",
+      "image": "/static/references/kitchen/03_kerala_traditional.jpg?v=20260905_hd",
       "order": 3
     },
     {
@@ -516,7 +516,7 @@
       "category": "kitchen",
       "styleName": "Modern Kerala Fusion",
       "description": "Modern cabinetry and appliances combined with Kerala woodwork, screens, brass or patterns.",
-      "image": "/static/references/kitchen/04_modern_kerala_fusion.jpg?v=20260905",
+      "image": "/static/references/kitchen/04_modern_kerala_fusion.jpg?v=20260905_hd",
       "order": 4
     },
     {
@@ -525,7 +525,7 @@
       "category": "kitchen",
       "styleName": "Neoclassical",
       "description": "Classical proportions with lighter colours, refined mouldings and restrained ornamentation.",
-      "image": "/static/references/kitchen/05_neoclassical.jpg?v=20260905",
+      "image": "/static/references/kitchen/05_neoclassical.jpg?v=20260905_hd",
       "order": 5
     },
     {
@@ -534,7 +534,7 @@
       "category": "kitchen",
       "styleName": "English Country",
       "description": "Painted inset cabinetry, natural wood, open shelves, farmhouse sink and a welcoming atmosphere.",
-      "image": "/static/references/kitchen/06_english_country.jpg?v=20260905",
+      "image": "/static/references/kitchen/06_english_country.jpg?v=20260905_hd",
       "order": 6
     },
     {
@@ -543,7 +543,7 @@
       "category": "kitchen",
       "styleName": "Mediterranean",
       "description": "Textured plaster, earthy colours, rustic timber, natural stone and warm handmade tiles.",
-      "image": "/static/references/kitchen/07_mediterranean.jpg?v=20260905",
+      "image": "/static/references/kitchen/07_mediterranean.jpg?v=20260905_hd",
       "order": 7
     },
     {
@@ -552,7 +552,7 @@
       "category": "kitchen",
       "styleName": "Italian Contemporary",
       "description": "Sleek European cabinetry, dramatic stone and highly refined proportions.",
-      "image": "/static/references/kitchen/08_italian_contemporary.jpg?v=20260905",
+      "image": "/static/references/kitchen/08_italian_contemporary.jpg?v=20260905_hd",
       "order": 8
     },
     {
@@ -561,7 +561,7 @@
       "category": "kitchen",
       "styleName": "Contemporary Classical",
       "description": "Modern planning combined with subtle mouldings and classical balance.",
-      "image": "/static/references/kitchen/09_contemporary_classical.jpg?v=20260905",
+      "image": "/static/references/kitchen/09_contemporary_classical.jpg?v=20260905_hd",
       "order": 9
     },
     {
@@ -570,7 +570,7 @@
       "category": "kitchen",
       "styleName": "Parisian",
       "description": "Elegant panelling, marble, brass and sophisticated decorative lighting.",
-      "image": "/static/references/kitchen/10_parisian.jpg?v=20260905",
+      "image": "/static/references/kitchen/10_parisian.jpg?v=20260905_hd",
       "order": 10
     },
     {
@@ -579,7 +579,7 @@
       "category": "kitchen",
       "styleName": "Spanish",
       "description": "Dark timber, arches, hand-painted tiles and wrought-iron accents.",
-      "image": "/static/references/kitchen/11_spanish.jpg?v=20260905",
+      "image": "/static/references/kitchen/11_spanish.jpg?v=20260905_hd",
       "order": 11
     },
     {
@@ -588,7 +588,7 @@
       "category": "kitchen",
       "styleName": "Scandinavian",
       "description": "Pale wood, light colours, bright interiors and simple practical cabinetry.",
-      "image": "/static/references/kitchen/12_scandinavian.jpg?v=20260905",
+      "image": "/static/references/kitchen/12_scandinavian.jpg?v=20260905_hd",
       "order": 12
     },
     {
@@ -597,7 +597,7 @@
       "category": "kitchen",
       "styleName": "Japandi",
       "description": "Japanese simplicity combined with Scandinavian warmth, natural wood and calm functional detailing.",
-      "image": "/static/references/kitchen/13_japandi.jpg?v=20260905",
+      "image": "/static/references/kitchen/13_japandi.jpg?v=20260905_hd",
       "order": 13
     },
     {
@@ -606,7 +606,7 @@
       "category": "kitchen",
       "styleName": "Futuristic",
       "description": "Sculptural forms, advanced technology and unconventional lighting.",
-      "image": "/static/references/kitchen/14_futuristic.jpg?v=20260905",
+      "image": "/static/references/kitchen/14_futuristic.jpg?v=20260905_hd",
       "order": 14
     }
   ]
