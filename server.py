@@ -31,8 +31,8 @@ auth.login_manager.init_app(app)
 
 def seed_default_architect():
     try:
-        users = architect_db.get_all_users()
-        if not users:
+        user = architect_db.get_user_by_email("architect@shameerassociates.com")
+        if not user:
             default_email = "architect@shameerassociates.com"
             default_pass = "Architect123!"
             p_hash = auth.hash_password(default_pass)
@@ -61,6 +61,19 @@ with open(VISUALS_PATH, 'r', encoding='utf-8') as f:
 
 @app.route('/')
 def index():
+    return render_template('index.html')
+
+
+@app.route('/questionnaire/<token>')
+def client_questionnaire(token):
+    """Canonical client questionnaire entry point.
+    The client clicks this link and their session is loaded automatically.
+    No login required — the token IS the authentication.
+    """
+    # Ensure the session exists (create if new token from architect)
+    existing = database.get_session_data(token)
+    if not existing:
+        database.create_session(token)
     return render_template('index.html')
 
 
@@ -198,26 +211,9 @@ def submit(token):
     })
 
 
-@app.route('/api/session/<token>/pdf', methods=['GET'])
-def download_pdf(token):
-    session_data = database.get_session_data(token)
-    if not session_data:
-        return "Session not found", 404
-
-    pdf_bytes = generate_pdf_bytes(session_data, QUESTIONNAIRE_SCHEMA)
-    
-    client_name = session_data.get('answers', {}).get('client_name', 'Client')
-    safe_name = "".join(c for c in client_name if c.isalnum() or c in (' ', '_', '-')).strip() or 'Client'
-    filename = f"Shameer_Associates_Design_Brief_{safe_name.replace(' ', '_')}.pdf"
-
-    is_download = request.args.get('download', '0') == '1'
-
-    return send_file(
-        io.BytesIO(pdf_bytes),
-        mimetype='application/pdf',
-        as_attachment=is_download,
-        download_name=filename
-    )
+# NOTE: /api/session/<token>/pdf has been removed for security.
+# PDF generation is strictly architect-only via /api/architect/project/<id>/pdf.
+# Clients must NOT be able to access or download design PDFs.
 
 
 @app.route('/api/session/<token>/consultation', methods=['POST'])
@@ -409,6 +405,104 @@ def get_architect_notifications():
 def read_notification(notification_id):
     architect_db.mark_notification_read(notification_id)
     return jsonify({'success': True})
+
+
+@app.route('/api/architect/new-questionnaire', methods=['POST'])
+@login_required
+@auth.require_role('architect', 'admin')
+def architect_new_questionnaire():
+    """Architect creates a new client questionnaire session.
+    Pre-populates client info so it is visible in the dashboard immediately.
+    Returns a unique client link the architect can copy or send.
+    """
+    data = request.get_json(silent=True) or {}
+    client_name = (data.get('client_name') or '').strip()
+    phone = (data.get('phone') or '').strip()
+    email = (data.get('email') or '').strip()
+    project_name = (data.get('project_name') or '').strip()
+    location = (data.get('location') or '').strip()
+
+    if not client_name:
+        return jsonify({'success': False, 'error': 'Client name is required'}), 400
+
+    # 1. Create a new session token
+    token = str(uuid.uuid4())
+    database.create_session(token)
+
+    # 2. Pre-populate answers with client info so dashboard shows it right away
+    pre_answers = {}
+    if client_name:
+        pre_answers['client_name'] = client_name
+    if email:
+        pre_answers['email_address'] = email
+    if phone:
+        pre_answers['contact_number'] = phone
+    if project_name:
+        pre_answers['project_name'] = project_name
+    if location:
+        pre_answers['project_location'] = location
+
+    if pre_answers:
+        database.save_answers(token, pre_answers, current_chapter=0, progress_percent=0)
+
+    # 3. Create or retrieve the architect project record
+    project = architect_db.get_or_create_project(
+        token,
+        client_name=client_name,
+        location=location,
+        project_type='Residential Project'
+    )
+    # Sync metadata so client_name/location are visible in project list
+    architect_db.sync_project_metadata(token)
+
+    # 4. Build the questionnaire URL dynamically
+    base_url = request.host_url.rstrip('/')
+    questionnaire_url = f"{base_url}/questionnaire/{token}"
+
+    return jsonify({
+        'success': True,
+        'token': token,
+        'project_id': project['id'],
+        'url': questionnaire_url
+    })
+
+
+@app.route('/api/architect/send-questionnaire', methods=['POST'])
+@login_required
+@auth.require_role('architect', 'admin')
+def architect_send_questionnaire():
+    """Send the questionnaire link to a client phone/WhatsApp.
+    Currently returns the WhatsApp deep-link for the frontend to open.
+    Wire in a real SMS/WhatsApp provider via notify.py when ready.
+    """
+    data = request.get_json(silent=True) or {}
+    token = (data.get('token') or '').strip()
+    phone = (data.get('phone') or '').strip()
+    client_name = (data.get('client_name') or 'Client').strip()
+
+    if not token or not phone:
+        return jsonify({'success': False, 'error': 'token and phone are required'}), 400
+
+    base_url = request.host_url.rstrip('/')
+    questionnaire_url = f"{base_url}/questionnaire/{token}"
+
+    # Attempt notify via configured provider (email/WhatsApp placeholder)
+    try:
+        notify.notify_questionnaire_link(client_name, phone, questionnaire_url)
+    except Exception as e:
+        app.logger.warning(f"[SEND] Notification provider error: {e}")
+
+    # Return WhatsApp deep-link so the frontend can open it
+    message = f"Hello {client_name},\n\nPlease complete your Shameer Associates Residential Design Questionnaire using the link below:\n\n{questionnaire_url}\n\nThank you,\nShameer Associates"
+    import urllib.parse
+    wa_number = phone.replace('+', '').replace(' ', '').replace('-', '')
+    wa_url = f"https://wa.me/{wa_number}?text={urllib.parse.quote(message)}"
+
+    return jsonify({
+        'success': True,
+        'wa_url': wa_url,
+        'questionnaire_url': questionnaire_url
+    })
 
 
 @app.route('/api/architect/project/<int:project_id>/pdf', methods=['GET'])

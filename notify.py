@@ -102,6 +102,64 @@ def notify_new_submission(project):
 
 
 # Pluggable provider interface (WhatsApp ready):
+
+def notify_questionnaire_link(client_name, phone, questionnaire_url):
+    """
+    Send the questionnaire link to the client via phone/WhatsApp.
+
+    Currently logs the intent. Wire in a real provider (Twilio, WATI, Meta Cloud API)
+    by replacing the placeholder block below — no structural changes needed.
+
+    Args:
+        client_name (str): Client display name.
+        phone (str): Client phone number (E.164 format preferred, e.g. +919876543210).
+        questionnaire_url (str): The full /questionnaire/<token> URL.
+    """
+    logger.info(
+        "[NOTIFY] Questionnaire link to be sent — Client: %s | Phone: %s | URL: %s",
+        client_name, phone, questionnaire_url
+    )
+
+    # --- Wire in a provider here when ready ---
+    # Example using Twilio:
+    # from twilio.rest import Client as TwilioClient
+    # twilio = TwilioClient(os.environ.get('TWILIO_SID'), os.environ.get('TWILIO_TOKEN'))
+    # twilio.messages.create(
+    #     body=f"Hello {client_name}, your Shameer Associates questionnaire: {questionnaire_url}",
+    #     from_=os.environ.get('TWILIO_FROM'),
+    #     to=phone
+    # )
+
+    # Also send email if SMTP is configured
+    if SMTP_ENABLED:
+        subject = f"[Shameer Associates] Your Design Questionnaire — {client_name}"
+        html_body = f"""
+    <div style="font-family: 'Helvetica Neue', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #FBFBF9; border: 1px solid #E5E3DC;">
+      <div style="background: #121212; color: #fff; padding: 24px 32px;">
+        <h1 style="margin: 0; font-size: 18px; letter-spacing: 0.2em; font-weight: 700;">SHAMEER ASSOCIATES</h1>
+        <p style="margin: 4px 0 0; font-size: 11px; letter-spacing: 0.25em; color: #A0825B; text-transform: uppercase;">Architecture · Interiors · Landscape</p>
+      </div>
+      <div style="padding: 32px;">
+        <h2 style="font-size: 20px; color: #121212; margin-top: 0;">Your Design Questionnaire</h2>
+        <p style="font-size: 14px; color: #4A4A4A; line-height: 1.6;">
+          Dear {client_name},<br><br>
+          Thank you for choosing Shameer Associates. Please complete your Residential Design Questionnaire using the link below.
+          You can save your progress and return at any time using the same link.
+        </p>
+        <div style="margin-top: 28px;">
+          <a href="{questionnaire_url}" style="display: inline-block; background: #121212; color: #fff; text-decoration: none; padding: 12px 28px; font-size: 12px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;">
+            OPEN QUESTIONNAIRE
+          </a>
+        </div>
+        <p style="font-size: 12px; color: #737373; margin-top: 24px; border-top: 1px solid #E5E3DC; padding-top: 16px;">
+          This email was sent by Shameer Associates. If you have questions, please contact us directly.
+        </p>
+      </div>
+    </div>
+        """
+        _send_email(subject, html_body)
+
+
 def notify_whatsapp(project):
     """
     Placeholder for WhatsApp notification.

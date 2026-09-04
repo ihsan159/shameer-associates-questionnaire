@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Shameer Associates — Design Workspace</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              black: '#121212',
+              charcoal: '#1E1E1E',
+              slate: '#2D2D2D',
+              bronze: '#8C7355',
+              bronzeLight: '#A0825B',
+              bronzeMuted: '#C5B59E',
+              offwhite: '#FBFBF9',
+              lightGray: '#F3F2EE',
+              border: '#E5E3DC',
+              borderDark: '#3A3A3A',
+              muted: '#7A7874'
+            }
+          },
+          fontFamily: {
+            serif: ['Cinzel', 'Cormorant Garamond', 'Georgia', 'serif'],
+            editorial: ['Cormorant Garamond', 'Georgia', 'serif'],
+            sans: ['Plus Jakarta Sans', 'system-ui', '-apple-system', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="/static/css/main.css" />
+</head>
+<body class="bg-brand-offwhite text-brand-black font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-brand-bronze selection:text-white">
+
+  <!-- Sticky Top Header -->
+  <header class="sticky top-0 z-40 bg-white border-b border-brand-border shadow-luxury">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0">
+          <img src="/static/brand/logo.svg" alt="Shameer Associates Logo" class="w-full h-full object-contain" />
+        </div>
+        <div class="flex flex-col">
+          <span class="font-serif text-sm sm:text-base font-bold tracking-[0.25em] text-brand-black leading-tight">
+            SHAMEER
+          </span>
+          <span class="text-[9px] sm:text-[10px] tracking-[0.3em] font-medium text-brand-muted uppercase leading-none mt-0.5">
+            ASSOCIATES
+          </span>
+        </div>
+        <span class="px-2.5 py-0.5 bg-brand-lightGray border border-brand-border text-[9px] font-bold tracking-widest text-brand-bronze uppercase rounded ml-3">
+          Design Studio Workspace
+        </span>
+      </div>
+
+      <!-- Logged-in User Profile & Logout -->
+      <div class="flex items-center space-x-4">
+        <div class="hidden md:flex flex-col items-end text-xs">
+          <span class="font-bold text-brand-black">{{ current_user.full_name }}</span>
+          <span class="text-[10px] text-brand-muted capitalize font-medium">{{ current_user.role }}</span>
+        </div>
+        <div class="h-8 w-px bg-brand-border hidden md:block"></div>
+        <a href="{{ url_for('architect_bp.logout') }}" 
+           class="inline-flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold tracking-wider uppercase border border-brand-border hover:border-brand-black bg-white hover:bg-brand-black hover:text-white transition-all duration-200 rounded-sm">
+          <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
+          <span class="hidden sm:inline">Logout</span>
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8">
+    
+    <!-- Title Section -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between border-b border-brand-border pb-5 gap-4">
+      <div class="space-y-1">
+        <span class="text-[10px] font-bold tracking-[0.25em] text-brand-bronze uppercase">Design studio overview</span>
+        <h1 class="font-serif text-2xl sm:text-3xl font-bold text-brand-black">Project Dashboard</h1>
+      </div>
+      <div class="text-xs text-brand-muted">
+        System Local Time: <span class="font-mono text-brand-black font-semibold">{{ stats.get('time', '') }}</span>
+      </div>
+    </div>
+
+    <!-- Summary Stats Grid -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      
+      <div class="bg-white p-5 rounded-lg border border-brand-border shadow-luxury flex items-center space-x-4">
+        <div class="w-10 h-10 rounded-full bg-brand-lightGray text-brand-black flex items-center justify-center flex-shrink-0">
+          <i data-lucide="briefcase" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <p class="text-[10px] font-bold text-brand-muted uppercase tracking-wider">Total Submissions</p>
+          <h3 class="text-xl sm:text-2xl font-serif font-bold text-brand-black">{{ stats.total }}</h3>
+        </div>
+      </div>
+
+      <div class="bg-white p-5 rounded-lg border border-brand-border shadow-luxury flex items-center space-x-4">
+        <div class="w-10 h-10 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center flex-shrink-0">
+          <i data-lucide="inbox" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <p class="text-[10px] font-bold text-brand-muted uppercase tracking-wider">New submissions</p>
+          <h3 class="text-xl sm:text-2xl font-serif font-bold text-brand-black">{{ stats.new_submissions }}</h3>
+        </div>
+      </div>
+
+      <div class="bg-white p-5 rounded-lg border border-brand-border shadow-luxury flex items-center space-x-4">
+        <div class="w-10 h-10 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center flex-shrink-0">
+          <i data-lucide="eye" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <p class="text-[10px] font-bold text-brand-muted uppercase tracking-wider">In Review</p>
+          <h3 class="text-xl sm:text-2xl font-serif font-bold text-brand-black">{{ stats.in_review }}</h3>
+        </div>
+      </div>
+
+      <div class="bg-white p-5 rounded-lg border border-brand-border shadow-luxury flex items-center space-x-4">
+        <div class="w-10 h-10 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center flex-shrink-0">
+          <i data-lucide="check-circle" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <p class="text-[10px] font-bold text-brand-muted uppercase tracking-wider">Completed Briefs</p>
+          <h3 class="text-xl sm:text-2xl font-serif font-bold text-brand-black">{{ stats.completed }}</h3>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Active Notifications Panel (shown if any unread) -->
+    {% if notifications %}
+      <div class="bg-brand-charcoal text-white p-5 rounded-lg border border-brand-borderDark shadow-2xl space-y-4">
+        <div class="flex items-center justify-between border-b border-brand-borderDark pb-2.5">
+          <div class="flex items-center space-x-2 text-brand-bronzeLight">
+            <i data-lucide="bell" class="w-4 h-4 animate-bounce"></i>
+            <span class="text-xs font-bold tracking-wider uppercase">Unread Notifications ({{ notifications|length }})</span>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          {% for n in notifications %}
+            <div class="p-3 bg-brand-black border border-brand-borderDark/40 rounded flex items-center justify-between hover:border-brand-bronzeLight transition-colors">
+              <div class="space-y-1">
+                <p class="text-xs font-bold text-white">New Submission: {{ n.client_name or 'Anonymous Client' }}</p>
+                <p class="text-[10px] text-gray-400">UID: {{ n.project_uid }} | Location: {{ n.location or 'Not specified' }}</p>
+                <p class="text-[9px] text-brand-bronzeMuted font-mono">{{ n.created_at }}</p>
+              </div>
+              <div class="flex items-center space-x-2 ml-4">
+                <a href="{{ url_for('architect_bp.project_detail', project_id=n.project_id) }}" 
+                   class="px-3 py-1 bg-white hover:bg-brand-bronze text-brand-black hover:text-white text-[10px] font-bold tracking-wider uppercase rounded-sm transition-all">
+                  Open
+                </a>
+                <form action="{{ url_for('architect_bp.mark_read', notification_id=n.id) }}" method="POST" class="inline">
+                  <button type="submit" class="p-1 text-gray-400 hover:text-white transition-colors" title="Mark as read">
+                    <i data-lucide="check" class="w-4 h-4"></i>
+                  </button>
+                </form>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+
+    <!-- Filter, Search & Table Workspace -->
+    <div class="bg-white rounded-lg border border-brand-border shadow-luxury overflow-hidden">
+      
+      <!-- Filters and Search bar header -->
+      <div class="p-5 border-b border-brand-border bg-brand-offwhite/30 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        
+        <!-- Status Filters Tabs -->
+        <div class="flex flex-wrap gap-1.5">
+          {% for st in ['all', 'new_submission', 'in_review', 'consultation', 'completed', 'archived'] %}
+            <a href="{{ url_for('architect_bp.dashboard', status=st, q=search_query) }}" 
+               class="px-3 py-1.5 text-xs font-semibold uppercase tracking-wider rounded transition-all
+                      {% if status_filter == st %}
+                        bg-brand-black text-white font-bold
+                      {% else %}
+                        bg-brand-lightGray/70 hover:bg-brand-lightGray border border-brand-border/60 text-brand-muted hover:text-brand-black
+                      {% endif %}">
+              {{ st.replace('_', ' ') }}
+            </a>
+          {% endfor %}
+        </div>
+
+        <!-- Search Form -->
+        <form action="{{ url_for('architect_bp.dashboard') }}" method="GET" class="relative w-full md:w-80">
+          <input type="hidden" name="status" value="{{ status_filter }}" />
+          <input type="text" name="q" value="{{ search_query }}" placeholder="Search client name, UID, location..." 
+                 class="w-full pl-9 pr-4 py-2 bg-brand-offwhite border border-brand-border rounded text-xs text-brand-black placeholder:text-brand-muted/50 focus:bg-white" />
+          <div class="absolute left-3 top-2.5 text-brand-muted">
+            <i data-lucide="search" class="w-4 h-4"></i>
+          </div>
+          {% if search_query %}
+            <a href="{{ url_for('architect_bp.dashboard', status=status_filter) }}" class="absolute right-3 top-2.5 text-brand-muted hover:text-brand-black">
+              <i data-lucide="x" class="w-4 h-4"></i>
+            </a>
+          {% endif %}
+        </form>
+
+      </div>
+
+      <!-- Table Body -->
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr class="bg-brand-lightGray/50 border-b border-brand-border text-brand-black font-bold uppercase tracking-wider text-[10px]">
+              <th class="p-4 pl-6">Client Name</th>
+              <th class="p-4">Project UID</th>
+              <th class="p-4">Project Type & Location</th>
+              <th class="p-4">Progress %</th>
+              <th class="p-4">Status</th>
+              <th class="p-4">Last Updated</th>
+              <th class="p-4 pr-6 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-brand-border/60">
+            {% if projects %}
+              {% for p in projects %}
+                <tr class="hover:bg-brand-offwhite/50 transition-colors">
+                  <td class="p-4 pl-6 font-semibold text-brand-black">
+                    {{ p.client_name or 'Anonymous Client' }}
+                  </td>
+                  <td class="p-4 font-mono font-bold text-brand-bronze text-[11px]">
+                    {{ p.project_uid }}
+                  </td>
+                  <td class="p-4 text-brand-slate">
+                    <span class="font-medium text-brand-black">{{ p.project_type or 'Residence' }}</span>
+                    {% if p.location %}
+                      <span class="text-brand-muted block text-[10px] mt-0.5"><i data-lucide="map-pin" class="w-3 h-3 inline mr-0.5"></i>{{ p.location }}</span>
+                    {% endif %}
+                  </td>
+                  <td class="p-4">
+                    <div class="flex items-center space-x-2">
+                      <span class="font-mono font-semibold">{{ p.progress_percent }}%</span>
+                      <div class="w-16 bg-brand-lightGray h-1 rounded-full overflow-hidden">
+                        <div class="bg-brand-bronze h-full" style="width: {{ p.progress_percent }}%;"></div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="p-4">
+                    {% set st = p.status %}
+                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase border
+                                 {% if st == 'new_submission' %}
+                                   bg-blue-50 border-blue-200 text-blue-700
+                                 {% elif st in ('in_review', 'client_contacted') %}
+                                   bg-amber-50 border-amber-200 text-amber-700
+                                 {% elif st in ('consultation_pending', 'consultation_completed') %}
+                                   bg-purple-50 border-purple-200 text-purple-700
+                                 {% elif st in ('design_brief_ready', 'completed') %}
+                                   bg-emerald-50 border-emerald-200 text-emerald-700
+                                 {% else %}
+                                   bg-brand-lightGray border-brand-border text-brand-muted
+                                 {% endif %}">
+                      {{ st.replace('_', ' ') }}
+                    </span>
+                  </td>
+                  <td class="p-4 text-brand-muted font-light">
+                    {{ p.updated_at }}
+                  </td>
+                  <td class="p-4 pr-6 text-right">
+                    <a href="{{ url_for('architect_bp.project_detail', project_id=p.id) }}" 
+                       class="inline-flex items-center space-x-1 px-3.5 py-1.5 bg-brand-black hover:bg-brand-bronze text-white text-[11px] font-bold tracking-widest uppercase rounded-sm transition-colors">
+                      <span>View</span>
+                      <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                    </a>
+                  </td>
+                </tr>
+              {% endfor %}
+            {% else %}
+              <tr>
+                <td colspan="7" class="p-10 text-center text-brand-muted text-sm italic">
+                  No projects matching the current filters and search criteria were found.
+                </td>
+              </tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-brand-border bg-white py-8 mt-12 text-center text-xs text-brand-muted">
+    <div class="max-w-7xl mx-auto px-4 space-y-2">
+      <p class="font-serif tracking-widest text-brand-black font-semibold uppercase text-sm">Shameer Associates</p>
+      <p class="tracking-wider">Architecture • Interiors • Landscape • 3D Visualization</p>
+      <p class="text-[10px] text-brand-muted/85 pt-1">Design Studio Workspace. Security Level A Access.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+  </script>
+</body>
+</html>

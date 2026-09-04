@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Shameer Associates — Project Workspace: {{ project.project_uid }}</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              black: '#121212',
+              charcoal: '#1E1E1E',
+              slate: '#2D2D2D',
+              bronze: '#8C7355',
+              bronzeLight: '#A0825B',
+              bronzeMuted: '#C5B59E',
+              offwhite: '#FBFBF9',
+              lightGray: '#F3F2EE',
+              border: '#E5E3DC',
+              borderDark: '#3A3A3A',
+              muted: '#7A7874'
+            }
+          },
+          fontFamily: {
+            serif: ['Cinzel', 'Cormorant Garamond', 'Georgia', 'serif'],
+            editorial: ['Cormorant Garamond', 'Georgia', 'serif'],
+            sans: ['Plus Jakarta Sans', 'system-ui', '-apple-system', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="/static/css/main.css" />
+</head>
+<body class="bg-brand-offwhite text-brand-black font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-brand-bronze selection:text-white">
+
+  <!-- Sticky Top Header -->
+  <header class="sticky top-0 z-40 bg-white border-b border-brand-border shadow-luxury">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
+      
+      <!-- Logo and Back button -->
+      <div class="flex items-center space-x-4">
+        <a href="{{ url_for('architect_bp.dashboard') }}" class="p-2 border border-brand-border hover:border-brand-black rounded bg-brand-offwhite/50 hover:bg-white text-brand-black transition-colors flex items-center justify-center" title="Back to Dashboard">
+          <i data-lucide="arrow-left" class="w-4 h-4"></i>
+        </a>
+        <div class="flex items-center space-x-2">
+          <div class="w-8 h-8 flex-shrink-0">
+            <img src="/static/brand/logo.svg" alt="Shameer Associates Logo" class="w-full h-full object-contain" />
+          </div>
+          <div class="flex flex-col">
+            <span class="font-serif text-xs sm:text-sm font-bold tracking-[0.25em] text-brand-black leading-tight">SHAMEER</span>
+            <span class="text-[8px] sm:text-[9px] tracking-[0.3em] font-medium text-brand-muted uppercase leading-none mt-0.5">ASSOCIATES</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Actions: Download PDF, Save note -->
+      <div class="flex items-center space-x-3">
+        <a href="{{ url_for('architect_bp.download_project_pdf', project_id=project.id, download=0) }}" target="_blank"
+           class="inline-flex items-center space-x-1.5 px-4 py-2 bg-brand-black hover:bg-brand-bronze text-white text-xs font-bold tracking-widest uppercase rounded-sm shadow transition-colors">
+          <i data-lucide="file-text" class="w-4 h-4"></i>
+          <span>View / Export PDF</span>
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Content Workspace Layout -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-8">
+
+    <!-- Flash messages feedback -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="space-y-2">
+          {% for category, message in messages %}
+            <div class="p-3 text-xs rounded border 
+                        {% if category == 'success' %}
+                          bg-emerald-50 border-emerald-200 text-emerald-800
+                        {% else %}
+                          bg-red-50 border-red-200 text-red-800
+                        {% endif %}">
+              {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <!-- Top Project Title Card -->
+    <div class="bg-brand-charcoal text-white p-6 sm:p-8 rounded-lg shadow-2xl border border-brand-borderDark flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+      <div class="space-y-2">
+        <div class="flex items-center space-x-3">
+          <span class="px-2.5 py-0.5 bg-brand-bronze text-white text-[10px] font-bold tracking-widest uppercase rounded">
+            PROJECT
+          </span>
+          <span class="font-mono text-brand-bronzeLight font-bold text-sm tracking-wider">{{ project.project_uid }}</span>
+        </div>
+        <h1 class="font-serif text-2xl sm:text-3xl font-bold tracking-wide">{{ project.client_name or 'Anonymous Client' }}</h1>
+        <p class="text-xs text-gray-300 flex items-center gap-4">
+          <span><i data-lucide="calendar" class="w-3.5 h-3.5 inline mr-1.5 text-brand-bronzeMuted"></i>Submitted: {{ project.session.submitted_at or 'Draft Mode' }}</span>
+          <span><i data-lucide="clock" class="w-3.5 h-3.5 inline mr-1.5 text-brand-bronzeMuted"></i>Last Action: {{ project.updated_at }}</span>
+        </p>
+      </div>
+
+      <!-- Action Panel: Status Change and Assignee -->
+      <div class="bg-brand-black/40 p-4 rounded border border-brand-borderDark/60 flex flex-wrap gap-4 w-full lg:w-auto">
+        <!-- Status Dropdown -->
+        <form action="{{ url_for('architect_bp.update_status', project_id=project.id) }}" method="POST" class="space-y-1">
+          <label class="block text-[10px] font-bold text-brand-bronzeMuted uppercase tracking-wider">Project Status</label>
+          <div class="flex items-center space-x-1.5">
+            <select name="status" onchange="this.form.submit()" class="bg-brand-charcoal border border-brand-borderDark text-white px-3 py-1.5 text-xs rounded focus:ring-1 focus:ring-brand-bronze outline-none">
+              {% for val, lbl in [('new_submission', 'New Submission'), ('in_review', 'In Review'), ('client_contacted', 'Client Contacted'), ('consultation_pending', 'Consultation Pending'), ('consultation_completed', 'Consultation Completed'), ('design_brief_ready', 'Design Brief Ready'), ('completed', 'Completed')] %}
+                <option value="{{ val }}" {% if project.status == val %}selected{% endif %}>{{ lbl }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </form>
+
+        <!-- Architect Assign -->
+        <form action="{{ url_for('architect_bp.assign', project_id=project.id) }}" method="POST" class="space-y-1">
+          <label class="block text-[10px] font-bold text-brand-bronzeMuted uppercase tracking-wider">Assigned Architect</label>
+          <select name="assigned_architect_id" onchange="this.form.submit()" class="bg-brand-charcoal border border-brand-borderDark text-white px-3 py-1.5 text-xs rounded focus:ring-1 focus:ring-brand-bronze outline-none">
+            <option value="">Unassigned</option>
+            {% for arc in architects %}
+              <option value="{{ arc.id }}" {% if project.assigned_architect_id == arc.id %}selected{% endif %}>{{ arc.full_name }}</option>
+            {% endfor %}
+          </select>
+        </form>
+      </div>
+    </div>
+
+    <!-- Layout Columns: Tabbed Navigation & Detailed Workspace -->
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+      
+      <!-- Navigation Sidebar Tabs -->
+      <div class="lg:col-span-1 space-y-2">
+        <div class="sticky top-28 bg-white border border-brand-border rounded-lg shadow-luxury p-4 space-y-1.5">
+          <span class="text-[9px] font-bold tracking-widest text-brand-muted uppercase block px-3 mb-2">Workspace Menu</span>
+          
+          <button onclick="switchTab('tab-overview')" id="btn-tab-overview" class="tab-btn w-full text-left px-3 py-2 text-xs font-semibold uppercase tracking-wider rounded transition-all bg-brand-black text-white">
+            Overview & Contacts
+          </button>
+          
+          <button onclick="switchTab('tab-responses')" id="btn-tab-responses" class="tab-btn w-full text-left px-3 py-2 text-xs font-semibold uppercase tracking-wider rounded transition-all text-brand-muted hover:bg-brand-lightGray/60 hover:text-brand-black">
+            Client Responses
+          </button>
+
+          <button onclick="switchTab('tab-visuals')" id="btn-tab-visuals" class="tab-btn w-full text-left px-3 py-2 text-xs font-semibold uppercase tracking-wider rounded transition-all text-brand-muted hover:bg-brand-lightGray/60 hover:text-brand-black">
+            Selected Visuals
+          </button>
+
+          <button onclick="switchTab('tab-notes')" id="btn-tab-notes" class="tab-btn w-full text-left px-3 py-2 text-xs font-semibold uppercase tracking-wider rounded transition-all text-brand-muted hover:bg-brand-lightGray/60 hover:text-brand-black">
+            Internal Notes ({{ project.notes|length }})
+          </button>
+
+          <button onclick="switchTab('tab-logs')" id="btn-tab-logs" class="tab-btn w-full text-left px-3 py-2 text-xs font-semibold uppercase tracking-wider rounded transition-all text-brand-muted hover:bg-brand-lightGray/60 hover:text-brand-black">
+            Audit Logs & Trail
+          </button>
+        </div>
+      </div>
+
+      <!-- Detail Workspaces -->
+      <div class="lg:col-span-3 space-y-6">
+
+        <!-- TAB 1: OVERVIEW & CONTACTS -->
+        <div id="tab-overview" class="tab-content bg-white p-6 sm:p-8 rounded-lg border border-brand-border shadow-luxury space-y-6">
+          <h2 class="font-serif text-xl font-bold border-b border-brand-border pb-3 text-brand-black flex items-center space-x-2">
+            <i data-lucide="info" class="w-5 h-5 text-brand-bronze"></i>
+            <span>Overview & Client Information</span>
+          </h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            <!-- Contact Details -->
+            <div class="space-y-4">
+              <h3 class="text-xs font-bold uppercase tracking-wider text-brand-bronze border-b border-brand-border pb-1">Contact Info</h3>
+              <table class="w-full text-xs space-y-2">
+                <tr><td class="py-1.5 font-bold text-brand-muted w-28 uppercase">Email</td><td class="py-1.5 text-brand-black font-semibold">{{ project.session.email or '—' }}</td></tr>
+                <tr><td class="py-1.5 font-bold text-brand-muted uppercase">Phone</td><td class="py-1.5 text-brand-black font-semibold">{{ project.session.phone or '—' }}</td></tr>
+                <tr><td class="py-1.5 font-bold text-brand-muted uppercase">Location</td><td class="py-1.5 text-brand-black">{{ project.location or '—' }}</td></tr>
+              </table>
+            </div>
+
+            <!-- Consultation details -->
+            <div class="space-y-4">
+              <h3 class="text-xs font-bold uppercase tracking-wider text-brand-bronze border-b border-brand-border pb-1">Consultation Meeting</h3>
+              {% if project.consultation %}
+                <table class="w-full text-xs space-y-2">
+                  <tr><td class="py-1.5 font-bold text-brand-muted w-28 uppercase">Meeting Date</td><td class="py-1.5 text-brand-black font-semibold">{{ project.consultation.preferred_date }}</td></tr>
+                  <tr><td class="py-1.5 font-bold text-brand-muted uppercase">Preferred Time</td><td class="py-1.5 text-brand-black">{{ project.consultation.preferred_time }}</td></tr>
+                  <tr><td class="py-1.5 font-bold text-brand-muted uppercase">Meeting Type</td><td class="py-1.5 text-brand-black">{{ project.consultation.meeting_type }}</td></tr>
+                  {% if project.consultation.notes %}
+                    <tr><td class="py-1.5 font-bold text-brand-muted uppercase">Client Note</td><td class="py-1.5 text-brand-black italic font-light">"{{ project.consultation.notes }}"</td></tr>
+                  {% endif %}
+                </table>
+              {% else %}
+                <p class="text-xs text-brand-muted italic py-4">No consultation meeting booked yet.</p>
+              {% endif %}
+            </div>
+
+          </div>
+
+          <!-- Document Uploads -->
+          <div class="space-y-4 pt-4 border-t border-brand-border">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-brand-bronze">Uploaded Site Documents / Files</h3>
+            {% if project.uploads %}
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {% for up in project.uploads %}
+                  <div class="p-3 bg-brand-lightGray/40 border border-brand-border rounded flex items-center justify-between">
+                    <div class="flex items-center space-x-3 overflow-hidden">
+                      <div class="p-2 bg-brand-lightGray text-brand-bronze rounded flex-shrink-0">
+                        <i data-lucide="file" class="w-5 h-5"></i>
+                      </div>
+                      <div class="overflow-hidden">
+                        <p class="text-xs font-bold text-brand-black truncate" title="{{ up.original_filename }}">{{ up.original_filename }}</p>
+                        <p class="text-[10px] text-brand-muted font-mono">{{ (up.file_size / 1024)|round(1) }} KB | Uploaded: {{ up.uploaded_at.split(' ')[0] }}</p>
+                      </div>
+                    </div>
+                    <a href="/uploads/{{ up.stored_filename }}" target="_blank" download class="ml-4 p-2 text-brand-black hover:text-brand-bronze transition-colors" title="Download File">
+                      <i data-lucide="download" class="w-4 h-4"></i>
+                    </a>
+                  </div>
+                {% endfor %}
+              </div>
+            {% else %}
+              <p class="text-xs text-brand-muted italic">No files uploaded by client.</p>
+            {% endif %}
+          </div>
+
+        </div>
+
+        <!-- TAB 2: CLIENT RESPONSES -->
+        <div id="tab-responses" class="tab-content bg-white p-6 sm:p-8 rounded-lg border border-brand-border shadow-luxury space-y-8 hidden">
+          
+          <div class="flex items-center justify-between border-b border-brand-border pb-3">
+            <h2 class="font-serif text-xl font-bold text-brand-black flex items-center space-x-2">
+              <i data-lucide="check-square" class="w-5 h-5 text-brand-bronze"></i>
+              <span>Client Responses & Internal Edits</span>
+            </h2>
+            <span class="text-[10px] font-bold text-brand-muted bg-brand-lightGray px-2 py-1 uppercase rounded">Editable</span>
+          </div>
+
+          <!-- Dynamic questionnaire mapping -->
+          <div class="space-y-10">
+            {% for ch in schema.chapters %}
+              <div class="space-y-4">
+                <!-- Chapter Header -->
+                <div class="bg-brand-lightGray/60 p-3 border-l-2 border-brand-black flex items-baseline justify-between rounded-r">
+                  <h3 class="font-serif text-sm font-bold text-brand-black uppercase tracking-wider">Chapter {{ ch.number }} — {{ ch.title }}</h3>
+                  <span class="text-[10px] text-brand-muted">Part {{ loop.index }} of {{ schema.chapters|length }}</span>
+                </div>
+
+                <div class="divide-y divide-brand-border/40 space-y-4">
+                  {% for sec in ch.sections %}
+                    {% for q in sec.questions %}
+                      {% if q.type not in ('file-upload', 'visual-gallery', 'family-builder') %}
+                        
+                        {% set client_ans = project.answers.get(q.id) %}
+                        
+                        <!-- Question Item row -->
+                        <div class="pt-4 flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+                          
+                          <div class="space-y-1 max-w-xl">
+                            <span class="text-[9px] font-mono text-brand-bronze uppercase">QID: {{ q.id }}</span>
+                            <h4 class="text-xs font-bold text-brand-black tracking-wide">{{ q.label or q.placeholder }}</h4>
+                            <p class="text-[10px] text-brand-muted leading-relaxed">{{ q.helpText or '' }}</p>
+                            
+                            <!-- Display Answers -->
+                            <div class="mt-2.5 space-y-2">
+                              <!-- Client response -->
+                              <div class="p-2 bg-brand-lightGray/35 rounded border border-brand-border/60">
+                                <span class="text-[9px] font-bold text-brand-muted uppercase block">Client Response</span>
+                                <span class="text-xs text-brand-black font-semibold">{{ client_ans if client_ans is not none else '—' }}</span>
+                              </div>
+
+                              <!-- Edits highlight if any history exists -->
+                              {% set has_edits = [] %}
+                              {% for h in project.edit_history %}
+                                {% if h.question_id == q.id %}
+                                  {% set _ = has_edits.append(h) %}
+                                {% endif %}
+                              {% endfor %}
+                              
+                              {% if has_edits %}
+                                <div class="p-2 bg-amber-50/50 border border-amber-200 rounded">
+                                  <div class="flex items-center space-x-1.5 text-amber-800 text-[10px] font-bold uppercase mb-1">
+                                    <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
+                                    <span>Architect Modified Value</span>
+                                  </div>
+                                  <span class="text-xs font-bold text-brand-black">{{ client_ans }}</span>
+                                  
+                                  <!-- Edit audit logs details dropdown link -->
+                                  <details class="mt-2 text-[10px] text-brand-muted cursor-pointer">
+                                    <summary class="hover:text-brand-black outline-none font-semibold">View modification history ({{ has_edits|length }})</summary>
+                                    <div class="mt-1 pl-3 border-l border-amber-300 space-y-1.5 pt-1.5 font-light">
+                                      {% for h in has_edits %}
+                                        <div>
+                                          <span class="font-semibold text-brand-slate">{{ h.editor_name }}</span> 
+                                          edited to <span class="font-semibold text-brand-black">"{{ h.new_value }}"</span>
+                                          <span class="text-[9px] font-mono block text-brand-muted">{{ h.edited_at }} | Reason: {{ h.reason or 'None' }}</span>
+                                        </div>
+                                      {% endfor %}
+                                    </div>
+                                  </details>
+                                </div>
+                              {% endif %}
+                            </div>
+                          </div>
+
+                          <!-- Edit button / trigger -->
+                          <div class="flex-shrink-0 pt-3">
+                            <button onclick="toggleAnswerEditForm('form-{{ q.id }}')" 
+                                    class="px-3 py-1.5 border border-brand-border hover:border-brand-black rounded text-[11px] font-bold uppercase tracking-wider text-brand-black transition-colors flex items-center space-x-1.5">
+                              <i data-lucide="edit-3" class="w-3 h-3"></i>
+                              <span>Edit</span>
+                            </button>
+                          </div>
+
+                        </div>
+
+                        <!-- Edit form dropdown drawer (hidden by default) -->
+                        <div id="form-{{ q.id }}" class="hidden p-4 bg-brand-lightGray/40 border border-brand-border rounded-lg mt-3 animate-fade-in text-xs space-y-3">
+                          <form action="{{ url_for('architect_bp.edit_project_answer', project_id=project.id) }}" method="POST" class="space-y-3">
+                            <input type="hidden" name="question_id" value="{{ q.id }}" />
+                            <div class="space-y-1">
+                              <label class="block font-bold uppercase tracking-wider text-brand-muted text-[10px]">New Modified Value</label>
+                              {% if q.type == 'single-select' or q.type == 'multi-select' %}
+                                <select name="new_value" class="w-full p-2 bg-white border border-brand-border rounded text-xs">
+                                  {% for opt in q.options %}
+                                    <option value="{{ opt }}" {% if client_ans == opt %}selected{% endif %}>{{ opt }}</option>
+                                  {% endfor %}
+                                </select>
+                              {% elif q.type == 'textarea' %}
+                                <textarea name="new_value" rows="3" class="w-full p-2.5 bg-white border border-brand-border rounded text-xs leading-relaxed">{{ client_ans }}</textarea>
+                              {% else %}
+                                <input type="text" name="new_value" value="{{ client_ans }}" class="w-full p-2.5 bg-white border border-brand-border rounded text-xs" />
+                              {% endif %}
+                            </div>
+
+                            <div class="space-y-1">
+                              <label class="block font-bold uppercase tracking-wider text-brand-muted text-[10px]">Reason for internal edit</label>
+                              <input type="text" name="reason" placeholder="e.g. Budget adjustments, material change request" class="w-full p-2.5 bg-white border border-brand-border rounded text-xs" />
+                            </div>
+
+                            <div class="flex items-center space-x-2 pt-1">
+                              <button type="submit" class="px-4 py-2 bg-brand-black hover:bg-brand-bronze text-white font-bold tracking-wider uppercase rounded-sm transition-colors text-[10px]">
+                                Save Edit
+                              </button>
+                              <button type="button" onclick="toggleAnswerEditForm('form-{{ q.id }}')" class="px-4 py-2 border border-brand-border text-brand-black hover:bg-white rounded-sm text-[10px]">
+                                Cancel
+                              </button>
+                            </div>
+                          </form>
+                        </div>
+
+                      {% endif %}
+                    {% endfor %}
+                  {% endfor %}
+                </div>
+
+              </div>
+            {% endfor %}
+          </div>
+
+        </div>
+
+        <!-- TAB 3: SELECTED VISUALS -->
+        <div id="tab-visuals" class="tab-content bg-white p-6 sm:p-8 rounded-lg border border-brand-border shadow-luxury space-y-6 hidden">
+          <h2 class="font-serif text-xl font-bold border-b border-brand-border pb-3 text-brand-black flex items-center space-x-2">
+            <i data-lucide="palette" class="w-5 h-5 text-brand-bronze"></i>
+            <span>Selected Style References</span>
+          </h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+            
+            <!-- Exterior Selected visual -->
+            {% set vis_ext = project.selected_visuals.get('exterior') %}
+            <div class="bg-brand-offwhite p-4 rounded-lg border border-brand-border space-y-3">
+              <span class="text-[10px] font-bold tracking-wider text-brand-bronze uppercase block">01 Exterior Architecture</span>
+              {% if vis_ext %}
+                <div class="aspect-square bg-brand-lightGray rounded overflow-hidden flex items-center justify-center cursor-pointer" onclick="openGlobalLightbox('{{ vis_ext.image_url }}')">
+                  <img src="{{ vis_ext.image_url }}" alt="{{ vis_ext.style_name }}" class="w-full h-full object-contain object-center hover:scale-105 transition-transform duration-300" />
+                </div>
+                <div>
+                  <h4 class="font-serif font-bold text-sm text-brand-black">Style {{ vis_ext.style_number }}: {{ vis_ext.style_name }}</h4>
+                  <p class="text-[10px] text-brand-muted font-mono mt-0.5">ID: {{ vis_ext.style_id }}</p>
+                </div>
+              {% else %}
+                <div class="aspect-square bg-brand-lightGray rounded flex items-center justify-center text-xs text-brand-muted italic">Not selected by client</div>
+              {% endif %}
+            </div>
+
+            <!-- Social Living/Dining visual -->
+            {% set vis_fld = project.selected_visuals.get('formal_living_dining') %}
+            <div class="bg-brand-offwhite p-4 rounded-lg border border-brand-border space-y-3">
+              <span class="text-[10px] font-bold tracking-wider text-brand-bronze uppercase block">02 Social Living & Dining</span>
+              {% if vis_fld %}
+                <div class="grid grid-cols-2 gap-2">
+                  <div class="aspect-square bg-brand-lightGray rounded overflow-hidden flex items-center justify-center cursor-pointer" onclick="openGlobalLightbox('{{ vis_fld.living_image_url }}')">
+                    <img src="{{ vis_fld.living_image_url }}" alt="Living Room" class="w-full h-full object-contain object-center hover:scale-105 transition-transform duration-300" />
+                  </div>
+                  <div class="aspect-square bg-brand-lightGray rounded overflow-hidden flex items-center justify-center cursor-pointer" onclick="openGlobalLightbox('{{ vis_fld.dining_image_url }}')">
+                    <img src="{{ vis_fld.dining_image_url }}" alt="Dining Room" class="w-full h-full object-contain object-center hover:scale-105 transition-transform duration-300" />
+                  </div>
+                </div>
+                <div>
+                  <h4 class="font-serif font-bold text-sm text-brand-black">Style {{ vis_fld.style_number }}: {{ vis_fld.style_name }}</h4>
+                  <p class="text-[10px] text-brand-muted font-mono mt-0.5">ID: {{ vis_fld.style_id }}</p>
+                </div>
+              {% else %}
+                <div class="aspect-square bg-brand-lightGray rounded flex items-center justify-center text-xs text-brand-muted italic">Not selected by client</div>
+              {% endif %}
+            </div>
+
+            <!-- Bedroom Selected visual -->
+            {% set vis_bed = project.selected_visuals.get('bedroom') %}
+            <div class="bg-brand-offwhite p-4 rounded-lg border border-brand-border space-y-3">
+              <span class="text-[10px] font-bold tracking-wider text-brand-bronze uppercase block">03 Bedrooms & Dressing</span>
+              {% if vis_bed %}
+                <div class="grid grid-cols-2 gap-2">
+                  <div class="aspect-square bg-brand-lightGray rounded overflow-hidden flex items-center justify-center cursor-pointer" onclick="openGlobalLightbox('{{ vis_bed.bedroom_image_url }}')">
+                    <img src="{{ vis_bed.bedroom_image_url }}" alt="Bedroom" class="w-full h-full object-contain object-center hover:scale-105 transition-transform duration-300" />
+                  </div>
+                  <div class="aspect-square bg-brand-lightGray rounded overflow-hidden flex items-center justify-center cursor-pointer" onclick="openGlobalLightbox('{{ vis_bed.wardrobe_image_url }}')">
+                    <img src="{{ vis_bed.wardrobe_image_url }}" alt="Wardrobe" class="w-full h-full object-contain object-center hover:scale-105 transition-transform duration-300" />
+                  </div>
+                </div>
+                <div>
+                  <h4 class="font-serif font-bold text-sm text-brand-black">Style {{ vis_bed.style_number }}: {{ vis_bed.style_name }}</h4>
+                  <p class="text-[10px] text-brand-muted font-mono mt-0.5">ID: {{ vis_bed.style_id }}</p>
+                </div>
+              {% else %}
+                <div class="aspect-square bg-brand-lightGray rounded flex items-center justify-center text-xs text-brand-muted italic">Not selected by client</div>
+              {% endif %}
+            </div>
+
+            <!-- Kitchen Selected visual -->
+            {% set vis_kit = project.selected_visuals.get('kitchen') %}
+            <div class="bg-brand-offwhite p-4 rounded-lg border border-brand-border space-y-3">
+              <span class="text-[10px] font-bold tracking-wider text-brand-bronze uppercase block">04 Kitchen Workspace</span>
+              {% if vis_kit %}
+                <div class="aspect-square bg-brand-lightGray rounded overflow-hidden flex items-center justify-center cursor-pointer" onclick="openGlobalLightbox('{{ vis_kit.image_url }}')">
+                  <img src="{{ vis_kit.image_url }}" alt="{{ vis_kit.style_name }}" class="w-full h-full object-contain object-center hover:scale-105 transition-transform duration-300" />
+                </div>
+                <div>
+                  <h4 class="font-serif font-bold text-sm text-brand-black">Style {{ vis_kit.style_number }}: {{ vis_kit.style_name }}</h4>
+                  <p class="text-[10px] text-brand-muted font-mono mt-0.5">ID: {{ vis_kit.style_id }}</p>
+                </div>
+              {% else %}
+                <div class="aspect-square bg-brand-lightGray rounded flex items-center justify-center text-xs text-brand-muted italic">Not selected by client</div>
+              {% endif %}
+            </div>
+
+          </div>
+        </div>
+
+        <!-- TAB 4: INTERNAL NOTES -->
+        <div id="tab-notes" class="tab-content bg-white p-6 sm:p-8 rounded-lg border border-brand-border shadow-luxury space-y-6 hidden">
+          <h2 class="font-serif text-xl font-bold border-b border-brand-border pb-3 text-brand-black flex items-center space-x-2">
+            <i data-lucide="edit" class="w-5 h-5 text-brand-bronze"></i>
+            <span>Internal Architect Notes</span>
+          </h2>
+
+          <!-- Add Note Form -->
+          <div class="p-4 bg-brand-lightGray/40 border border-brand-border rounded-lg space-y-3">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-brand-black">Record New Note</h3>
+            <form action="{{ url_for('architect_bp.add_project_note', project_id=project.id) }}" method="POST" class="space-y-3">
+              <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+                <div class="md:col-span-3">
+                  <label class="block text-[10px] font-bold text-brand-muted uppercase mb-1">Note Content</label>
+                  <textarea name="content" rows="2" placeholder="Write internal design or client assessment details..." required
+                            class="w-full p-2.5 bg-white border border-brand-border rounded text-xs text-brand-black leading-relaxed outline-none"></textarea>
+                </div>
+                <div class="md:col-span-1 space-y-3">
+                  <div>
+                    <label class="block text-[10px] font-bold text-brand-muted uppercase mb-1">Note Type</label>
+                    <select name="note_type" class="w-full p-2 bg-white border border-brand-border rounded text-xs outline-none">
+                      <option value="general">General</option>
+                      <option value="design">Design Ideas</option>
+                      <option value="client">Client Requests</option>
+                      <option value="site">Site Assessment</option>
+                      <option value="budget">Budget Review</option>
+                      <option value="consultation">Consultation Notes</option>
+                      <option value="follow_up">Follow Up</option>
+                    </select>
+                  </div>
+                  <button type="submit" class="w-full py-2.5 bg-brand-black hover:bg-brand-bronze text-white text-[10px] font-bold tracking-wider uppercase rounded-sm transition-colors">
+                    Add Note
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <!-- Notes List -->
+          <div class="space-y-4">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-brand-bronze border-b border-brand-border pb-1">Notes Timeline</h3>
+            {% if project.notes %}
+              <div class="space-y-3">
+                {% for n in project.notes %}
+                  <div class="p-4 bg-brand-offwhite border border-brand-border rounded-lg space-y-2 relative">
+                    <div class="flex items-baseline justify-between border-b border-brand-border/60 pb-1.5">
+                      <div class="flex items-center space-x-2">
+                        <span class="px-2 py-0.5 bg-brand-lightGray border border-brand-border rounded text-[9px] font-bold tracking-wider uppercase text-brand-bronze">
+                          {{ n.note_type }}
+                        </span>
+                        <span class="text-xs font-bold text-brand-black">{{ n.author_name }}</span>
+                      </div>
+                      <span class="text-[10px] text-brand-muted font-mono">{{ n.created_at }}</span>
+                    </div>
+                    
+                    <p class="text-xs text-brand-slate leading-relaxed pt-1" id="note-txt-{{ n.id }}">{{ n.content }}</p>
+
+                    <!-- Edit / Delete Note Actions -->
+                    <div class="flex items-center space-x-3 pt-2 text-[10px] font-bold uppercase tracking-wider text-brand-muted">
+                      <button onclick="toggleNoteEditForm('edit-note-{{ n.id }}')" class="hover:text-brand-black flex items-center space-x-1">
+                        <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
+                        <span>Edit</span>
+                      </button>
+                      <form action="{{ url_for('architect_bp.delete_project_note', project_id=project.id, note_id=n.id) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to delete this note?')">
+                        <button type="submit" class="hover:text-red-600 flex items-center space-x-1 text-red-500/75">
+                          <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                          <span>Delete</span>
+                        </button>
+                      </form>
+                    </div>
+
+                    <!-- Edit note form overlay drawer -->
+                    <div id="edit-note-{{ n.id }}" class="hidden p-3 bg-brand-lightGray border border-brand-border rounded-lg mt-2 text-xs space-y-2">
+                      <form action="{{ url_for('architect_bp.edit_project_note', project_id=project.id, note_id=n.id) }}" method="POST" class="space-y-2">
+                        <div>
+                          <label class="block text-[9px] font-bold text-brand-muted uppercase mb-1">Edit Content</label>
+                          <textarea name="content" rows="2" required class="w-full p-2 bg-white border border-brand-border rounded text-xs leading-relaxed outline-none">{{ n.content }}</textarea>
+                        </div>
+                        <div class="flex items-center justify-between">
+                          <div>
+                            <label class="inline-block text-[9px] font-bold text-brand-muted uppercase mr-1">Type</label>
+                            <select name="note_type" class="p-1 bg-white border border-brand-border rounded text-[10px] outline-none">
+                              {% for nt in ['general', 'design', 'client', 'site', 'budget', 'consultation', 'follow_up'] %}
+                                <option value="{{ nt }}" {% if n.note_type == nt %}selected{% endif %}>{{ nt|title }}</option>
+                              {% endfor %}
+                            </select>
+                          </div>
+                          <div class="flex items-center space-x-2">
+                            <button type="submit" class="px-3 py-1 bg-brand-black hover:bg-brand-bronze text-white text-[10px] font-bold uppercase rounded-sm">Save</button>
+                            <button type="button" onclick="toggleNoteEditForm('edit-note-{{ n.id }}')" class="px-3 py-1 border border-brand-border text-brand-black rounded-sm text-[10px]">Cancel</button>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+
+                  </div>
+                {% endfor %}
+              </div>
+            {% else %}
+              <p class="text-xs text-brand-muted italic py-4">No internal architect notes recorded for this project.</p>
+            {% endif %}
+          </div>
+
+        </div>
+
+        <!-- TAB 5: AUDIT LOGS -->
+        <div id="tab-logs" class="tab-content bg-white p-6 sm:p-8 rounded-lg border border-brand-border shadow-luxury space-y-6 hidden">
+          <h2 class="font-serif text-xl font-bold border-b border-brand-border pb-3 text-brand-black flex items-center space-x-2">
+            <i data-lucide="activity" class="w-5 h-5 text-brand-bronze"></i>
+            <span>Project Audit Trail & Logs</span>
+          </h2>
+
+          <div class="space-y-4">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-brand-bronze border-b border-brand-border pb-1">Activity Log</h3>
+            {% if project.activity %}
+              <div class="space-y-2.5">
+                {% for act in project.activity %}
+                  <div class="p-3 bg-brand-lightGray/40 border border-brand-border/60 rounded flex items-center justify-between text-xs">
+                    <div class="space-y-0.5">
+                      <span class="font-bold text-brand-black">{{ act.actor_name or 'System' }}</span>
+                      <span class="text-brand-muted font-light">performed action:</span>
+                      <span class="font-semibold text-brand-bronze">{{ act.action_type.replace('_', ' ').upper() }}</span>
+                      {% if act.detail %}
+                        <span class="text-brand-muted block text-[10px] font-light">{{ act.detail }}</span>
+                      {% endif %}
+                    </div>
+                    <span class="text-[10px] text-brand-muted font-mono ml-4 flex-shrink-0">{{ act.occurred_at }}</span>
+                  </div>
+                {% endfor %}
+              </div>
+            {% else %}
+              <p class="text-xs text-brand-muted italic">No activity recorded yet.</p>
+            {% endif %}
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Fullscreen Lightbox Modal -->
+  <div id="global-image-lightbox" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden opacity-0 transition-opacity duration-300 flex items-center justify-center p-4" onclick="closeGlobalLightbox()">
+    <button onclick="closeGlobalLightbox()" class="absolute top-4 right-4 z-50 w-10 h-10 rounded-full bg-black/60 hover:bg-white hover:text-black text-white flex items-center justify-center transition-all duration-200 border border-white/20">
+      <i data-lucide="x" class="w-5 h-5"></i>
+    </button>
+    <div class="relative max-w-5xl max-h-[90vh] flex items-center justify-center">
+      <img id="global-lightbox-image" src="" alt="Enlarged Image" class="max-h-[90vh] max-w-full w-auto object-contain rounded shadow-2xl select-none" />
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="border-t border-brand-border bg-white py-8 mt-12 text-center text-xs text-brand-muted">
+    <div class="max-w-7xl mx-auto px-4 space-y-2">
+      <p class="font-serif tracking-widest text-brand-black font-semibold uppercase text-sm">Shameer Associates</p>
+      <p class="tracking-wider">Architecture • Interiors • Landscape • 3D Visualization</p>
+    </div>
+  </footer>
+
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    // Switch tab handler
+    function switchTab(tabId) {
+      // Hide all tabs
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      // Show selected tab
+      document.getElementById(tabId).classList.remove('hidden');
+
+      // Update button highlights
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('bg-brand-black', 'text-white');
+        btn.classList.add('text-brand-muted', 'hover:bg-brand-lightGray/60', 'hover:text-brand-black');
+      });
+      const activeBtn = document.getElementById('btn-' + tabId);
+      activeBtn.classList.remove('text-brand-muted', 'hover:bg-brand-lightGray/60', 'hover:text-brand-black');
+      activeBtn.classList.add('bg-brand-black', 'text-white');
+    }
+
+    // Toggle forms
+    function toggleNoteEditForm(formId) {
+      const form = document.getElementById(formId);
+      form.classList.toggle('hidden');
+    }
+
+    function toggleNoteEditForm(formId) {
+      const form = document.getElementById(formId);
+      form.classList.toggle('hidden');
+    }
+
+    function toggleAnswerEditForm(formId) {
+      const form = document.getElementById(formId);
+      form.classList.toggle('hidden');
+    }
+
+    // Lightbox triggers
+    function openGlobalLightbox(imageUrl) {
+      const modal = document.getElementById('global-image-lightbox');
+      const img = document.getElementById('global-lightbox-image');
+      img.src = imageUrl;
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+        modal.classList.add('opacity-100');
+      }, 50);
+      document.body.style.overflow = 'hidden'; // lock scroll
+    }
+
+    function closeGlobalLightbox() {
+      const modal = document.getElementById('global-image-lightbox');
+      modal.classList.remove('opacity-100');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 300);
+      document.body.style.overflow = ''; // unlock scroll
+    }
+  </script>
+</body>
+</html>

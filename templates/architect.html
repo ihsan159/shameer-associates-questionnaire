@@ -796,6 +796,184 @@
             .workspace-header { flex-direction: column; align-items: flex-start; }
             .status-selector-group { width: 100%; justify-content: space-between; }
         }
+
+        /* NEW QUESTIONNAIRE BUTTON */
+        .btn-new-questionnaire {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 18px;
+            background: linear-gradient(135deg, var(--accent-gold), #8B6B45);
+            border: none;
+            border-radius: 6px;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: opacity 0.2s, transform 0.15s;
+        }
+
+        .btn-new-questionnaire:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        /* MODAL FORM FIELDS */
+        .modal-form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 14px;
+        }
+
+        .modal-form-group label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+        }
+
+        .modal-form-group input {
+            padding: 10px 14px;
+            background-color: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .modal-form-group input:focus {
+            border-color: var(--accent-gold);
+        }
+
+        .modal-form-group input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .modal-form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        /* QUESTIONNAIRE LINK RESULT */
+        .q-link-result {
+            background-color: var(--bg-input);
+            border: 1px solid var(--accent-gold);
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+
+        .q-link-label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent-gold);
+            margin-bottom: 8px;
+        }
+
+        .q-link-url {
+            font-size: 12px;
+            color: var(--text-secondary);
+            word-break: break-all;
+            line-height: 1.5;
+            margin-bottom: 14px;
+            font-family: monospace;
+        }
+
+        .q-link-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-copy-link {
+            flex: 1;
+            padding: 9px 16px;
+            background-color: var(--accent-gold);
+            border: none;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            white-space: nowrap;
+        }
+
+        .btn-copy-link:hover { opacity: 0.85; }
+
+        .btn-send-phone {
+            flex: 1;
+            padding: 9px 16px;
+            background-color: transparent;
+            border: 1px solid var(--accent-gold);
+            border-radius: 6px;
+            color: var(--accent-gold);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s;
+            white-space: nowrap;
+        }
+
+        .btn-send-phone:hover {
+            background-color: var(--accent-gold);
+            color: #fff;
+        }
+
+        .q-link-feedback {
+            font-size: 11px;
+            color: #4ADE80;
+            margin-top: 8px;
+            min-height: 16px;
+            font-weight: 600;
+        }
+
+        /* QUESTIONNAIRE LINK SECTION IN PROJECT DETAIL */
+        .proj-q-link-box {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .proj-q-link-title {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent-gold);
+            margin-bottom: 12px;
+        }
+
+        .proj-q-link-url {
+            font-size: 12px;
+            color: var(--text-secondary);
+            word-break: break-all;
+            line-height: 1.5;
+            margin-bottom: 14px;
+            font-family: monospace;
+            background-color: var(--bg-input);
+            padding: 10px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+        }
     </style>
 </head>
 <body>
@@ -811,6 +989,10 @@
     </div>
 
     <div class="topbar-actions">
+        <button class="btn-new-questionnaire" onclick="openNewQuestionnaireModal()" id="btnNewQuestionnaire">
+            + New Client Questionnaire
+        </button>
+
         <div class="notif-wrapper">
             <button class="notif-bell-btn" onclick="toggleNotifications()">
                 🔔
@@ -950,6 +1132,11 @@
 
         <!-- SECTION 1: OVERVIEW -->
         <div id="sec-overview" class="workspace-section">
+            <!-- QUESTIONNAIRE LINK BOX (always visible in overview) -->
+            <div class="proj-q-link-box" id="projQLinkBox">
+                <!-- Populated by renderProjectQLinkBox(project) -->
+            </div>
+
             <div class="section-card">
                 <div class="section-card-title">Project Overview & Timeline</div>
                 <div class="qa-grid" id="gridOverview"></div>
@@ -1257,6 +1444,9 @@
         document.getElementById('projLocation').textContent = p.location || answers.project_location || 'Kerala, India';
         document.getElementById('projStatusSelect').value = p.status;
 
+        // Render the questionnaire link box (overview section)
+        renderProjectQLinkBox(p);
+
         // Render Overview
         const ovPairs = [
             ["Client Name", p.client_name || answers.client_name],
@@ -1527,6 +1717,311 @@
         if (!str) return '';
         return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
+</script>
+
+<!-- ============================================================ -->
+<!-- NEW CLIENT QUESTIONNAIRE MODAL                               -->
+<!-- ============================================================ -->
+<div class="modal-overlay" id="newQuestionnaireModal">
+    <div class="modal-box" style="max-width:560px;">
+        <div class="modal-title">+ New Client Questionnaire</div>
+        <p style="font-size:12px; color:var(--text-muted); margin-bottom:20px; line-height:1.6;">
+            Create a unique questionnaire link for the client. They will complete the questionnaire through this single link — no account required.
+        </p>
+
+        <!-- Form (step 1) -->
+        <div id="nqForm">
+            <div class="modal-form-row">
+                <div class="modal-form-group">
+                    <label for="nqClientName">Client Name *</label>
+                    <input type="text" id="nqClientName" placeholder="e.g. Ahmed Al-Rashid" autocomplete="off">
+                </div>
+                <div class="modal-form-group">
+                    <label for="nqPhone">Phone Number</label>
+                    <input type="tel" id="nqPhone" placeholder="+91 98765 43210" autocomplete="off">
+                </div>
+            </div>
+
+            <div class="modal-form-group">
+                <label for="nqEmail">Client Email</label>
+                <input type="email" id="nqEmail" placeholder="client@example.com" autocomplete="off">
+            </div>
+
+            <div class="modal-form-row">
+                <div class="modal-form-group">
+                    <label for="nqProjectName">Project Name</label>
+                    <input type="text" id="nqProjectName" placeholder="e.g. Villa Renovation" autocomplete="off">
+                </div>
+                <div class="modal-form-group">
+                    <label for="nqLocation">Location</label>
+                    <input type="text" id="nqLocation" placeholder="e.g. Kochi, Kerala" autocomplete="off">
+                </div>
+            </div>
+
+            <p id="nqError" style="color:#F87171; font-size:12px; margin-bottom:10px; display:none;"></p>
+        </div>
+
+        <!-- Generated Link Result (step 2) -->
+        <div id="nqResult" style="display:none;">
+            <div class="q-link-result">
+                <div class="q-link-label">Questionnaire Link Generated ✓</div>
+                <div class="q-link-url" id="nqLinkUrl"></div>
+                <div class="q-link-actions">
+                    <button class="btn-copy-link" onclick="copyQuestionnaireLink('nqLinkUrl', 'nqFeedback')">
+                        📋 Copy Link
+                    </button>
+                    <button class="btn-send-phone" onclick="sendToPhoneFromModal()">
+                        📲 Send to Phone
+                    </button>
+                </div>
+                <div class="q-link-feedback" id="nqFeedback"></div>
+            </div>
+            <p style="font-size:11px; color:var(--text-muted); margin-top:12px; line-height:1.6;">
+                This client and project are now visible in your dashboard. The client can return to their questionnaire anytime using this same link.
+            </p>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn-back" onclick="closeNewQuestionnaireModal()" style="margin:0; padding:8px 18px;">Close</button>
+            <button id="nqCreateBtn" class="btn-pdf" onclick="createNewQuestionnaire()" style="margin:0;">
+                Create Questionnaire Link
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ============================================================
+    // NEW QUESTIONNAIRE MODAL — State
+    // ============================================================
+    let nqCurrentToken = null;
+    let nqCurrentPhone = null;
+    let nqCurrentClientName = null;
+
+    function openNewQuestionnaireModal() {
+        // Reset form
+        document.getElementById('nqClientName').value = '';
+        document.getElementById('nqPhone').value = '';
+        document.getElementById('nqEmail').value = '';
+        document.getElementById('nqProjectName').value = '';
+        document.getElementById('nqLocation').value = '';
+        document.getElementById('nqError').style.display = 'none';
+        document.getElementById('nqForm').style.display = 'block';
+        document.getElementById('nqResult').style.display = 'none';
+        document.getElementById('nqCreateBtn').style.display = 'inline-block';
+        document.getElementById('nqCreateBtn').textContent = 'Create Questionnaire Link';
+        document.getElementById('nqCreateBtn').disabled = false;
+        nqCurrentToken = null;
+        nqCurrentPhone = null;
+        nqCurrentClientName = null;
+
+        document.getElementById('newQuestionnaireModal').classList.add('show');
+        setTimeout(() => document.getElementById('nqClientName').focus(), 100);
+    }
+
+    function closeNewQuestionnaireModal() {
+        document.getElementById('newQuestionnaireModal').classList.remove('show');
+        if (nqCurrentToken) {
+            // A new project was created — refresh the dashboard list
+            loadStats();
+            loadProjects();
+        }
+    }
+
+    async function createNewQuestionnaire() {
+        const clientName = document.getElementById('nqClientName').value.trim();
+        const phone = document.getElementById('nqPhone').value.trim();
+        const email = document.getElementById('nqEmail').value.trim();
+        const projectName = document.getElementById('nqProjectName').value.trim();
+        const location = document.getElementById('nqLocation').value.trim();
+
+        if (!clientName) {
+            const errEl = document.getElementById('nqError');
+            errEl.textContent = 'Client Name is required.';
+            errEl.style.display = 'block';
+            document.getElementById('nqClientName').focus();
+            return;
+        }
+
+        const btn = document.getElementById('nqCreateBtn');
+        btn.textContent = 'Creating...';
+        btn.disabled = true;
+
+        try {
+            const res = await fetch('/api/architect/new-questionnaire', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ client_name: clientName, phone, email, project_name: projectName, location })
+            });
+            const data = await res.json();
+
+            if (data.success) {
+                nqCurrentToken = data.token;
+                nqCurrentPhone = phone;
+                nqCurrentClientName = clientName;
+
+                // Build the canonical URL using the current origin (works in dev AND prod)
+                const canonicalUrl = `${window.location.origin}/questionnaire/${data.token}`;
+                document.getElementById('nqLinkUrl').textContent = canonicalUrl;
+                document.getElementById('nqFeedback').textContent = '';
+
+                document.getElementById('nqForm').style.display = 'none';
+                document.getElementById('nqResult').style.display = 'block';
+                btn.style.display = 'none';
+
+                // Immediately refresh the dashboard project list
+                loadStats();
+                loadProjects();
+            } else {
+                const errEl = document.getElementById('nqError');
+                errEl.textContent = data.error || 'Failed to create questionnaire. Please try again.';
+                errEl.style.display = 'block';
+                btn.textContent = 'Create Questionnaire Link';
+                btn.disabled = false;
+            }
+        } catch (e) {
+            const errEl = document.getElementById('nqError');
+            errEl.textContent = 'Network error — please check your connection and try again.';
+            errEl.style.display = 'block';
+            btn.textContent = 'Create Questionnaire Link';
+            btn.disabled = false;
+            console.error('New questionnaire error:', e);
+        }
+    }
+
+    // ============================================================
+    // COPY LINK — works both in modal and in project detail
+    // ============================================================
+    function copyQuestionnaireLink(urlElementId, feedbackElementId) {
+        const urlEl = document.getElementById(urlElementId);
+        const feedbackEl = document.getElementById(feedbackElementId);
+        if (!urlEl) return;
+
+        const url = urlEl.textContent.trim();
+        if (!url) return;
+
+        navigator.clipboard.writeText(url).then(() => {
+            if (feedbackEl) {
+                feedbackEl.textContent = '✓ Questionnaire link copied.';
+                setTimeout(() => { feedbackEl.textContent = ''; }, 3000);
+            }
+        }).catch(() => {
+            // Fallback for older browsers
+            const ta = document.createElement('textarea');
+            ta.value = url;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            if (feedbackEl) {
+                feedbackEl.textContent = '✓ Questionnaire link copied.';
+                setTimeout(() => { feedbackEl.textContent = ''; }, 3000);
+            }
+        });
+    }
+
+    // ============================================================
+    // SEND TO PHONE
+    // ============================================================
+    async function sendToPhoneFromModal() {
+        if (!nqCurrentToken) return;
+
+        const phone = nqCurrentPhone || prompt('Enter client phone number (e.g. +919876543210):');
+        if (!phone) return;
+
+        const canonicalUrl = `${window.location.origin}/questionnaire/${nqCurrentToken}`;
+        await sendQuestionnaireToPhone(nqCurrentToken, phone, nqCurrentClientName || 'Client', canonicalUrl, 'nqFeedback');
+    }
+
+    async function sendToPhoneFromProject() {
+        if (!currentProject) return;
+        const token = currentProject.session_token;
+        const phone = currentProject.phone || currentProject.answers?.contact_number || '';
+        const name = currentProject.client_name || 'Client';
+        const canonicalUrl = `${window.location.origin}/questionnaire/${token}`;
+
+        const phoneToUse = phone || prompt('Enter client phone number (e.g. +919876543210):');
+        if (!phoneToUse) return;
+
+        await sendQuestionnaireToPhone(token, phoneToUse, name, canonicalUrl, 'projQLinkFeedback');
+    }
+
+    async function sendQuestionnaireToPhone(token, phone, clientName, questUrl, feedbackId) {
+        const feedbackEl = document.getElementById(feedbackId);
+        if (feedbackEl) feedbackEl.textContent = 'Opening WhatsApp...';
+
+        try {
+            const res = await fetch('/api/architect/send-questionnaire', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ token, phone, client_name: clientName })
+            });
+            const data = await res.json();
+
+            if (data.success && data.wa_url) {
+                window.open(data.wa_url, '_blank');
+                if (feedbackEl) {
+                    feedbackEl.textContent = '✓ WhatsApp opened with questionnaire link.';
+                    setTimeout(() => { feedbackEl.textContent = ''; }, 4000);
+                }
+            } else {
+                if (feedbackEl) {
+                    feedbackEl.textContent = data.error || 'Could not open WhatsApp.';
+                    setTimeout(() => { feedbackEl.textContent = ''; }, 4000);
+                }
+            }
+        } catch (e) {
+            console.error('Send to phone error:', e);
+            if (feedbackEl) {
+                feedbackEl.textContent = 'Network error. Please copy the link manually.';
+                setTimeout(() => { feedbackEl.textContent = ''; }, 4000);
+            }
+        }
+    }
+
+    // ============================================================
+    // QUESTIONNAIRE LINK BOX — rendered inside project detail
+    // ============================================================
+    function renderProjectQLinkBox(project) {
+        const container = document.getElementById('projQLinkBox');
+        if (!container) return;
+
+        const token = project.session_token;
+        if (!token) {
+            container.innerHTML = '<div style="font-size:12px; color:var(--text-muted);">No questionnaire link available for this project.</div>';
+            return;
+        }
+
+        const canonicalUrl = `${window.location.origin}/questionnaire/${token}`;
+
+        container.innerHTML = `
+            <div class="proj-q-link-title">📎 Client Questionnaire Link</div>
+            <div class="proj-q-link-url" id="projQLinkUrl">${escapeHtml(canonicalUrl)}</div>
+            <div class="q-link-actions">
+                <button class="btn-copy-link" onclick="copyQuestionnaireLink('projQLinkUrl', 'projQLinkFeedback')">
+                    📋 Copy Link
+                </button>
+                <button class="btn-send-phone" onclick="sendToPhoneFromProject()">
+                    📲 Send to Phone
+                </button>
+            </div>
+            <div class="q-link-feedback" id="projQLinkFeedback"></div>
+        `;
+    }
+
+    // Close modal on overlay click
+    document.getElementById('newQuestionnaireModal').addEventListener('click', function(e) {
+        if (e.target === this) closeNewQuestionnaireModal();
+    });
+
+    // Close modal on Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeNewQuestionnaireModal();
+        }
+    });
 </script>
 
 </body>

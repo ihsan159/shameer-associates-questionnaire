@@ -143,7 +143,7 @@
       </button>
 
       <!-- Large Image Area (Preserving exact aspect ratio with contain) -->
-      <div class="w-full lg:w-2/3 bg-black flex items-center justify-center p-4 min-h-[300px] lg:min-h-[500px]">
+      <div id="lightbox-img-container" class="w-full lg:w-2/3 bg-black flex items-center justify-center p-4 min-h-[300px] lg:min-h-[500px] cursor-zoom-in">
         <img id="lightbox-image" src="" alt="" class="max-h-[75vh] w-auto max-w-full object-contain rounded transition-all duration-300 select-none shadow-2xl" />
       </div>
 
@@ -243,6 +243,18 @@
       <p class="text-[11px] text-center text-brand-muted pt-2 border-t border-brand-border">
         Bookmark this page or save the link to complete your brief later.
       </p>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- REUSABLE GLOBAL IMAGE LIGHTBOX (Fullscreen Enlargement) -->
+  <!-- ======================================================== -->
+  <div id="global-image-lightbox" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden opacity-0 transition-opacity duration-300 flex items-center justify-center p-4" onclick="window.app && window.app.handleGlobalLightboxBackdrop(event)">
+    <button onclick="window.app && window.app.closeGlobalLightbox()" class="absolute top-4 right-4 z-50 w-10 h-10 rounded-full bg-black/60 hover:bg-white hover:text-black text-white flex items-center justify-center transition-all duration-200 border border-white/20">
+      <i data-lucide="x" class="w-5 h-5"></i>
+    </button>
+    <div class="relative max-w-5xl max-h-[90vh] flex items-center justify-center">
+      <img id="global-lightbox-image" src="" alt="Enlarged Visual Reference" class="max-h-[90vh] max-w-full w-auto object-contain rounded shadow-2xl select-none" />
     </div>
   </div>
 

@@ -141,18 +141,9 @@ class TestShameerAssociatesApp(unittest.TestCase):
         sub_data = json.loads(res_sub.data)
         self.assertEqual(sub_data['status'], 'submitted')
 
-        # 8. Generate & Download PDF
+        # 8. Verify public client PDF access is disabled (architect-only feature)
         res_pdf = self.client.get(f'/api/session/{token}/pdf')
-        self.assertEqual(res_pdf.status_code, 200)
-        self.assertEqual(res_pdf.mimetype, 'application/pdf')
-        self.assertTrue(len(res_pdf.data) > 50000)
-
-        # Verify PDF validity with PyMuPDF
-        pdf_doc = pymupdf.open(stream=res_pdf.data, filetype='pdf')
-        self.assertTrue(len(pdf_doc) >= 5)
-        cover_text = pdf_doc[0].get_text()
-        self.assertIn('SHAMEER ASSOCIATES', cover_text)
-        self.assertIn('Dr. Danish Ahmed', cover_text)
+        self.assertEqual(res_pdf.status_code, 404)
 
         # 9. Book consultation
         res_consult = self.client.post(f'/api/session/{token}/consultation', json={
@@ -280,6 +271,25 @@ class TestShameerAssociatesApp(unittest.TestCase):
         # 11. Delete note
         res_del_note = self.client.delete(f'/api/architect/project/{project_id}/note/{note_id}')
         self.assertEqual(res_del_note.status_code, 200)
+
+    def test_06_security_and_access_control(self):
+        # 1. Test that public client cannot access any architect endpoints
+        res_arch_pdf_anon = self.client.get('/api/architect/project/1/pdf')
+        self.assertIn(res_arch_pdf_anon.status_code, (302, 401))
+
+        res_arch_stats_anon = self.client.get('/api/architect/stats')
+        self.assertIn(res_arch_stats_anon.status_code, (302, 401))
+
+        res_arch_proj_anon = self.client.get('/api/architect/projects')
+        self.assertIn(res_arch_proj_anon.status_code, (302, 401))
+
+        res_arch_dash_anon = self.client.get('/architect')
+        self.assertIn(res_arch_dash_anon.status_code, (302, 401))
+
+        # 2. Test that public PDF route /api/session/<token>/pdf returns 404
+        fake_token = "any-random-client-token-12345"
+        res_pub_pdf = self.client.get(f'/api/session/{fake_token}/pdf')
+        self.assertEqual(res_pub_pdf.status_code, 404)
 
 if __name__ == '__main__':
     unittest.main()

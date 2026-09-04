@@ -29,11 +29,12 @@
     }
 
     async init() {
-      // 1. Parse Token from URL if present or check localStorage
+      // 1. Parse Token — check /questionnaire/<token> path first (canonical client link)
+      const pathMatch = window.location.pathname.match(/^\/questionnaire\/([a-zA-Z0-9\-]+)$/);
       const urlParams = new URLSearchParams(window.location.search);
       const urlToken = urlParams.get('token');
       const storedToken = localStorage.getItem('sa_questionnaire_token');
-      this.sessionToken = urlToken || storedToken || null;
+      this.sessionToken = (pathMatch ? pathMatch[1] : null) || urlToken || storedToken || null;
 
       // 2. Fetch Schema and Visuals
       try {
@@ -54,6 +55,7 @@
         // 4. Register Global Keyboard Shortcuts (Escape for Lightbox/Modals)
         document.addEventListener('keydown', (e) => {
           if (e.key === 'Escape') {
+            this.closeGlobalLightbox();
             this.closeLightbox();
             this.closeTooltip();
             this.closeSaveModal();
@@ -187,37 +189,38 @@
     }
 
     // ========================================================
-    // PROGRESS CALCULATION
+    // SCROLL LOCK SYSTEM
+    // ========================================================
+    lockBodyScroll() {
+      document.body.style.overflow = 'hidden';
+    }
+
+    unlockBodyScroll() {
+      const m1 = document.getElementById('lightbox-modal');
+      const m2 = document.getElementById('global-image-lightbox');
+      const m3 = document.getElementById('tooltip-modal');
+      const m4 = document.getElementById('save-modal');
+      const anyOpen = (m1 && !m1.classList.contains('hidden')) ||
+                      (m2 && !m2.classList.contains('hidden')) ||
+                      (m3 && !m3.classList.contains('hidden')) ||
+                      (m4 && !m4.classList.contains('hidden'));
+      if (!anyOpen) {
+        document.body.style.overflow = '';
+      }
+    }
+
+    // ========================================================
+    // PROGRESS CALCULATION (One source of truth, chapter-based)
     // ========================================================
     calculateProgress() {
       if (!this.schema || !this.schema.chapters) return 0;
-      let totalQuestions = 0;
-      let answeredCount = 0;
+      const totalChapters = this.schema.chapters.length; // 8
 
-      this.schema.chapters.forEach(ch => {
-        ch.sections.forEach(sec => {
-          if (sec.questions) {
-            sec.questions.forEach(q => {
-              if (q.type !== 'file-upload') {
-                totalQuestions++;
-                const val = this.sessionData.answers[q.id];
-                if (val !== undefined && val !== null && val !== "" && (!Array.isArray(val) || val.length > 0)) {
-                  answeredCount++;
-                }
-              }
-            });
-          }
-        });
-      });
+      if (this.currentScreen === 'success' || this.currentScreen === 'review') return 100;
+      if (!this.currentScreen.startsWith('chapter-')) return 0;
 
-      // Check visuals (4 categories)
-      totalQuestions += 4;
-      if (this.sessionData.selected_visuals.exterior) answeredCount++;
-      if (this.sessionData.selected_visuals.formal_living_dining) answeredCount++;
-      if (this.sessionData.selected_visuals.bedroom) answeredCount++;
-      if (this.sessionData.selected_visuals.kitchen) answeredCount++;
-
-      return Math.min(100, Math.round((answeredCount / totalQuestions) * 100));
+      // Chapter 0 (Ch 1) → 13%, Chapter 1 (Ch 2) → 25%, ..., Chapter 7 (Ch 8) → 100%
+      return Math.round(((this.currentChapterIndex + 1) / totalChapters) * 100);
     }
 
     updateHeaderProgress() {
@@ -919,34 +922,34 @@
               let imgHtml = '';
               if (category === 'formal_living_dining') {
                 imgHtml = `
-                  <div class="grid grid-cols-2 gap-1 bg-black">
-                    <div class="visual-card-img-container aspect-[4/3] relative cursor-pointer" onclick="window.app.openLightbox('${category}', '${item.id}', '${item.livingImage}', 'Formal Living')">
-                      <img src="${item.livingImage}" alt="${item.styleName} Living" loading="lazy" class="visual-card-img w-full h-full object-cover" />
+                  <div class="grid grid-cols-2 gap-1 bg-brand-lightGray">
+                    <div class="visual-card-img-container aspect-square relative cursor-pointer overflow-hidden flex items-center justify-center bg-brand-lightGray" onclick="window.app.openLightbox('${category}', '${item.id}', '${item.livingImage}', 'Formal Living')">
+                      <img src="${item.livingImage}" alt="${item.styleName} Living" loading="lazy" class="visual-card-img w-full h-full object-contain object-center animate-fade-in" />
                       <span class="absolute bottom-1 left-1 px-1.5 py-0.5 bg-black/70 text-[9px] font-bold text-white uppercase rounded-xs">Living</span>
                     </div>
-                    <div class="visual-card-img-container aspect-[4/3] relative cursor-pointer" onclick="window.app.openLightbox('${category}', '${item.id}', '${item.diningImage}', 'Dining')">
-                      <img src="${item.diningImage}" alt="${item.styleName} Dining" loading="lazy" class="visual-card-img w-full h-full object-cover" />
+                    <div class="visual-card-img-container aspect-square relative cursor-pointer overflow-hidden flex items-center justify-center bg-brand-lightGray" onclick="window.app.openLightbox('${category}', '${item.id}', '${item.diningImage}', 'Dining')">
+                      <img src="${item.diningImage}" alt="${item.styleName} Dining" loading="lazy" class="visual-card-img w-full h-full object-contain object-center animate-fade-in" />
                       <span class="absolute bottom-1 left-1 px-1.5 py-0.5 bg-black/70 text-[9px] font-bold text-white uppercase rounded-xs">Dining</span>
                     </div>
                   </div>
                 `;
               } else if (category === 'bedroom') {
                 imgHtml = `
-                  <div class="grid grid-cols-2 gap-1 bg-black">
-                    <div class="visual-card-img-container aspect-[4/3] relative cursor-pointer" onclick="window.app.openLightbox('${category}', '${item.id}', '${item.bedroomImage}', 'Bedroom')">
-                      <img src="${item.bedroomImage}" alt="${item.styleName} Bedroom" loading="lazy" class="visual-card-img w-full h-full object-cover" />
+                  <div class="grid grid-cols-2 gap-1 bg-brand-lightGray">
+                    <div class="visual-card-img-container aspect-square relative cursor-pointer overflow-hidden flex items-center justify-center bg-brand-lightGray" onclick="window.app.openLightbox('${category}', '${item.id}', '${item.bedroomImage}', 'Bedroom')">
+                      <img src="${item.bedroomImage}" alt="${item.styleName} Bedroom" loading="lazy" class="visual-card-img w-full h-full object-contain object-center animate-fade-in" />
                       <span class="absolute bottom-1 left-1 px-1.5 py-0.5 bg-black/70 text-[9px] font-bold text-white uppercase rounded-xs">Bed</span>
                     </div>
-                    <div class="visual-card-img-container aspect-[4/3] relative cursor-pointer" onclick="window.app.openLightbox('${category}', '${item.id}', '${item.wardrobeImage}', 'Wardrobe / Dressing')">
-                      <img src="${item.wardrobeImage}" alt="${item.styleName} Wardrobe" loading="lazy" class="visual-card-img w-full h-full object-cover" />
+                    <div class="visual-card-img-container aspect-square relative cursor-pointer overflow-hidden flex items-center justify-center bg-brand-lightGray" onclick="window.app.openLightbox('${category}', '${item.id}', '${item.wardrobeImage}', 'Wardrobe / Dressing')">
+                      <img src="${item.wardrobeImage}" alt="${item.styleName} Wardrobe" loading="lazy" class="visual-card-img w-full h-full object-contain object-center animate-fade-in" />
                       <span class="absolute bottom-1 left-1 px-1.5 py-0.5 bg-black/70 text-[9px] font-bold text-white uppercase rounded-xs">Dressing</span>
                     </div>
                   </div>
                 `;
               } else {
                 imgHtml = `
-                  <div class="visual-card-img-container aspect-[16/10] relative cursor-pointer bg-black" onclick="window.app.openLightbox('${category}', '${item.id}', '${item.image}')">
-                    <img src="${item.image}" alt="${item.styleName}" loading="lazy" class="visual-card-img w-full h-full object-cover" />
+                  <div class="visual-card-img-container aspect-square relative cursor-pointer bg-brand-lightGray overflow-hidden flex items-center justify-center" onclick="window.app.openLightbox('${category}', '${item.id}', '${item.image}')">
+                    <img src="${item.image}" alt="${item.styleName}" loading="lazy" class="visual-card-img w-full h-full object-contain object-center animate-fade-in" />
                     <div class="absolute inset-0 bg-black/0 hover:bg-black/20 transition-colors flex items-center justify-center opacity-0 hover:opacity-100">
                       <span class="px-2.5 py-1 bg-black/75 text-white text-[10px] font-semibold tracking-widest uppercase rounded shadow backdrop-blur-xs">
                         View Fullscreen
@@ -1058,6 +1061,12 @@
         selectText.textContent = 'Select This Style';
       }
 
+      const imgContainer = document.getElementById('lightbox-img-container') || img.parentElement;
+      if (imgContainer) {
+        imgContainer.onclick = () => this.openGlobalLightbox(img.src);
+      }
+
+      this.lockBodyScroll();
       modal.classList.remove('hidden');
       setTimeout(() => {
         modal.classList.remove('opacity-0');
@@ -1073,6 +1082,7 @@
         setTimeout(() => {
           modal.classList.add('hidden');
           this.activeLightboxData = null;
+          this.unlockBodyScroll();
         }, 200);
       }
     }
@@ -1080,6 +1090,42 @@
     handleLightboxBackdrop(e) {
       if (e.target.id === 'lightbox-modal') {
         this.closeLightbox();
+      }
+    }
+
+    // ========================================================
+    // REUSABLE GLOBAL IMAGE LIGHTBOX (Fullscreen Enlargement)
+    // ========================================================
+    openGlobalLightbox(src) {
+      if (!src) return;
+      const modal = document.getElementById('global-image-lightbox');
+      const img = document.getElementById('global-lightbox-image');
+      if (!modal || !img) return;
+
+      img.src = src;
+      this.lockBodyScroll();
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+        modal.classList.remove('opacity-0');
+      }, 10);
+
+      if (window.lucide) window.lucide.createIcons();
+    }
+
+    closeGlobalLightbox() {
+      const modal = document.getElementById('global-image-lightbox');
+      if (modal && !modal.classList.contains('hidden')) {
+        modal.classList.add('opacity-0');
+        setTimeout(() => {
+          modal.classList.add('hidden');
+          this.unlockBodyScroll();
+        }, 200);
+      }
+    }
+
+    handleGlobalLightboxBackdrop(e) {
+      if (e.target.id === 'global-image-lightbox' || (e.target.closest('#global-image-lightbox') && !e.target.closest('#global-lightbox-image'))) {
+        this.closeGlobalLightbox();
       }
     }
 
@@ -1475,26 +1521,19 @@
             </p>
           </div>
 
-          <!-- PDF Actions -->
-          <div class="bg-white p-6 sm:p-8 rounded-lg shadow-luxury border border-brand-border max-w-2xl mx-auto space-y-6">
+          <!-- Design Brief Confirmation (Client PDF access removed — architect only) -->
+          <div class="bg-white p-6 sm:p-8 rounded-lg shadow-luxury border border-brand-border max-w-2xl mx-auto space-y-4">
             <div class="flex items-center justify-between border-b border-brand-border/60 pb-3">
-              <span class="text-xs font-bold tracking-wider text-brand-black uppercase">Architectural Design Brief Document</span>
-              <span class="text-[11px] text-emerald-600 font-semibold">✓ Generated</span>
+              <span class="text-xs font-bold tracking-wider text-brand-black uppercase">Design Brief Status</span>
+              <span class="text-[11px] text-emerald-600 font-semibold">✓ Submitted to Studio</span>
             </div>
-
-            <p class="text-xs text-brand-muted text-left leading-relaxed">
-              A complete, publication-quality PDF containing all your structured answers, family requirements, room specifications, and chosen design references is ready.
-            </p>
-
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
-              <a href="/api/session/${this.sessionToken}/pdf?download=1" class="w-full sm:w-auto px-8 py-3.5 bg-brand-black hover:bg-brand-bronze text-white text-xs font-bold tracking-widest uppercase rounded-sm shadow transition-colors inline-flex items-center justify-center space-x-2">
-                <i data-lucide="download" class="w-4 h-4"></i>
-                <span>Download PDF Brief</span>
-              </a>
-              <a href="/api/session/${this.sessionToken}/pdf" target="_blank" class="w-full sm:w-auto px-8 py-3.5 bg-brand-lightGray hover:bg-brand-slate hover:text-white text-brand-black text-xs font-bold tracking-widest uppercase rounded-sm transition-colors inline-flex items-center justify-center space-x-2">
-                <i data-lucide="eye" class="w-4 h-4"></i>
-                <span>View in Browser</span>
-              </a>
+            <div class="flex items-start space-x-3 text-left">
+              <div class="w-8 h-8 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600 flex-shrink-0 mt-0.5">
+                <i data-lucide="file-check" class="w-4 h-4"></i>
+              </div>
+              <p class="text-xs text-brand-slate leading-relaxed">
+                Your complete residential design brief — including all lifestyle answers, family needs, space preferences, and selected reference imagery — has been securely delivered to the Shameer Associates studio. Our architectural team will review your brief in preparation for your consultation.
+              </p>
             </div>
           </div>
 
