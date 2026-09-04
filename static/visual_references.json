@@ -89,7 +89,7 @@
       "category": "formal_living_dining",
       "styleName": "Modern / Minimal",
       "designBrief": "Clean lines, simple furniture, neutral colours and limited decoration create calm, uncluttered formal living and dining spaces. The design prioritises comfort, functionality and a clear contemporary appearance.",
-      "howItFeels": "The soft neutral palette, smooth surfaces and clean geometric forms create a feeling of ease, clarity and quiet calm — a space where the mind can rest.",
+      "howItFeels": "The soft neutral palette, smooth surfaces and clean geometric forms create a feeling of ease, clarity and quiet calm \u2014 a space where the mind can rest.",
       "livingImage": "/static/references/formal_living_dining/01_modern_minimal_living.jpg",
       "diningImage": "/static/references/formal_living_dining/01_modern_minimal_dining.jpg",
       "order": 1
@@ -100,7 +100,7 @@
       "category": "formal_living_dining",
       "styleName": "Luxury Contemporary",
       "designBrief": "Premium materials, statement furniture, rich textures, bespoke details and elegant layered lighting create sophisticated formal living and dining spaces. The atmosphere feels luxurious and refined without excessive ornamentation.",
-      "howItFeels": "The rich material palette, layered lighting and refined forms create a feeling of quiet confidence — a space that feels special without ever being loud.",
+      "howItFeels": "The rich material palette, layered lighting and refined forms create a feeling of quiet confidence \u2014 a space that feels special without ever being loud.",
       "livingImage": "/static/references/formal_living_dining/02_luxury_contemporary_living.jpg",
       "diningImage": "/static/references/formal_living_dining/02_luxury_contemporary_dining.jpg",
       "order": 2
@@ -221,7 +221,7 @@
       "category": "formal_living_dining",
       "styleName": "Art Deco",
       "designBrief": "Bold geometry, rich colours, metallic accents, luxurious fabrics and statement lighting create glamorous and memorable formal spaces. The style is dramatic, decorative and perfect for those who love a strong visual identity.",
-      "howItFeels": "The deep colours, golden accents and dramatic forms create a feeling of glamour, confidence and celebration — a space that truly stands out.",
+      "howItFeels": "The deep colours, golden accents and dramatic forms create a feeling of glamour, confidence and celebration \u2014 a space that truly stands out.",
       "livingImage": "/static/references/formal_living_dining/13_art_deco_living.jpg",
       "diningImage": "/static/references/formal_living_dining/13_art_deco_dining.jpg",
       "order": 13
@@ -232,7 +232,7 @@
       "category": "formal_living_dining",
       "styleName": "Industrial",
       "designBrief": "Exposed brick or concrete, dark metal, timber, leather furniture and visible structural details create bold urban interiors. Warm lighting and comfortable furnishings help balance the raw material character.",
-      "howItFeels": "The raw textures, warm lights and honest materials create a feeling of strength, character and relaxed confidence — urban yet welcoming.",
+      "howItFeels": "The raw textures, warm lights and honest materials create a feeling of strength, character and relaxed confidence \u2014 urban yet welcoming.",
       "livingImage": "/static/references/formal_living_dining/14_industrial_living.jpg",
       "diningImage": "/static/references/formal_living_dining/14_industrial_dining.jpg",
       "order": 14
@@ -243,7 +243,7 @@
       "category": "formal_living_dining",
       "styleName": "Rustic",
       "designBrief": "Natural timber, stone, earthy colours, textured fabrics and handcrafted furniture create warm and grounded spaces. The design has a relaxed atmosphere and a strong connection to nature.",
-      "howItFeels": "The earthy materials, natural textures and handmade details create a feeling of warmth, comfort and belonging — close to nature, close to home.",
+      "howItFeels": "The earthy materials, natural textures and handmade details create a feeling of warmth, comfort and belonging \u2014 close to nature, close to home.",
       "livingImage": "/static/references/formal_living_dining/15_rustic_living.jpg",
       "diningImage": "/static/references/formal_living_dining/15_rustic_dining.jpg",
       "order": 15
@@ -275,7 +275,7 @@
       "styleNumber": "18",
       "category": "formal_living_dining",
       "styleName": "Fusion",
-      "designBrief": "Two or more styles are thoughtfully combined to create a personalised design — for example, traditional woodwork with modern furniture, lighting and planning. The combination is carefully balanced to maintain visual harmony across spaces.",
+      "designBrief": "Two or more styles are thoughtfully combined to create a personalised design \u2014 for example, traditional woodwork with modern furniture, lighting and planning. The combination is carefully balanced to maintain visual harmony across spaces.",
       "howItFeels": "The blend of familiar warmth and modern ease creates a feeling of personal identity, comfort and timeless relevance.",
       "livingImage": "/static/references/formal_living_dining/18_fusion_living.jpg",
       "diningImage": "/static/references/formal_living_dining/18_fusion_dining.jpg",
@@ -289,7 +289,7 @@
       "category": "bedroom",
       "styleName": "Modern / Minimal",
       "designBrief": "Clean lines, simple furniture, neutral colours and limited decoration create calm, uncluttered bedrooms. The design prioritises comfort, functionality and a clear contemporary appearance.",
-      "howItFeels": "The soft neutral palette, smooth surfaces and clean geometric forms create a feeling of ease, clarity and quiet calm — a space where the mind can rest.",
+      "howItFeels": "The soft neutral palette, smooth surfaces and clean geometric forms create a feeling of ease, clarity and quiet calm \u2014 a space where the mind can rest.",
       "bedroomImage": "/static/references/bedroom/01_modern_minimal_bedroom.jpg",
       "wardrobeImage": "/static/references/bedroom/01_modern_minimal_wardrobe.jpg",
       "order": 1
@@ -300,7 +300,7 @@
       "category": "bedroom",
       "styleName": "Luxury Contemporary",
       "designBrief": "Premium materials, statement furniture, rich textures, bespoke details and elegant layered lighting create sophisticated bedrooms. The atmosphere feels luxurious and refined without being loud.",
-      "howItFeels": "The rich material palette, layered lighting and refined forms create a feeling of quiet confidence — a space that feels special and personally indulgent.",
+      "howItFeels": "The rich material palette, layered lighting and refined forms create a feeling of quiet confidence \u2014 a space that feels special and personally indulgent.",
       "bedroomImage": "/static/references/bedroom/02_luxury_contemporary_bedroom.jpg",
       "wardrobeImage": "/static/references/bedroom/02_luxury_contemporary_wardrobe.jpg",
       "order": 2
@@ -489,7 +489,7 @@
       "category": "kitchen",
       "styleName": "Modern / Minimal",
       "description": "Clean geometric cabinetry, smooth surfaces, neutral colours and a practical contemporary look.",
-      "image": "/static/references/kitchen/01_modern_minimal.jpg",
+      "image": "/static/references/kitchen/01_modern_minimal.jpg?v=20260905",
       "order": 1
     },
     {
@@ -498,7 +498,7 @@
       "category": "kitchen",
       "styleName": "Luxury Contemporary",
       "description": "Premium stone, veneers, metallic accents, bespoke cabinetry and sophisticated lighting.",
-      "image": "/static/references/kitchen/02_luxury_contemporary.jpg",
+      "image": "/static/references/kitchen/02_luxury_contemporary.jpg?v=20260905",
       "order": 2
     },
     {
@@ -507,7 +507,7 @@
       "category": "kitchen",
       "styleName": "Kerala Traditional",
       "description": "Rich timber, carved details, brass hardware, natural stone and Kerala-inspired craftsmanship.",
-      "image": "/static/references/kitchen/03_kerala_traditional.jpg",
+      "image": "/static/references/kitchen/03_kerala_traditional.jpg?v=20260905",
       "order": 3
     },
     {
@@ -516,7 +516,7 @@
       "category": "kitchen",
       "styleName": "Modern Kerala Fusion",
       "description": "Modern cabinetry and appliances combined with Kerala woodwork, screens, brass or patterns.",
-      "image": "/static/references/kitchen/04_modern_kerala_fusion.jpg",
+      "image": "/static/references/kitchen/04_modern_kerala_fusion.jpg?v=20260905",
       "order": 4
     },
     {
@@ -525,7 +525,7 @@
       "category": "kitchen",
       "styleName": "Neoclassical",
       "description": "Classical proportions with lighter colours, refined mouldings and restrained ornamentation.",
-      "image": "/static/references/kitchen/05_neoclassical.jpg",
+      "image": "/static/references/kitchen/05_neoclassical.jpg?v=20260905",
       "order": 5
     },
     {
@@ -534,7 +534,7 @@
       "category": "kitchen",
       "styleName": "English Country",
       "description": "Painted inset cabinetry, natural wood, open shelves, farmhouse sink and a welcoming atmosphere.",
-      "image": "/static/references/kitchen/06_english_country.jpg",
+      "image": "/static/references/kitchen/06_english_country.jpg?v=20260905",
       "order": 6
     },
     {
@@ -543,7 +543,7 @@
       "category": "kitchen",
       "styleName": "Mediterranean",
       "description": "Textured plaster, earthy colours, rustic timber, natural stone and warm handmade tiles.",
-      "image": "/static/references/kitchen/07_mediterranean.jpg",
+      "image": "/static/references/kitchen/07_mediterranean.jpg?v=20260905",
       "order": 7
     },
     {
@@ -552,7 +552,7 @@
       "category": "kitchen",
       "styleName": "Italian Contemporary",
       "description": "Sleek European cabinetry, dramatic stone and highly refined proportions.",
-      "image": "/static/references/kitchen/08_italian_contemporary.jpg",
+      "image": "/static/references/kitchen/08_italian_contemporary.jpg?v=20260905",
       "order": 8
     },
     {
@@ -561,7 +561,7 @@
       "category": "kitchen",
       "styleName": "Contemporary Classical",
       "description": "Modern planning combined with subtle mouldings and classical balance.",
-      "image": "/static/references/kitchen/09_contemporary_classical.jpg",
+      "image": "/static/references/kitchen/09_contemporary_classical.jpg?v=20260905",
       "order": 9
     },
     {
@@ -570,7 +570,7 @@
       "category": "kitchen",
       "styleName": "Parisian",
       "description": "Elegant panelling, marble, brass and sophisticated decorative lighting.",
-      "image": "/static/references/kitchen/10_parisian.jpg",
+      "image": "/static/references/kitchen/10_parisian.jpg?v=20260905",
       "order": 10
     },
     {
@@ -579,7 +579,7 @@
       "category": "kitchen",
       "styleName": "Spanish",
       "description": "Dark timber, arches, hand-painted tiles and wrought-iron accents.",
-      "image": "/static/references/kitchen/11_spanish.jpg",
+      "image": "/static/references/kitchen/11_spanish.jpg?v=20260905",
       "order": 11
     },
     {
@@ -588,7 +588,7 @@
       "category": "kitchen",
       "styleName": "Scandinavian",
       "description": "Pale wood, light colours, bright interiors and simple practical cabinetry.",
-      "image": "/static/references/kitchen/12_scandinavian.jpg",
+      "image": "/static/references/kitchen/12_scandinavian.jpg?v=20260905",
       "order": 12
     },
     {
@@ -597,7 +597,7 @@
       "category": "kitchen",
       "styleName": "Japandi",
       "description": "Japanese simplicity combined with Scandinavian warmth, natural wood and calm functional detailing.",
-      "image": "/static/references/kitchen/13_japandi.jpg",
+      "image": "/static/references/kitchen/13_japandi.jpg?v=20260905",
       "order": 13
     },
     {
@@ -606,7 +606,7 @@
       "category": "kitchen",
       "styleName": "Futuristic",
       "description": "Sculptural forms, advanced technology and unconventional lighting.",
-      "image": "/static/references/kitchen/14_futuristic.jpg",
+      "image": "/static/references/kitchen/14_futuristic.jpg?v=20260905",
       "order": 14
     }
   ]
