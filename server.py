@@ -467,6 +467,28 @@ def architect_new_questionnaire():
     })
 
 
+def format_whatsapp_number(phone):
+    """Format phone number for WhatsApp deep-links.
+    Automatically handles 10-digit Indian mobile numbers (e.g. starting with 6,7,8,9)
+    by prepending country code '91'.
+    Strips non-digits, leading zeros, hyphens, and spaces.
+    """
+    if not phone:
+        return ""
+    digits = "".join(c for c in str(phone) if c.isdigit())
+    if not digits:
+        return ""
+    
+    # Strip leading zero if present (e.g. 09567843662 -> 9567843662)
+    digits = digits.lstrip('0')
+    
+    # If standard 10-digit Indian mobile number (e.g. 9567843662), prepend '91'
+    if len(digits) == 10:
+        return "91" + digits
+    
+    return digits
+
+
 @app.route('/api/architect/send-questionnaire', methods=['POST'])
 @login_required
 @auth.require_role('architect', 'admin')
@@ -495,7 +517,7 @@ def architect_send_questionnaire():
     # Return WhatsApp deep-link so the frontend can open it
     message = f"Hello {client_name},\n\nPlease complete your Shameer Associates Residential Design Questionnaire using the link below:\n\n{questionnaire_url}\n\nThank you,\nShameer Associates"
     import urllib.parse
-    wa_number = phone.replace('+', '').replace(' ', '').replace('-', '')
+    wa_number = format_whatsapp_number(phone)
     wa_url = f"https://wa.me/{wa_number}?text={urllib.parse.quote(message)}"
 
     return jsonify({
