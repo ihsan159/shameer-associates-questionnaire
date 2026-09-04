@@ -49,7 +49,7 @@ class TestShameerAssociatesApp(unittest.TestCase):
             self.assertTrue(os.path.exists(ward_path), f"Missing wardrobe image: {ward_path}")
 
         for item in visuals['kitchen']:
-            path = item['image'].lstrip('/')
+            path = item['image'].split('?')[0].lstrip('/')
             self.assertTrue(os.path.exists(path), f"Missing kitchen image: {path}")
 
     def test_03_session_lifecycle(self):
