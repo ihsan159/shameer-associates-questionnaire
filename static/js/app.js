@@ -1,6 +1,6 @@
 /**
- * SHAMEER ASSOCIATES — PREMIUM DIGITAL RESIDENTIAL DESIGN JOURNEY
- * Frontend Application Engine (Phase 1)
+ * SHAMEER ASSOCIATES — LUXURY RESIDENTIAL DESIGN JOURNEY
+ * Client Questionnaire Application Engine
  */
 
 (function () {
@@ -20,7 +20,7 @@
         consultation: null
       };
 
-      this.currentScreen = 'welcome'; // 'welcome', 'philosophy', 'chapter-X', 'review', 'success'
+      this.currentScreen = 'welcome'; // 'welcome', 'philosophy', 'chapter-X', 'interstitial-X', 'review', 'success'
       this.currentChapterIndex = 0; // 0 to 7 (Chapters 1 to 8)
       this.saveDebounceTimer = null;
       this.activeLightboxData = null;
@@ -217,9 +217,8 @@
       const totalChapters = this.schema.chapters.length; // 8
 
       if (this.currentScreen === 'success' || this.currentScreen === 'review') return 100;
-      if (!this.currentScreen.startsWith('chapter-')) return 0;
+      if (!this.currentScreen.startsWith('chapter-') && !this.currentScreen.startsWith('interstitial-')) return 0;
 
-      // Chapter 0 (Ch 1) → 13%, Chapter 1 (Ch 2) → 25%, ..., Chapter 7 (Ch 8) → 100%
       return Math.round(((this.currentChapterIndex + 1) / totalChapters) * 100);
     }
 
@@ -231,7 +230,7 @@
       const headerBar = document.getElementById('header-progress-bar');
       const mobileBar = document.getElementById('mobile-progress-bar');
 
-      if (this.currentScreen.startsWith('chapter-') || this.currentScreen === 'review') {
+      if (this.currentScreen.startsWith('chapter-') || this.currentScreen.startsWith('interstitial-') || this.currentScreen === 'review') {
         if (progressContainer) progressContainer.classList.remove('hidden');
         const chNum = this.currentScreen === 'review' ? 8 : this.currentChapterIndex + 1;
         const chTitle = this.currentScreen === 'review' ? 'Brief Review' : this.schema.chapters[this.currentChapterIndex].title;
@@ -263,7 +262,7 @@
 
     startQuestionnaire() {
       this.currentChapterIndex = 0;
-      this.currentScreen = 'chapter-0';
+      this.currentScreen = 'interstitial-0';
       this.render();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -277,10 +276,20 @@
       }
     }
 
+    enterChapterContent(index) {
+      this.currentChapterIndex = index;
+      this.currentScreen = `chapter-${index}`;
+      this.render();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
     nextChapter() {
       this.performAutoSave();
       if (this.currentChapterIndex < this.schema.chapters.length - 1) {
-        this.goToChapter(this.currentChapterIndex + 1);
+        this.currentChapterIndex++;
+        this.currentScreen = `interstitial-${this.currentChapterIndex}`;
+        this.render();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
         this.goToReview();
       }
@@ -313,6 +322,8 @@
         root.innerHTML = this.renderWelcomeScreen();
       } else if (this.currentScreen === 'philosophy') {
         root.innerHTML = this.renderPhilosophyScreen();
+      } else if (this.currentScreen.startsWith('interstitial-')) {
+        root.innerHTML = this.renderChapterInterstitialScreen(this.currentChapterIndex);
       } else if (this.currentScreen.startsWith('chapter-')) {
         root.innerHTML = this.renderChapterScreen(this.currentChapterIndex);
       } else if (this.currentScreen === 'review') {
@@ -327,68 +338,75 @@
     }
 
     // ========================================================
-    // SCREEN 1: BRAND WELCOME & ENTRANCE
+    // SCREEN 1: LUXURY BRAND WELCOME & ENTRANCE
     // ========================================================
     renderWelcomeScreen() {
       return `
-        <div class="animate-fade-in max-w-4xl mx-auto text-center py-6 sm:py-16 space-y-8 sm:space-y-12">
+        <div class="animate-fade-in-up max-w-4xl mx-auto text-center py-8 sm:py-16 space-y-10 sm:space-y-14">
           
-          <!-- Official Geometric Brand Logo -->
-          <div class="flex flex-col items-center justify-center space-y-4">
-            <div class="w-24 h-24 sm:w-32 sm:h-32 p-2 bg-white rounded-lg shadow-luxury border border-brand-border/60">
-              <img src="/static/brand/logo.svg" alt="Shameer Associates" class="w-full h-full object-contain" />
+          <!-- Official Studio Branding Header -->
+          <div class="flex flex-col items-center justify-center space-y-5">
+            <div class="w-20 h-20 sm:w-28 sm:h-28 p-2 bg-white rounded-lg shadow-2xl border border-brand-border/80 flex items-center justify-center">
+              <img src="/static/brand/logo.svg" alt="Shameer Associates Logo" class="w-full h-full object-contain" />
             </div>
-            <div class="space-y-1">
+            <div class="space-y-1.5">
               <h1 class="font-serif text-2xl sm:text-4xl font-bold tracking-[0.25em] text-brand-black">
                 SHAMEER ASSOCIATES
               </h1>
-              <p class="text-xs sm:text-sm font-semibold tracking-[0.35em] text-brand-bronze uppercase">
-                ARCHITECTURE • INTERIORS • LANDSCAPE
+              <p class="text-[10px] sm:text-xs font-semibold tracking-[0.35em] text-brand-bronze uppercase">
+                RESIDENTIAL DESIGN QUESTIONNAIRE
               </p>
             </div>
           </div>
 
-          <!-- Motto & Headline -->
-          <div class="space-y-3 max-w-2xl mx-auto">
+          <!-- Editorial Tagline & Hero Guidance -->
+          <div class="space-y-4 max-w-2xl mx-auto">
             <div class="w-16 h-0.5 bg-brand-bronze mx-auto"></div>
             <h2 class="font-serif text-3xl sm:text-5xl font-bold text-brand-black tracking-tight leading-tight">
-              YOUR HOME.<br/>
-              YOUR STORY.<br/>
-              YOUR DESIGN.
+              "Let's understand the way you live."
             </h2>
-            <p class="text-sm sm:text-base text-brand-slate font-light leading-relaxed pt-2">
-              Before we design your home, we want to understand the people who will live in it — their routines, priorities, needs and vision.
+            <p class="text-xs sm:text-sm text-brand-slate font-light leading-relaxed pt-2">
+              Your home is personal. This questionnaire helps our design team understand your lifestyle, preferences and vision before we begin our architectural journey together.
             </p>
           </div>
 
-          <!-- ICREATE Studio Values Grid -->
-          <div class="bg-white p-6 sm:p-8 rounded-lg shadow-luxury border border-brand-border max-w-3xl mx-auto text-left">
-            <div class="flex items-center justify-between pb-4 border-b border-brand-border mb-6">
-              <span class="text-xs font-bold tracking-[0.2em] text-brand-bronze uppercase">Our Design Philosophy</span>
-              <span class="font-serif font-bold text-sm tracking-widest text-brand-black">ICREATE</span>
+          <!-- Studio Core Values Card -->
+          <div class="bg-white p-6 sm:p-8 rounded-lg shadow-luxury border border-brand-border max-w-3xl mx-auto text-left space-y-6">
+            <div class="flex items-center justify-between pb-4 border-b border-brand-border">
+              <span class="text-[11px] font-bold tracking-[0.2em] text-brand-bronze uppercase">Our Architectural Commitment</span>
+              <span class="font-serif font-bold text-xs tracking-widest text-brand-black">ICREATE PHILOSOPHY</span>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-brand-slate">
-              <div><b class="text-brand-black font-semibold">Integrity</b> — in our commitments & transparency</div>
-              <div><b class="text-brand-black font-semibold">Creativity</b> — in every unique architectural solution</div>
-              <div><b class="text-brand-black font-semibold">Relationships</b> — built through listening and respect</div>
-              <div><b class="text-brand-black font-semibold">Excellence</b> — in structural quality & execution</div>
-              <div><b class="text-brand-black font-semibold">Attention to Detail</b> — meticulous craftsmanship</div>
-              <div><b class="text-brand-black font-semibold">Timeliness</b> — respecting time & client budgets</div>
-              <div class="sm:col-span-2"><b class="text-brand-black font-semibold">Evolution</b> — continuous innovation & climate-responsive learning</div>
+              <div class="p-3 bg-brand-offwhite rounded border border-brand-border/60">
+                <b class="text-brand-black font-bold block mb-0.5">Integrity</b>
+                <span class="text-brand-muted">Complete transparency in structural design and commitments.</span>
+              </div>
+              <div class="p-3 bg-brand-offwhite rounded border border-brand-border/60">
+                <b class="text-brand-black font-bold block mb-0.5">Creativity</b>
+                <span class="text-brand-muted">Bespoke architectural solutions tailored to your plot and climate.</span>
+              </div>
+              <div class="p-3 bg-brand-offwhite rounded border border-brand-border/60">
+                <b class="text-brand-black font-bold block mb-0.5">Relationships</b>
+                <span class="text-brand-muted">Built through listening, respect, and deep lifestyle understanding.</span>
+              </div>
+              <div class="p-3 bg-brand-offwhite rounded border border-brand-border/60">
+                <b class="text-brand-black font-bold block mb-0.5">Excellence</b>
+                <span class="text-brand-muted">Uncompromising material quality, ventilation, and spatial flow.</span>
+              </div>
             </div>
-            <p class="text-xs text-brand-muted italic mt-6 pt-4 border-t border-brand-border leading-relaxed">
-              "We believe a home should be created with honesty, clarity and care—protecting our clients from costly mistakes while transforming their dreams into a timeless space that truly belongs to them."
+            <p class="text-xs text-brand-muted italic pt-2 border-t border-brand-border leading-relaxed">
+              "We believe a home should be created with honesty, clarity and care — transforming your vision into a timeless space that truly belongs to your family."
             </p>
           </div>
 
-          <!-- Primary CTA Button -->
-          <div class="pt-4 space-y-3">
-            <button onclick="window.app.goToPhilosophy()" class="px-8 sm:px-12 py-4 bg-brand-black hover:bg-brand-bronze text-white text-xs sm:text-sm font-bold tracking-[0.25em] uppercase rounded-sm shadow-xl hover:shadow-2xl transition-all duration-300 inline-flex items-center space-x-3 group">
+          <!-- Primary Call To Action Button -->
+          <div class="pt-2 space-y-3">
+            <button onclick="window.app.goToPhilosophy()" class="px-10 sm:px-14 py-4 bg-brand-black hover:bg-brand-bronze text-white text-xs sm:text-sm font-bold tracking-[0.25em] uppercase rounded-sm shadow-xl hover:shadow-2xl transition-all duration-300 inline-flex items-center space-x-3 group">
               <span>BEGIN YOUR DESIGN JOURNEY</span>
               <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
             </button>
-            <p class="text-xs text-brand-muted">
-              There are no right or wrong answers. Answer openly based on how you genuinely live.
+            <p class="text-[11px] text-brand-muted">
+              There are no right or wrong answers. Answer openly based on your family's authentic routine.
             </p>
           </div>
 
@@ -402,11 +420,11 @@
     renderPhilosophyScreen() {
       const data = this.schema.before_you_begin;
       return `
-        <div class="animate-fade-in max-w-4xl mx-auto py-6 sm:py-10 space-y-8">
+        <div class="animate-fade-in-up max-w-4xl mx-auto py-6 sm:py-10 space-y-8">
           
           <div class="text-center space-y-3">
-            <span class="text-xs font-bold tracking-[0.25em] text-brand-bronze uppercase">Before You Begin</span>
-            <h2 class="font-serif text-3xl sm:text-4xl font-bold text-brand-black">A Gentle Reminder</h2>
+            <span class="text-xs font-bold tracking-[0.25em] text-brand-bronze uppercase">Design Consultation Context</span>
+            <h2 class="font-serif text-3xl sm:text-4xl font-bold text-brand-black">Before You Begin</h2>
             <p class="text-xs sm:text-sm text-brand-muted max-w-2xl mx-auto leading-relaxed">
               ${data.subtitle}
             </p>
@@ -417,7 +435,7 @@
             ${data.thoughts.map((t, idx) => `
               <div class="bg-white p-6 rounded-lg shadow-luxury border border-brand-border hover:border-brand-bronze transition-all duration-200 space-y-3 ${idx === 4 ? 'md:col-span-2' : ''}">
                 <div class="flex items-center space-x-3">
-                  <span class="w-6 h-6 rounded-full bg-brand-lightGray text-brand-black flex items-center justify-center text-xs font-bold font-serif">
+                  <span class="w-7 h-7 rounded-full bg-brand-lightGray text-brand-black flex items-center justify-center text-xs font-bold font-serif">
                     0${idx + 1}
                   </span>
                   <h3 class="font-serif text-base sm:text-lg font-bold text-brand-black">${t.title}</h3>
@@ -432,16 +450,46 @@
           <!-- Bottom CTA -->
           <div class="text-center pt-8 space-y-4">
             <button onclick="window.app.startQuestionnaire()" class="px-10 py-4 bg-brand-black hover:bg-brand-bronze text-white text-xs sm:text-sm font-bold tracking-[0.25em] uppercase rounded-sm shadow-xl hover:shadow-2xl transition-all duration-300 inline-flex items-center space-x-3 group">
-              <span>LET'S BEGIN</span>
+              <span>CONTINUE TO CHAPTER 1</span>
               <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
             </button>
             <div>
               <button onclick="window.app.goToWelcome()" class="text-xs text-brand-muted hover:text-brand-black underline tracking-wider uppercase">
-                Back to Introduction
+                Back to Welcome Screen
               </button>
             </div>
           </div>
 
+        </div>
+      `;
+    }
+
+    // ========================================================
+    // CHAPTER INTERSTITIAL TRANSITION SCREEN
+    // ========================================================
+    renderChapterInterstitialScreen(chapterIndex) {
+      const chapter = this.schema.chapters[chapterIndex];
+      return `
+        <div class="animate-fade-in-up max-w-3xl mx-auto text-center py-12 sm:py-24 space-y-8">
+          <div class="space-y-3">
+            <span class="px-3 py-1 bg-brand-black text-white text-[10px] font-bold tracking-[0.3em] uppercase rounded-xs">
+              CHAPTER ${chapter.number}
+            </span>
+            <h2 class="font-serif text-4xl sm:text-5xl font-bold text-brand-black tracking-tight leading-tight">
+              ${chapter.title}
+            </h2>
+            <div class="w-16 h-0.5 bg-brand-bronze mx-auto my-4"></div>
+            <p class="text-sm sm:text-base text-brand-slate font-light leading-relaxed max-w-xl mx-auto">
+              ${chapter.description}
+            </p>
+          </div>
+
+          <div class="pt-6">
+            <button onclick="window.app.enterChapterContent(${chapterIndex})" class="px-12 py-4 bg-brand-black hover:bg-brand-bronze text-white text-xs sm:text-sm font-bold tracking-[0.25em] uppercase rounded-sm shadow-xl transition-all duration-300 inline-flex items-center space-x-3 group">
+              <span>EXPLORE CHAPTER</span>
+              <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+            </button>
+          </div>
         </div>
       `;
     }
@@ -455,17 +503,20 @@
       const isLast = chapterIndex === this.schema.chapters.length - 1;
 
       return `
-        <div class="animate-fade-in max-w-4xl mx-auto space-y-8 sm:space-y-12">
+        <div class="animate-fade-in-up max-w-4xl mx-auto space-y-8 sm:space-y-12">
           
-          <!-- Chapter Banner -->
+          <!-- Chapter Header Banner -->
           <div class="border-b border-brand-border pb-6 space-y-2">
-            <div class="flex items-center space-x-2">
-              <span class="px-2.5 py-0.5 bg-brand-black text-white text-[10px] font-bold tracking-widest uppercase rounded-xs">
-                CHAPTER ${chapter.number}
-              </span>
-              <span class="text-xs font-semibold tracking-wider text-brand-muted uppercase">
-                Part ${chapterIndex + 1} of ${this.schema.chapters.length}
-              </span>
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-2">
+                <span class="px-2.5 py-0.5 bg-brand-black text-white text-[10px] font-bold tracking-widest uppercase rounded-xs">
+                  CHAPTER ${chapter.number}
+                </span>
+                <span class="text-xs font-semibold tracking-wider text-brand-muted uppercase">
+                  Part ${chapterIndex + 1} of ${this.schema.chapters.length}
+                </span>
+              </div>
+              <span class="text-xs font-serif font-bold text-brand-bronze uppercase tracking-wider">${chapter.title}</span>
             </div>
             <h2 class="font-serif text-2xl sm:text-4xl font-bold text-brand-black">
               ${chapter.title}
@@ -475,24 +526,35 @@
             </p>
           </div>
 
-          <!-- Sections Container -->
+          <!-- Sections & Questions Container -->
           <div class="space-y-10">
             ${chapter.sections.map(sec => this.renderSection(sec)).join('')}
           </div>
 
-          <!-- Bottom Step Navigation Bar -->
-          <div class="pt-8 border-t border-brand-border flex flex-col sm:flex-row items-center justify-between gap-4">
-            <button onclick="window.app.prevChapter()" class="w-full sm:w-auto px-6 py-3.5 border border-brand-border hover:border-brand-black text-brand-black text-xs font-bold tracking-widest uppercase rounded-sm bg-white transition-all flex items-center justify-center space-x-2">
+          <!-- Bottom Navigation Bar (Desktop) -->
+          <div class="pt-8 border-t border-brand-border hidden sm:flex items-center justify-between gap-4">
+            <button onclick="window.app.prevChapter()" class="px-6 py-3.5 border border-brand-border hover:border-brand-black text-brand-black text-xs font-bold tracking-widest uppercase rounded-sm bg-white transition-all flex items-center space-x-2">
               <i data-lucide="arrow-left" class="w-4 h-4"></i>
               <span>${isFirst ? 'Before You Begin' : 'Previous Chapter'}</span>
             </button>
 
-            <div class="flex items-center space-x-3 w-full sm:w-auto">
-              <button onclick="window.app.nextChapter()" class="w-full sm:w-auto px-10 py-3.5 bg-brand-black hover:bg-brand-bronze text-white text-xs font-bold tracking-widest uppercase rounded-sm shadow-lg transition-all flex items-center justify-center space-x-2 group">
-                <span>${isLast ? 'Proceed to Review' : 'Save & Continue'}</span>
-                <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
-              </button>
-            </div>
+            <button onclick="window.app.nextChapter()" class="px-10 py-3.5 bg-brand-black hover:bg-brand-bronze text-white text-xs font-bold tracking-widest uppercase rounded-sm shadow-lg transition-all flex items-center space-x-2 group">
+              <span>${isLast ? 'Proceed to Review' : 'Save & Continue'}</span>
+              <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+            </button>
+          </div>
+
+          <!-- Sticky Mobile Navigation Bar -->
+          <div class="mobile-sticky-nav sm:hidden flex items-center justify-between gap-3">
+            <button onclick="window.app.prevChapter()" class="px-4 py-3 border border-brand-border text-brand-black text-[11px] font-bold tracking-wider uppercase rounded-sm bg-white flex items-center space-x-1.5">
+              <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
+              <span>Back</span>
+            </button>
+
+            <button onclick="window.app.nextChapter()" class="px-6 py-3 bg-brand-black text-white text-[11px] font-bold tracking-wider uppercase rounded-sm flex items-center space-x-1.5">
+              <span>${isLast ? 'Review' : 'Next'}</span>
+              <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </button>
           </div>
 
         </div>
@@ -555,7 +617,7 @@
               <label class="block text-xs font-bold tracking-wider text-brand-black uppercase">
                 ${q.label} ${q.required ? '<span class="text-red-500">*</span>' : ''} ${tooltipBtn}
               </label>
-              <input type="${q.type}" value="${val || ''}" placeholder="${q.placeholder || ''}" oninput="window.app.handleInput('${q.id}', this.value)" class="w-full px-4 py-2.5 bg-brand-offwhite border border-brand-border rounded text-xs text-brand-black placeholder:text-brand-muted/60 focus:bg-white" />
+              <input type="${q.type}" value="${val || ''}" placeholder="${q.placeholder || ''}" oninput="window.app.handleInput('${q.id}', this.value)" class="w-full px-4 py-3 bg-brand-offwhite border border-brand-border rounded text-xs text-brand-black placeholder:text-brand-muted/60 focus:bg-white" />
             </div>
           `;
 
@@ -565,7 +627,7 @@
               <label class="block text-xs font-bold tracking-wider text-brand-black uppercase">
                 ${q.label} ${q.required ? '<span class="text-red-500">*</span>' : ''} ${tooltipBtn}
               </label>
-              <input type="number" value="${val || ''}" placeholder="${q.placeholder || ''}" oninput="window.app.handleInput('${q.id}', this.value)" class="w-full sm:w-48 px-4 py-2.5 bg-brand-offwhite border border-brand-border rounded text-xs text-brand-black placeholder:text-brand-muted/60 focus:bg-white" />
+              <input type="number" value="${val || ''}" placeholder="${q.placeholder || ''}" oninput="window.app.handleInput('${q.id}', this.value)" class="w-full sm:w-48 px-4 py-3 bg-brand-offwhite border border-brand-border rounded text-xs text-brand-black placeholder:text-brand-muted/60 focus:bg-white" />
             </div>
           `;
 
@@ -575,7 +637,7 @@
               <label class="block text-xs font-bold tracking-wider text-brand-black uppercase">
                 ${q.label} ${q.required ? '<span class="text-red-500">*</span>' : ''} ${tooltipBtn}
               </label>
-              <textarea rows="3" placeholder="${q.placeholder || ''}" oninput="window.app.handleInput('${q.id}', this.value)" class="w-full px-4 py-2.5 bg-brand-offwhite border border-brand-border rounded text-xs text-brand-black placeholder:text-brand-muted/60 focus:bg-white leading-relaxed">${val || ''}</textarea>
+              <textarea rows="3" placeholder="${q.placeholder || ''}" oninput="window.app.handleInput('${q.id}', this.value)" class="w-full px-4 py-3 bg-brand-offwhite border border-brand-border rounded text-xs text-brand-black placeholder:text-brand-muted/60 focus:bg-white leading-relaxed">${val || ''}</textarea>
             </div>
           `;
 
@@ -589,7 +651,7 @@
                 ${q.options.map(opt => {
                   const isSelected = val === opt;
                   return `
-                    <div onclick="window.app.handleSingleSelect('${q.id}', '${this.escapeHtml(opt)}')" class="option-card cursor-pointer p-3 rounded border text-xs flex items-center justify-between ${isSelected ? 'selected border-brand-black bg-white font-semibold' : 'border-brand-border bg-brand-offwhite/50 hover:bg-white hover:border-brand-slate text-brand-slate'}">
+                    <div onclick="window.app.handleSingleSelect('${q.id}', '${this.escapeHtml(opt)}')" class="option-card cursor-pointer p-3.5 rounded border text-xs flex items-center justify-between ${isSelected ? 'selected border-brand-black bg-white font-semibold' : 'border-brand-border bg-brand-offwhite/50 hover:bg-white text-brand-slate'}">
                       <span>${opt}</span>
                       <div class="w-4 h-4 rounded-full border flex items-center justify-center ml-2 flex-shrink-0 ${isSelected ? 'border-brand-black bg-brand-black text-white' : 'border-brand-border bg-white'}">
                         ${isSelected ? '<i data-lucide="check" class="w-2.5 h-2.5"></i>' : ''}
@@ -612,7 +674,7 @@
                 ${q.options.map(opt => {
                   const isSelected = currentList.includes(opt);
                   return `
-                    <div onclick="window.app.handleMultiSelect('${q.id}', '${this.escapeHtml(opt)}')" class="option-card cursor-pointer p-3 rounded border text-xs flex items-center justify-between ${isSelected ? 'selected border-brand-black bg-white font-semibold' : 'border-brand-border bg-brand-offwhite/50 hover:bg-white hover:border-brand-slate text-brand-slate'}">
+                    <div onclick="window.app.handleMultiSelect('${q.id}', '${this.escapeHtml(opt)}')" class="option-card cursor-pointer p-3.5 rounded border text-xs flex items-center justify-between ${isSelected ? 'selected border-brand-black bg-white font-semibold' : 'border-brand-border bg-brand-offwhite/50 hover:bg-white text-brand-slate'}">
                       <span>${opt}</span>
                       <div class="w-4 h-4 rounded border flex items-center justify-center ml-2 flex-shrink-0 ${isSelected ? 'border-brand-black bg-brand-black text-white' : 'border-brand-border bg-white'}">
                         ${isSelected ? '<i data-lucide="check" class="w-2.5 h-2.5"></i>' : ''}
@@ -655,7 +717,7 @@
 
           ${members.length === 0 ? `
             <div class="p-4 border border-dashed border-brand-border rounded text-center text-xs text-brand-muted bg-brand-offwhite/50">
-              No family members added yet. Click "+ Add Member" above to add family details (Children, Teenagers, Adults, Seniors).
+              No family members added yet. Click "+ Add Member" above to specify household routine needs.
             </div>
           ` : `
             <div class="space-y-3">
@@ -806,7 +868,7 @@
                 ${q.options.map(opt => {
                   const isSelected = val === opt;
                   return `
-                    <div onclick="window.app.handleDynamicRoomSingleSelect(${roomIdx}, '${q.id}', '${this.escapeHtml(opt)}')" class="option-card cursor-pointer p-3 rounded border text-xs flex items-center justify-between ${isSelected ? 'selected border-brand-black bg-white font-semibold' : 'border-brand-border bg-brand-offwhite/50 hover:bg-white hover:border-brand-slate text-brand-slate'}">
+                    <div onclick="window.app.handleDynamicRoomSingleSelect(${roomIdx}, '${q.id}', '${this.escapeHtml(opt)}')" class="option-card cursor-pointer p-3.5 rounded border text-xs flex items-center justify-between ${isSelected ? 'selected border-brand-black bg-white font-semibold' : 'border-brand-border bg-brand-offwhite/50 hover:bg-white text-brand-slate'}">
                       <span>${opt}</span>
                       <div class="w-4 h-4 rounded-full border flex items-center justify-center ml-2 flex-shrink-0 ${isSelected ? 'border-brand-black bg-brand-black text-white' : 'border-brand-border bg-white'}">
                         ${isSelected ? '<i data-lucide="check" class="w-2.5 h-2.5"></i>' : ''}
@@ -827,7 +889,7 @@
                 ${q.options.map(opt => {
                   const isSelected = currentList.includes(opt);
                   return `
-                    <div onclick="window.app.handleDynamicRoomMultiSelect(${roomIdx}, '${q.id}', '${this.escapeHtml(opt)}')" class="option-card cursor-pointer p-3 rounded border text-xs flex items-center justify-between ${isSelected ? 'selected border-brand-black bg-white font-semibold' : 'border-brand-border bg-brand-offwhite/50 hover:bg-white hover:border-brand-slate text-brand-slate'}">
+                    <div onclick="window.app.handleDynamicRoomMultiSelect(${roomIdx}, '${q.id}', '${this.escapeHtml(opt)}')" class="option-card cursor-pointer p-3.5 rounded border text-xs flex items-center justify-between ${isSelected ? 'selected border-brand-black bg-white font-semibold' : 'border-brand-border bg-brand-offwhite/50 hover:bg-white text-brand-slate'}">
                       <span>${opt}</span>
                       <div class="w-4 h-4 rounded border flex items-center justify-center ml-2 flex-shrink-0 ${isSelected ? 'border-brand-black bg-brand-black text-white' : 'border-brand-border bg-white'}">
                         ${isSelected ? '<i data-lucide="check" class="w-2.5 h-2.5"></i>' : ''}
@@ -843,7 +905,7 @@
           return `
             <div class="space-y-1.5">
               <label class="block text-xs font-bold tracking-wider text-brand-black uppercase">${q.label}</label>
-              <textarea rows="2" placeholder="${q.placeholder || ''}" oninput="window.app.handleDynamicRoomInput(${roomIdx}, '${q.id}', this.value)" class="w-full px-4 py-2.5 bg-brand-offwhite border border-brand-border rounded text-xs text-brand-black placeholder:text-brand-muted/60 focus:bg-white leading-relaxed">${val || ''}</textarea>
+              <textarea rows="2" placeholder="${q.placeholder || ''}" oninput="window.app.handleDynamicRoomInput(${roomIdx}, '${q.id}', this.value)" class="w-full px-4 py-3 bg-brand-offwhite border border-brand-border rounded text-xs text-brand-black placeholder:text-brand-muted/60 focus:bg-white leading-relaxed">${val || ''}</textarea>
             </div>
           `;
 
@@ -966,7 +1028,7 @@
                     <div class="p-4 space-y-2">
                       <div class="flex items-baseline justify-between">
                         <span class="text-[10px] font-bold text-brand-bronze uppercase tracking-widest">Style ${item.styleNumber}</span>
-                        ${isSelected ? '<span class="px-2 py-0.5 bg-brand-black text-white text-[9px] font-bold uppercase tracking-wider rounded-xs flex items-center space-x-1"><i data-lucide="check" class="w-3 h-3"></i><span>Selected</span></span>' : ''}
+                        ${isSelected ? '<span class="px-2 py-0.5 bg-brand-black text-white text-[9px] font-bold uppercase tracking-wider rounded-xs flex items-center space-x-1"><i data-lucide="check" class="w-3 h-3"></i><span>✓ SELECTED</span></span>' : ''}
                       </div>
                       <h4 class="font-serif text-base font-bold text-brand-black">${item.styleName}</h4>
                       <p class="text-[11px] text-brand-muted leading-relaxed line-clamp-2">
@@ -1052,11 +1114,11 @@
 
       const isSelected = this.sessionData.selected_visuals[category] && this.sessionData.selected_visuals[category].style_id === item.id;
       if (isSelected) {
-        selectBtn.classList.add('bg-emerald-600', 'text-white');
+        selectBtn.classList.add('bg-brand-black', 'text-white');
         selectBtn.classList.remove('bg-white', 'text-brand-black');
         selectText.textContent = '✓ Selected Reference';
       } else {
-        selectBtn.classList.remove('bg-emerald-600', 'text-white');
+        selectBtn.classList.remove('bg-brand-black', 'text-white');
         selectBtn.classList.add('bg-white', 'text-brand-black');
         selectText.textContent = 'Select This Style';
       }
@@ -1355,7 +1417,7 @@
       });
 
       return `
-        <div class="animate-fade-in max-w-4xl mx-auto space-y-8 sm:space-y-12">
+        <div class="animate-fade-in-up max-w-4xl mx-auto space-y-8 sm:space-y-12">
           
           <div class="border-b border-brand-border pb-6 space-y-2 text-center">
             <span class="text-xs font-bold tracking-[0.25em] text-brand-bronze uppercase">Design Brief Final Audit</span>
@@ -1500,24 +1562,24 @@
     }
 
     // ========================================================
-    // SCREEN 5: SUCCESS, PDF PREVIEW & CONSULTATION SCHEDULER
+    // SCREEN 5: SUCCESS & CONSULTATION SCHEDULER (ZERO CLIENT PDF)
     // ========================================================
     renderSuccessScreen() {
       const answers = this.sessionData.answers || {};
       const clientName = answers.client_name || 'Client';
 
       return `
-        <div class="animate-fade-in max-w-4xl mx-auto text-center py-6 sm:py-12 space-y-8 sm:space-y-12">
+        <div class="animate-fade-in-up max-w-4xl mx-auto text-center py-8 sm:py-16 space-y-8 sm:space-y-12">
           
           <!-- Celebration Header -->
           <div class="space-y-4">
-            <div class="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mx-auto border border-emerald-200">
+            <div class="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mx-auto border border-emerald-200 shadow-lg">
               <i data-lucide="check-circle" class="w-8 h-8"></i>
             </div>
-            <span class="text-xs font-bold tracking-[0.25em] text-brand-bronze uppercase">Design Brief Received</span>
+            <span class="text-xs font-bold tracking-[0.25em] text-brand-bronze uppercase">YOUR DESIGN STORY IS COMPLETE</span>
             <h2 class="font-serif text-3xl sm:text-5xl font-bold text-brand-black">Thank You, ${clientName}</h2>
             <p class="text-xs sm:text-sm text-brand-slate max-w-xl mx-auto leading-relaxed">
-              Your residential design brief has been saved and shared with the Shameer Associates architectural team.
+              Your responses have been securely submitted to the Shameer Associates design team.
             </p>
           </div>
 
@@ -1525,7 +1587,7 @@
           <div class="bg-white p-6 sm:p-8 rounded-lg shadow-luxury border border-brand-border max-w-2xl mx-auto space-y-4">
             <div class="flex items-center justify-between border-b border-brand-border/60 pb-3">
               <span class="text-xs font-bold tracking-wider text-brand-black uppercase">Design Brief Status</span>
-              <span class="text-[11px] text-emerald-600 font-semibold">✓ Submitted to Studio</span>
+              <span class="text-[11px] text-emerald-600 font-semibold">✓ Delivered to Studio</span>
             </div>
             <div class="flex items-start space-x-3 text-left">
               <div class="w-8 h-8 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600 flex-shrink-0 mt-0.5">

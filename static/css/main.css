@@ -1,24 +1,30 @@
 /* ======================================================== */
-/* SHAMEER ASSOCIATES — ARCHITECTURAL DESIGN STYLES */
+/* SHAMEER ASSOCIATES — LUXURY ARCHITECTURAL DESIGN SYSTEM */
 /* ======================================================== */
 
 :root {
   --color-brand-black: #121212;
-  --color-brand-charcoal: #1E1E1E;
+  --color-brand-charcoal: #1C1C1E;
+  --color-brand-slate: #2C2C2E;
   --color-brand-bronze: #8C7355;
   --color-brand-bronze-light: #A0825B;
+  --color-brand-bronze-muted: #C5B59E;
   --color-brand-offwhite: #FBFBF9;
+  --color-brand-light-gray: #F3F2EE;
   --color-brand-border: #E5E3DC;
+  --color-brand-border-dark: #3A3A3C;
+  --color-brand-muted: #7A7874;
 }
 
 body {
   background-color: var(--color-brand-offwhite);
   color: var(--color-brand-black);
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Typography Enhancements */
+/* Typography Classes */
 .font-serif {
   font-family: 'Cinzel', 'Cormorant Garamond', 'Georgia', serif;
 }
@@ -27,11 +33,15 @@ body {
   font-family: 'Cormorant Garamond', 'Georgia', serif;
 }
 
-/* Subtle fade in animations */
-@keyframes fadeIn {
+.font-sans {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+}
+
+/* Smooth Micro-Animations */
+@keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(16px);
   }
   to {
     opacity: 1;
@@ -39,40 +49,105 @@ body {
   }
 }
 
+.animate-fade-in-up {
+  animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 .animate-fade-in {
-  animation: fadeIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: fadeIn 0.35s ease-out forwards;
 }
 
-/* Architectural Image Card Hover Zoom (Desktop only) */
-@media (hover: hover) and (pointer: fine) {
-  .visual-card-img-container {
-    overflow: hidden;
-  }
-  .visual-card-img {
-    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-    transform-origin: center center;
-  }
-  .visual-card:hover .visual-card-img {
-    transform: scale(1.065);
-  }
-}
-
-/* Luxury Card Active States */
+/* Option Cards (Single & Multi-Select) */
 .option-card {
-  transition: all 0.2s ease-in-out;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  background-color: #FFFFFF;
+  border: 1px solid var(--color-brand-border);
+  position: relative;
+  cursor: pointer;
+  user-select: none;
 }
+
+.option-card:hover {
+  border-color: var(--color-brand-bronze-light);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -8px rgba(0, 0, 0, 0.05);
+}
+
 .option-card.selected {
   border-color: var(--color-brand-black);
   background-color: #FFFFFF;
-  box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 0 0 1px var(--color-brand-black), 0 12px 30px -10px rgba(0, 0, 0, 0.08);
 }
 
-.visual-card {
-  transition: all 0.25s ease-in-out;
+.option-card.selected .card-check-badge {
+  opacity: 1;
+  transform: scale(1);
 }
+
+/* Visual Reference Cards (Exterior, Kitchen, Bedroom, FLD) */
+.visual-card {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  background-color: #FFFFFF;
+  border: 1px solid var(--color-brand-border);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+.visual-card-img-container {
+  position: relative;
+  overflow: hidden;
+  background-color: #121212;
+}
+
+.visual-card-img {
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-origin: center center;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .visual-card:hover .visual-card-img {
+    transform: scale(1.05);
+  }
+}
+
+.visual-card:hover {
+  border-color: var(--color-brand-bronze-light);
+  box-shadow: 0 16px 36px -12px rgba(0, 0, 0, 0.1);
+}
+
 .visual-card.selected {
   border-color: var(--color-brand-black);
-  box-shadow: 0 0 0 2px var(--color-brand-black), 0 12px 30px -10px rgba(0,0,0,0.12);
+  box-shadow: 0 0 0 2px var(--color-brand-black), 0 16px 36px -12px rgba(0, 0, 0, 0.12);
+}
+
+/* Progress Bar Smooth Transition */
+.progress-bar-fill {
+  transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Text Inputs & Textareas */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="number"],
+textarea,
+select {
+  background-color: #FFFFFF;
+  border: 1px solid var(--color-brand-border);
+  color: var(--color-brand-black);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--color-brand-black) !important;
+  box-shadow: 0 0 0 1px var(--color-brand-black) !important;
 }
 
 /* Custom Scrollbars */
@@ -81,26 +156,42 @@ body {
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #F3F2EE;
+  background: var(--color-brand-light-gray);
 }
 ::-webkit-scrollbar-thumb {
-  background: #C5B59E;
+  background: var(--color-brand-bronze-muted);
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #8C7355;
+  background: var(--color-brand-bronze);
 }
 
-/* Input Focus Rings */
-input:focus, textarea:focus, select:focus {
-  outline: none;
-  border-color: var(--color-brand-black) !important;
-  box-shadow: 0 0 0 1px var(--color-brand-black) !important;
+/* Mobile Sticky Bottom Nav */
+@media (max-width: 768px) {
+  .mobile-sticky-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 40;
+    background-color: rgba(251, 251, 249, 0.96);
+    backdrop-filter: blur(12px);
+    border-top: 1px solid var(--color-brand-border);
+    padding: 12px 16px;
+    box-shadow: 0 -10px 25px rgba(0, 0, 0, 0.05);
+  }
+
+  body {
+    padding-bottom: 72px; /* Prevent bottom nav overlapping content */
+  }
 }
 
-/* Touch Friendly Mobile Targets */
-@media (max-width: 640px) {
-  .option-card, .btn-touch {
-    min-height: 48px;
+/* Reduced Motion Respect */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
