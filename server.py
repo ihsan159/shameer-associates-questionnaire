@@ -572,6 +572,23 @@ def update_project_status(project_id):
     return jsonify({'success': True, 'status': new_status})
 
 
+@app.route('/api/architect/project/<int:project_id>', methods=['DELETE'])
+@login_required
+@auth.require_role('architect', 'admin')
+def delete_architect_project(project_id):
+    project = architect_db.get_project_by_id(project_id)
+    if not project:
+        return jsonify({'success': False, 'error': 'Project not found'}), 404
+
+    permanent = request.args.get('permanent', '0') == '1'
+    if permanent:
+        architect_db.delete_project_permanent(project_id, current_user.id)
+    else:
+        architect_db.archive_project(project_id, current_user.id)
+
+    return jsonify({'success': True, 'message': 'Project deleted successfully'})
+
+
 @app.route('/api/architect/project/<int:project_id>/note', methods=['POST'])
 @login_required
 @auth.require_role('architect', 'admin')
@@ -778,12 +795,14 @@ def download_architect_pdf(project_id):
     filename = f"Shameer_Associates_Project_Brief_{project.get('project_uid', 'SA')}_{safe_name.replace(' ', '_')}_v{v_num}.pdf"
 
     is_download = request.args.get('download', '1') == '1'
-    return send_file(
+    resp = send_file(
         io.BytesIO(pdf_bytes),
         mimetype='application/pdf',
         as_attachment=is_download,
         download_name=filename
     )
+    resp.headers['Access-Control-Expose-Headers'] = 'Content-Disposition'
+    return resp
 
 
 @app.route('/api/health', methods=['GET'])

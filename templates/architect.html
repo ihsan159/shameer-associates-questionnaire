@@ -514,6 +514,25 @@
 
         .btn-pdf:hover { opacity: 0.9; }
 
+        .btn-delete-proj {
+            padding: 9px 16px;
+            background: #ef4444;
+            border: none;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: opacity 0.2s, background 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-delete-proj:hover { background: #dc2626; opacity: 0.95; }
+
         /* WORKSPACE SECTIONS / TABS */
         .workspace-tabs {
             display: flex;
@@ -1114,6 +1133,7 @@
                 </select>
 
                 <button class="btn-pdf" onclick="downloadArchitectPDF()">Download Architect PDF</button>
+                <button id="btnDeleteCurrentProject" class="btn-delete-proj" onclick="deleteCurrentProject()">🗑 Delete</button>
             </div>
         </div>
 
@@ -1346,7 +1366,10 @@
                     <td>${subDate}</td>
                     <td><span class="status-pill ${statusClass}">${statusLabel}</span></td>
                     <td>
-                        <button class="btn-action" onclick="openProject(${p.id})">Open Project</button>
+                        <div style="display:flex; gap:6px; align-items:center;">
+                            <button class="btn-action" onclick="openProject(${p.id})">Open</button>
+                            <button class="btn-action-delete" title="Delete Questionnaire" onclick="event.stopPropagation(); deleteProjectFromList(${p.id}, '${escapeHtml(p.client_name || p.project_uid)}')" style="background:#fee2e2; color:#dc2626; border:1px solid #fca5a5; padding:6px 10px; border-radius:4px; font-size:12px; cursor:pointer; font-weight:bold;">🗑</button>
+                        </div>
                     </td>
                 </tr>
             `;
@@ -1708,9 +1731,101 @@
         document.getElementById(`sec-${secId}`).style.display = 'block';
     }
 
-    function downloadArchitectPDF() {
+    async function downloadArchitectPDF() {
         if (!currentProject) return;
-        window.open(`/api/architect/project/${currentProject.id}/pdf?download=1`, '_blank');
+        const btn = document.querySelector('.btn-pdf');
+        const originalText = btn ? btn.innerHTML : 'Download Architect PDF';
+        if (btn) {
+            btn.innerHTML = '⏳ Generating PDF...';
+            btn.disabled = true;
+            btn.style.opacity = '0.7';
+        }
+        try {
+            const res = await fetch(`/api/architect/project/${currentProject.id}/pdf?download=1`, {
+                credentials: 'same-origin'
+            });
+            if (!res.ok) {
+                const text = await res.text();
+                throw new Error(text || `HTTP ${res.status}`);
+            }
+            const blob = await res.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+
+            let filename = `Shameer_Associates_Brief_${currentProject.project_uid || currentProject.id}.pdf`;
+            const disposition = res.headers.get('Content-Disposition');
+            if (disposition && disposition.indexOf('filename=') !== -1) {
+                const matches = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/.exec(disposition);
+                if (matches != null && matches[1]) {
+                    filename = matches[1].replace(/['"]/g, '');
+                }
+            }
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        } catch (err) {
+            console.error('PDF download error:', err);
+            alert('Could not download PDF: ' + err.message);
+        } finally {
+            if (btn) {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                btn.style.opacity = '1';
+            }
+        }
+    }
+
+    async function deleteCurrentProject() {
+        if (!currentProject) return;
+        const name = currentProject.client_name || currentProject.project_uid;
+        const isArchived = currentProject.archived === 1;
+        const promptMsg = isArchived
+            ? `Permanently delete questionnaire for "${name}"? This cannot be undone.`
+            : `Delete questionnaire for "${name}"? It will be removed from your active projects dashboard.`;
+        if (!confirm(promptMsg)) return;
+
+        try {
+            const url = `/api/architect/project/${currentProject.id}${isArchived ? '?permanent=1' : ''}`;
+            const res = await fetch(url, { method: 'DELETE', credentials: 'same-origin' });
+            const data = await res.json();
+            if (data.success) {
+                showDashboard();
+                loadProjects();
+                loadStats();
+            } else {
+                alert('Could not delete questionnaire: ' + (data.error || 'Unknown error'));
+            }
+        } catch (e) {
+            console.error('Delete project error:', e);
+            alert('Error deleting questionnaire: ' + e.message);
+        }
+    }
+
+    async function deleteProjectFromList(projectId, clientName) {
+        const isArchived = activeFilter === 'archived';
+        const promptMsg = isArchived
+            ? `Permanently delete questionnaire for "${clientName}"? This cannot be undone.`
+            : `Delete questionnaire for "${clientName}"? It will be removed from your active dashboard.`;
+        if (!confirm(promptMsg)) return;
+
+        try {
+            const url = `/api/architect/project/${projectId}${isArchived ? '?permanent=1' : ''}`;
+            const res = await fetch(url, { method: 'DELETE', credentials: 'same-origin' });
+            const data = await res.json();
+            if (data.success) {
+                loadProjects();
+                loadStats();
+            } else {
+                alert('Could not delete questionnaire: ' + (data.error || 'Unknown error'));
+            }
+        } catch (e) {
+            console.error('Delete project error:', e);
+            alert('Error deleting questionnaire: ' + e.message);
+        }
     }
 
     function escapeHtml(str) {

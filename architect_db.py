@@ -327,6 +327,34 @@ def archive_project(project_id, user_id):
         cursor.execute("UPDATE projects SET archived = 1, updated_at = CURRENT_TIMESTAMP WHERE id = %s", (project_id,))
         conn.commit()
     log_activity(project_id, user_id, 'project_archived', {})
+    return True
+
+
+def delete_project_permanent(project_id, user_id=None):
+    with get_db() as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT session_token FROM projects WHERE id = %s", (project_id,))
+        row = cursor.fetchone()
+        token = row['session_token'] if row else None
+
+        cursor.execute("DELETE FROM notifications WHERE project_id = %s", (project_id,))
+        cursor.execute("DELETE FROM project_activity WHERE project_id = %s", (project_id,))
+        cursor.execute("DELETE FROM pdf_versions WHERE project_id = %s", (project_id,))
+        cursor.execute("DELETE FROM project_status_history WHERE project_id = %s", (project_id,))
+        cursor.execute("DELETE FROM answer_edit_history WHERE project_id = %s", (project_id,))
+        cursor.execute("DELETE FROM architect_notes WHERE project_id = %s", (project_id,))
+        cursor.execute("DELETE FROM projects WHERE id = %s", (project_id,))
+
+        if token:
+            cursor.execute("DELETE FROM dynamic_rooms WHERE session_token = %s", (token,))
+            cursor.execute("DELETE FROM family_members WHERE session_token = %s", (token,))
+            cursor.execute("DELETE FROM selected_visuals WHERE session_token = %s", (token,))
+            cursor.execute("DELETE FROM uploads WHERE session_token = %s", (token,))
+            cursor.execute("DELETE FROM consultations WHERE session_token = %s", (token,))
+            cursor.execute("DELETE FROM answers WHERE session_token = %s", (token,))
+            cursor.execute("DELETE FROM sessions WHERE token = %s", (token,))
+        conn.commit()
+    return True
 
 
 def assign_architect(project_id, architect_id, assigner_id):
