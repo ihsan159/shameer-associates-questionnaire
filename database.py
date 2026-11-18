@@ -14,9 +14,10 @@ def is_postgres():
 
 class DBConnection:
     """Unified database connection wrapper providing standard interface for SQLite and PostgreSQL with context management."""
-    def __init__(self, conn, is_pg=False):
+    def __init__(self, conn, is_pg=False, pool=None):
         self._conn = conn
         self.is_pg = is_pg
+        self.pool = pool
 
     def cursor(self):
         return DBCursor(self._conn.cursor(), self.is_pg)
@@ -32,7 +33,10 @@ class DBConnection:
 
     def close(self):
         try:
-            self._conn.close()
+            if self.pool is not None:
+                self.pool.putconn(self._conn)
+            else:
+                self._conn.close()
         except Exception:
             pass
 
@@ -94,9 +98,47 @@ def db_binary(data):
         return psycopg2.Binary(data)
     return sqlite3.Binary(data)
 
+_pg_pool = None
+
+def get_pg_pool():
+    global _pg_pool
+    if _pg_pool is None:
+        import psycopg2.pool
+        from psycopg2.extras import RealDictCursor
+        url = os.environ.get('DATABASE_URL', '')
+        if url.startswith('postgres://'):
+            url = 'postgresql://' + url[len('postgres://'):]
+        _pg_pool = psycopg2.pool.ThreadedConnectionPool(
+            minconn=1,
+            maxconn=10,
+            dsn=url,
+            connect_timeout=10,
+            cursor_factory=RealDictCursor
+        )
+    return _pg_pool
+
 def get_db():
     """Factory function returning a unified DBConnection with context management."""
     if is_postgres():
+        pool = get_pg_pool()
+        conn = None
+        for _ in range(2):
+            try:
+                conn = pool.getconn()
+                if conn.closed:
+                    pool.putconn(conn, close=True)
+                    conn = None
+                    continue
+                conn.autocommit = False
+                return DBConnection(conn, is_pg=True, pool=pool)
+            except Exception:
+                if conn:
+                    try:
+                        pool.putconn(conn, close=True)
+                    except Exception:
+                        pass
+                    conn = None
+        # Fallback to direct connect if pool is exhausted or reconnecting
         import psycopg2
         from psycopg2.extras import RealDictCursor
         url = os.environ.get('DATABASE_URL', '')
@@ -104,7 +146,7 @@ def get_db():
             url = 'postgresql://' + url[len('postgres://'):]
         conn = psycopg2.connect(url, connect_timeout=10, cursor_factory=RealDictCursor)
         conn.autocommit = False
-        return DBConnection(conn, is_pg=True)
+        return DBConnection(conn, is_pg=True, pool=None)
     else:
         conn = sqlite3.connect(DB_PATH)
         conn.row_factory = sqlite3.Row

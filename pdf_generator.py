@@ -1131,10 +1131,11 @@ def generate_architect_pdf_bytes(project_data, schema):
         st_headers = ["From Status", "To Status", "Changed By", "Date & Note"]
         st_rows = [[Paragraph(f"<b>{h}</b>", styles['QuestionLabel']) for h in st_headers]]
         for sh in status_history:
-            f_st = sh.get('from_status', '').replace('_', ' ').title()
-            t_st = sh.get('to_status', '').replace('_', ' ').title()
+            f_st = (sh.get('from_status') or '').replace('_', ' ').title()
+            t_st = (sh.get('to_status') or '').replace('_', ' ').title()
             c_by = sh.get('changed_by_name', 'Architect')
-            c_note = f"{sh.get('changed_at', '')[:16]} — {sh.get('note', '')}" if sh.get('note') else str(sh.get('changed_at', ''))[:16]
+            ch_date = str(sh.get('changed_at') or '')[:16]
+            c_note = f"{ch_date} — {sh.get('note', '')}" if sh.get('note') else ch_date
             st_rows.append([
                 Paragraph(f_st, styles['AnswerValue']),
                 Paragraph(t_st, styles['AnswerValue']),

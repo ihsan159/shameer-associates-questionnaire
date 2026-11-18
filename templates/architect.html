@@ -1768,7 +1768,18 @@
             });
             if (!res.ok) {
                 const text = await res.text();
-                throw new Error(text || `HTTP ${res.status}`);
+                let errMsg = 'Server error generating PDF';
+                try {
+                    const parsed = JSON.parse(text);
+                    errMsg = parsed.error || errMsg;
+                } catch (_) {
+                    if (text.includes('Internal Server Error')) {
+                        errMsg = 'Internal server error while generating PDF. Please retry.';
+                    } else {
+                        errMsg = `Server returned status ${res.status}`;
+                    }
+                }
+                throw new Error(errMsg);
             }
             const blob = await res.blob();
             const url = window.URL.createObjectURL(blob);
@@ -1854,6 +1865,8 @@
 
     async function executeDeleteProject() {
         if (!deleteTarget) return;
+        const targetId = deleteTarget.id;
+        const isPerm = deleteTarget.permanent;
         const btn = document.getElementById('btnConfirmDeleteAction');
         const origText = btn ? btn.textContent : 'Yes, Delete';
         if (btn) {
@@ -1862,16 +1875,33 @@
         }
 
         try {
-            const url = `/api/architect/project/${deleteTarget.id}${deleteTarget.permanent ? '?permanent=1' : ''}`;
+            const url = `/api/architect/project/${targetId}${isPerm ? '?permanent=1' : ''}`;
             const res = await fetch(url, { method: 'DELETE', credentials: 'same-origin' });
+            if (!res.ok) {
+                const text = await res.text();
+                let errMsg = 'Could not delete questionnaire';
+                try {
+                    const parsed = JSON.parse(text);
+                    errMsg = parsed.error || errMsg;
+                } catch (_) {
+                    errMsg = text || `HTTP ${res.status}`;
+                }
+                throw new Error(errMsg);
+            }
             const data = await res.json();
             if (data.success) {
                 closeDeleteModal();
-                if (currentProject && currentProject.id === deleteTarget.id) {
+
+                // Optimistically remove from list immediately for zero perceived lag
+                projectsData = projectsData.filter(p => p.id !== targetId);
+                renderProjectsTable(projectsData);
+
+                if (currentProject && currentProject.id === targetId) {
                     showDashboard();
+                } else {
+                    loadStats();
+                    loadProjects();
                 }
-                loadProjects();
-                loadStats();
             } else {
                 alert('Could not delete questionnaire: ' + (data.error || 'Unknown error'));
             }

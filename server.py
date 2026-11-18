@@ -580,11 +580,12 @@ def delete_architect_project(project_id):
     if not project:
         return jsonify({'success': False, 'error': 'Project not found'}), 404
 
+    user_id = getattr(current_user, 'id', None)
     permanent = request.args.get('permanent', '0') == '1'
     if permanent:
-        architect_db.delete_project_permanent(project_id, current_user.id)
+        architect_db.delete_project_permanent(project_id, user_id)
     else:
-        architect_db.archive_project(project_id, current_user.id)
+        architect_db.archive_project(project_id, user_id)
 
     return jsonify({'success': True, 'message': 'Project deleted successfully'})
 
@@ -783,26 +784,34 @@ def architect_send_questionnaire():
 @login_required
 @auth.require_role('architect', 'admin')
 def download_architect_pdf(project_id):
-    project = architect_db.get_full_project_detail(project_id)
-    if not project:
-        return "Project not found", 404
+    try:
+        project = architect_db.get_full_project_detail(project_id)
+        if not project:
+            return jsonify({'success': False, 'error': 'Project not found'}), 404
 
-    pdf_bytes = generate_architect_pdf_bytes(project, QUESTIONNAIRE_SCHEMA)
-    version_id, v_num = architect_db.store_pdf_version(project_id, pdf_bytes, 'architect_export', current_user.id)
+        pdf_bytes = generate_architect_pdf_bytes(project, QUESTIONNAIRE_SCHEMA)
+        v_num = 1
+        try:
+            version_id, v_num = architect_db.store_pdf_version(project_id, pdf_bytes, 'architect_export', getattr(current_user, 'id', None))
+        except Exception as store_err:
+            app.logger.warning(f"Could not store pdf version history: {store_err}")
 
-    client_name = project.get('client_name', 'Client')
-    safe_name = "".join(c for c in client_name if c.isalnum() or c in (' ', '_', '-')).strip() or 'Client'
-    filename = f"Shameer_Associates_Project_Brief_{project.get('project_uid', 'SA')}_{safe_name.replace(' ', '_')}_v{v_num}.pdf"
+        client_name = project.get('client_name', 'Client')
+        safe_name = "".join(c for c in client_name if c.isalnum() or c in (' ', '_', '-')).strip() or 'Client'
+        filename = f"Shameer_Associates_Project_Brief_{project.get('project_uid', 'SA')}_{safe_name.replace(' ', '_')}_v{v_num}.pdf"
 
-    is_download = request.args.get('download', '1') == '1'
-    resp = send_file(
-        io.BytesIO(pdf_bytes),
-        mimetype='application/pdf',
-        as_attachment=is_download,
-        download_name=filename
-    )
-    resp.headers['Access-Control-Expose-Headers'] = 'Content-Disposition'
-    return resp
+        is_download = request.args.get('download', '1') == '1'
+        resp = send_file(
+            io.BytesIO(pdf_bytes),
+            mimetype='application/pdf',
+            as_attachment=is_download,
+            download_name=filename
+        )
+        resp.headers['Access-Control-Expose-Headers'] = 'Content-Disposition'
+        return resp
+    except Exception as e:
+        app.logger.error(f"Error generating PDF for project {project_id}: {e}", exc_info=True)
+        return jsonify({'success': False, 'error': f"Failed to generate PDF: {str(e)}"}), 500
 
 
 @app.route('/api/health', methods=['GET'])

@@ -264,25 +264,23 @@ def get_project_list(status_filter=None, search=None, include_archived=False):
     '''
     params = []
 
-    if not include_archived:
+    if include_archived or status_filter == 'archived':
+        sql += " AND p.archived = 1"
+    else:
         sql += " AND p.archived = 0"
 
     STATUS_FILTER_MAP = {
         'new_submission': ['new_submission'],
         'in_review': ['in_review', 'client_contacted'],
         'consultation': ['consultation_pending', 'consultation_completed'],
-        'completed': ['design_brief_ready', 'completed'],
-        'archived': None  # handled by include_archived
+        'completed': ['design_brief_ready', 'completed']
     }
 
-    if status_filter and status_filter != 'all':
-        if status_filter == 'archived':
-            sql = sql.replace("AND p.archived = 0", "AND p.archived = 1")
-        elif status_filter in STATUS_FILTER_MAP:
-            statuses = STATUS_FILTER_MAP[status_filter]
-            placeholders = ','.join(['%s'] * len(statuses))
-            sql += f" AND p.status IN ({placeholders})"
-            params.extend(statuses)
+    if status_filter and status_filter not in ('all', 'archived') and status_filter in STATUS_FILTER_MAP:
+        statuses = STATUS_FILTER_MAP[status_filter]
+        placeholders = ','.join(['%s'] * len(statuses))
+        sql += f" AND p.status IN ({placeholders})"
+        params.extend(statuses)
 
     if search:
         sql += " AND (p.client_name LIKE %s OR p.location LIKE %s OR p.project_uid LIKE %s OR p.project_type LIKE %s)"
@@ -321,12 +319,16 @@ def sync_project_metadata(session_token):
         conn.commit()
 
 
-def archive_project(project_id, user_id):
+def archive_project(project_id, user_id=None):
     with get_db() as conn:
         cursor = conn.cursor()
         cursor.execute("UPDATE projects SET archived = 1, updated_at = CURRENT_TIMESTAMP WHERE id = %s", (project_id,))
         conn.commit()
-    log_activity(project_id, user_id, 'project_archived', {})
+    if user_id:
+        try:
+            log_activity(project_id, user_id, 'project_archived', {})
+        except Exception:
+            pass
     return True
 
 
@@ -337,22 +339,44 @@ def delete_project_permanent(project_id, user_id=None):
         row = cursor.fetchone()
         token = row['session_token'] if row else None
 
-        cursor.execute("DELETE FROM notifications WHERE project_id = %s", (project_id,))
-        cursor.execute("DELETE FROM project_activity WHERE project_id = %s", (project_id,))
-        cursor.execute("DELETE FROM pdf_versions WHERE project_id = %s", (project_id,))
-        cursor.execute("DELETE FROM project_status_history WHERE project_id = %s", (project_id,))
-        cursor.execute("DELETE FROM answer_edit_history WHERE project_id = %s", (project_id,))
-        cursor.execute("DELETE FROM architect_notes WHERE project_id = %s", (project_id,))
-        cursor.execute("DELETE FROM projects WHERE id = %s", (project_id,))
+        if is_postgres():
+            cursor.execute("""
+                DELETE FROM notifications WHERE project_id = %(pid)s;
+                DELETE FROM project_activity WHERE project_id = %(pid)s;
+                DELETE FROM pdf_versions WHERE project_id = %(pid)s;
+                DELETE FROM project_status_history WHERE project_id = %(pid)s;
+                DELETE FROM answer_edit_history WHERE project_id = %(pid)s;
+                DELETE FROM architect_notes WHERE project_id = %(pid)s;
+                DELETE FROM projects WHERE id = %(pid)s;
+            """, {'pid': project_id})
 
-        if token:
-            cursor.execute("DELETE FROM dynamic_rooms WHERE session_token = %s", (token,))
-            cursor.execute("DELETE FROM family_members WHERE session_token = %s", (token,))
-            cursor.execute("DELETE FROM selected_visuals WHERE session_token = %s", (token,))
-            cursor.execute("DELETE FROM uploads WHERE session_token = %s", (token,))
-            cursor.execute("DELETE FROM consultations WHERE session_token = %s", (token,))
-            cursor.execute("DELETE FROM answers WHERE session_token = %s", (token,))
-            cursor.execute("DELETE FROM sessions WHERE token = %s", (token,))
+            if token:
+                cursor.execute("""
+                    DELETE FROM dynamic_rooms WHERE session_token = %(tok)s;
+                    DELETE FROM family_members WHERE session_token = %(tok)s;
+                    DELETE FROM selected_visuals WHERE session_token = %(tok)s;
+                    DELETE FROM uploads WHERE session_token = %(tok)s;
+                    DELETE FROM consultations WHERE session_token = %(tok)s;
+                    DELETE FROM answers WHERE session_token = %(tok)s;
+                    DELETE FROM sessions WHERE token = %(tok)s;
+                """, {'tok': token})
+        else:
+            cursor.execute("DELETE FROM notifications WHERE project_id = %s", (project_id,))
+            cursor.execute("DELETE FROM project_activity WHERE project_id = %s", (project_id,))
+            cursor.execute("DELETE FROM pdf_versions WHERE project_id = %s", (project_id,))
+            cursor.execute("DELETE FROM project_status_history WHERE project_id = %s", (project_id,))
+            cursor.execute("DELETE FROM answer_edit_history WHERE project_id = %s", (project_id,))
+            cursor.execute("DELETE FROM architect_notes WHERE project_id = %s", (project_id,))
+            cursor.execute("DELETE FROM projects WHERE id = %s", (project_id,))
+
+            if token:
+                cursor.execute("DELETE FROM dynamic_rooms WHERE session_token = %s", (token,))
+                cursor.execute("DELETE FROM family_members WHERE session_token = %s", (token,))
+                cursor.execute("DELETE FROM selected_visuals WHERE session_token = %s", (token,))
+                cursor.execute("DELETE FROM uploads WHERE session_token = %s", (token,))
+                cursor.execute("DELETE FROM consultations WHERE session_token = %s", (token,))
+                cursor.execute("DELETE FROM answers WHERE session_token = %s", (token,))
+                cursor.execute("DELETE FROM sessions WHERE token = %s", (token,))
         conn.commit()
     return True
 
