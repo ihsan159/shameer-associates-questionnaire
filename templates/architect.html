@@ -1133,7 +1133,7 @@
                 </select>
 
                 <button class="btn-pdf" onclick="downloadArchitectPDF()">Download Architect PDF</button>
-                <button id="btnDeleteCurrentProject" class="btn-delete-proj" onclick="deleteCurrentProject()">🗑 Delete</button>
+                <button id="btnDeleteCurrentProject" class="btn-delete-proj" onclick="openDeleteModal()">🗑 Delete</button>
             </div>
         </div>
 
@@ -1148,6 +1148,7 @@
             <div class="tab-item" onclick="switchSection('exterior', this)">Exterior</div>
             <div class="tab-item" onclick="switchSection('visuals', this)">Selected Visuals</div>
             <div class="tab-item" onclick="switchSection('notes', this)">Architect Notes 📝</div>
+            <div class="tab-item" onclick="switchSection('manage', this)" style="color:#ef4444;">Manage / Delete ⚙️</div>
         </div>
 
         <!-- SECTION 1: OVERVIEW -->
@@ -1254,6 +1255,27 @@
                 </div>
 
                 <div class="notes-list" id="notesList"></div>
+            </div>
+        </div>
+
+        <!-- SECTION 10: MANAGE / DELETE -->
+        <div id="sec-manage" class="workspace-section" style="display:none;">
+            <div class="section-card" style="border-color: rgba(239, 68, 68, 0.3);">
+                <div class="section-card-title" style="color:#ef4444;">
+                    <span>Manage Questionnaire & Deletion</span>
+                </div>
+                <p style="font-size:13px; color:var(--text-secondary); margin-bottom:18px; line-height:1.6;">
+                    Remove this questionnaire from your active projects dashboard. The record will be archived so all client responses and notes are safely preserved.
+                </p>
+                <div style="background:rgba(239, 68, 68, 0.05); border:1px solid rgba(239, 68, 68, 0.2); padding:16px; border-radius:8px; margin-bottom:20px; display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                        <div style="font-weight:600; font-size:13px; color:#ef4444;">Delete Questionnaire</div>
+                        <div style="font-size:11px; color:var(--text-muted); margin-top:4px;">Removes the questionnaire from "All Projects", "New", and active filter lists.</div>
+                    </div>
+                    <button class="btn-delete-proj" onclick="openDeleteModal()">
+                        🗑 Delete Questionnaire
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -1368,7 +1390,7 @@
                     <td>
                         <div style="display:flex; gap:6px; align-items:center;">
                             <button class="btn-action" onclick="openProject(${p.id})">Open</button>
-                            <button class="btn-action-delete" title="Delete Questionnaire" onclick="event.stopPropagation(); deleteProjectFromList(${p.id}, '${escapeHtml(p.client_name || p.project_uid)}')" style="background:#fee2e2; color:#dc2626; border:1px solid #fca5a5; padding:6px 10px; border-radius:4px; font-size:12px; cursor:pointer; font-weight:bold;">🗑</button>
+                            <button class="btn-action-delete" title="Delete Questionnaire" onclick="event.stopPropagation(); openDeleteModalForProject(${p.id}, '${escapeHtml(p.client_name || p.project_uid)}', '${p.project_uid}')" style="background:#fee2e2; color:#dc2626; border:1px solid #fca5a5; padding:6px 10px; border-radius:4px; font-size:12px; cursor:pointer; font-weight:bold;">🗑</button>
                         </div>
                     </td>
                 </tr>
@@ -1779,21 +1801,75 @@
         }
     }
 
-    async function deleteCurrentProject() {
+    let deleteTarget = null;
+
+    function openDeleteModal() {
         if (!currentProject) return;
-        const name = currentProject.client_name || currentProject.project_uid;
         const isArchived = currentProject.archived === 1;
-        const promptMsg = isArchived
-            ? `Permanently delete questionnaire for "${name}"? This cannot be undone.`
-            : `Delete questionnaire for "${name}"? It will be removed from your active projects dashboard.`;
-        if (!confirm(promptMsg)) return;
+        const name = currentProject.client_name || currentProject.project_uid || 'Untitled Project';
+        const uid = currentProject.project_uid ? `UID: ${currentProject.project_uid}` : `ID: #${currentProject.id}`;
+        deleteTarget = {
+            id: currentProject.id,
+            name: name,
+            uid: uid,
+            permanent: isArchived
+        };
+        const msgEl = document.getElementById('deleteModalMessage');
+        if (msgEl) {
+            msgEl.textContent = isArchived
+                ? 'Are you sure you want to permanently delete this questionnaire? This action cannot be undone.'
+                : 'Are you sure you want to delete this questionnaire? It will be removed from your active projects dashboard.';
+        }
+        document.getElementById('deleteModalTargetName').textContent = name;
+        document.getElementById('deleteModalTargetUID').textContent = uid;
+        const modal = document.getElementById('deleteConfirmModal');
+        if (modal) modal.classList.add('show');
+    }
+
+    function openDeleteModalForProject(projectId, clientName, projectUid) {
+        const isArchived = activeFilter === 'archived';
+        deleteTarget = {
+            id: projectId,
+            name: clientName || projectUid || 'Project #' + projectId,
+            uid: projectUid ? `UID: ${projectUid}` : `ID: #${projectId}`,
+            permanent: isArchived
+        };
+        const msgEl = document.getElementById('deleteModalMessage');
+        if (msgEl) {
+            msgEl.textContent = isArchived
+                ? 'Are you sure you want to permanently delete this questionnaire? This action cannot be undone.'
+                : 'Are you sure you want to delete this questionnaire? It will be removed from your active dashboard.';
+        }
+        document.getElementById('deleteModalTargetName').textContent = deleteTarget.name;
+        document.getElementById('deleteModalTargetUID').textContent = deleteTarget.uid;
+        const modal = document.getElementById('deleteConfirmModal');
+        if (modal) modal.classList.add('show');
+    }
+
+    function closeDeleteModal() {
+        const modal = document.getElementById('deleteConfirmModal');
+        if (modal) modal.classList.remove('show');
+        deleteTarget = null;
+    }
+
+    async function executeDeleteProject() {
+        if (!deleteTarget) return;
+        const btn = document.getElementById('btnConfirmDeleteAction');
+        const origText = btn ? btn.textContent : 'Yes, Delete';
+        if (btn) {
+            btn.textContent = 'Deleting...';
+            btn.disabled = true;
+        }
 
         try {
-            const url = `/api/architect/project/${currentProject.id}${isArchived ? '?permanent=1' : ''}`;
+            const url = `/api/architect/project/${deleteTarget.id}${deleteTarget.permanent ? '?permanent=1' : ''}`;
             const res = await fetch(url, { method: 'DELETE', credentials: 'same-origin' });
             const data = await res.json();
             if (data.success) {
-                showDashboard();
+                closeDeleteModal();
+                if (currentProject && currentProject.id === deleteTarget.id) {
+                    showDashboard();
+                }
                 loadProjects();
                 loadStats();
             } else {
@@ -1802,30 +1878,20 @@
         } catch (e) {
             console.error('Delete project error:', e);
             alert('Error deleting questionnaire: ' + e.message);
+        } finally {
+            if (btn) {
+                btn.textContent = origText;
+                btn.disabled = false;
+            }
         }
     }
 
-    async function deleteProjectFromList(projectId, clientName) {
-        const isArchived = activeFilter === 'archived';
-        const promptMsg = isArchived
-            ? `Permanently delete questionnaire for "${clientName}"? This cannot be undone.`
-            : `Delete questionnaire for "${clientName}"? It will be removed from your active dashboard.`;
-        if (!confirm(promptMsg)) return;
+    function deleteCurrentProject() {
+        openDeleteModal();
+    }
 
-        try {
-            const url = `/api/architect/project/${projectId}${isArchived ? '?permanent=1' : ''}`;
-            const res = await fetch(url, { method: 'DELETE', credentials: 'same-origin' });
-            const data = await res.json();
-            if (data.success) {
-                loadProjects();
-                loadStats();
-            } else {
-                alert('Could not delete questionnaire: ' + (data.error || 'Unknown error'));
-            }
-        } catch (e) {
-            console.error('Delete project error:', e);
-            alert('Error deleting questionnaire: ' + e.message);
-        }
+    function deleteProjectFromList(projectId, clientName, projectUid) {
+        openDeleteModalForProject(projectId, clientName, projectUid);
     }
 
     function escapeHtml(str) {
@@ -1900,6 +1966,30 @@
             <button class="btn-back" onclick="closeNewQuestionnaireModal()" style="margin:0; padding:8px 18px;">Close</button>
             <button id="nqCreateBtn" class="btn-pdf" onclick="createNewQuestionnaire()" style="margin:0;">
                 Create Questionnaire Link
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- DELETE CONFIRMATION MODAL                                    -->
+<!-- ============================================================ -->
+<div class="modal-overlay" id="deleteConfirmModal">
+    <div class="modal-box" style="max-width:480px; text-align:left;">
+        <div class="modal-title" style="color:#ef4444; display:flex; align-items:center; gap:8px;">
+            <span>🗑 Delete Questionnaire</span>
+        </div>
+        <p id="deleteModalMessage" style="font-size:13px; color:var(--text-secondary); margin-bottom:16px; line-height:1.6;">
+            Are you sure you want to delete this questionnaire? It will be removed from your active projects dashboard.
+        </p>
+        <div style="background:rgba(239, 68, 68, 0.08); border-left:3px solid #ef4444; padding:12px 14px; border-radius:6px; margin-bottom:20px;">
+            <div style="font-size:13px; font-weight:600; color:#ef4444;" id="deleteModalTargetName">Project</div>
+            <div style="font-size:11px; color:var(--text-muted); margin-top:3px;" id="deleteModalTargetUID">UID: -</div>
+        </div>
+        <div class="modal-footer" style="display:flex; justify-content:flex-end; gap:10px;">
+            <button type="button" class="btn-back" onclick="closeDeleteModal()" style="margin:0; padding:8px 18px; border-radius:6px;">Cancel</button>
+            <button type="button" id="btnConfirmDeleteAction" class="btn-delete-proj" onclick="executeDeleteProject()" style="padding:8px 18px; margin:0; border-radius:6px; background:#ef4444; border:none; color:#fff; cursor:pointer; font-weight:600;">
+                Yes, Delete
             </button>
         </div>
     </div>
@@ -2130,11 +2220,18 @@
     document.getElementById('newQuestionnaireModal').addEventListener('click', function(e) {
         if (e.target === this) closeNewQuestionnaireModal();
     });
+    const delModal = document.getElementById('deleteConfirmModal');
+    if (delModal) {
+        delModal.addEventListener('click', function(e) {
+            if (e.target === this) closeDeleteModal();
+        });
+    }
 
     // Close modal on Escape key
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             closeNewQuestionnaireModal();
+            closeDeleteModal();
         }
     });
 </script>
