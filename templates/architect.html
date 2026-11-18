@@ -1312,6 +1312,7 @@
 
 <script>
     let activeFilter = 'all';
+    let allProjectsMaster = [];
     let projectsData = [];
     let currentProject = null;
     let editingFieldQId = null;
@@ -1348,16 +1349,49 @@
 
     async function loadProjects() {
         try {
-            const search = document.getElementById('searchInput').value.trim();
-            const res = await fetch(`/api/architect/projects?status=${activeFilter}&search=${encodeURIComponent(search)}`);
+            const res = await fetch('/api/architect/projects?include_archived=1');
             const data = await res.json();
             if (data.success) {
-                projectsData = data.projects;
-                renderProjectsTable(projectsData);
+                allProjectsMaster = data.projects || [];
+                applyFilterAndRender();
             }
         } catch (e) {
             console.error('Load projects error:', e);
         }
+    }
+
+    function applyFilterAndRender() {
+        const searchInput = document.getElementById('searchInput');
+        const search = searchInput ? searchInput.value.trim().toLowerCase() : '';
+        let list = (allProjectsMaster || []).slice();
+
+        if (activeFilter === 'archived') {
+            list = list.filter(p => p.archived === 1);
+        } else {
+            list = list.filter(p => p.archived === 0);
+            if (activeFilter !== 'all') {
+                const map = {
+                    'new_submission': ['new_submission'],
+                    'in_review': ['in_review', 'client_contacted'],
+                    'consultation': ['consultation_pending', 'consultation_completed'],
+                    'completed': ['design_brief_ready', 'completed']
+                };
+                const allowed = map[activeFilter] || [activeFilter];
+                list = list.filter(p => allowed.includes(p.status));
+            }
+        }
+
+        if (search) {
+            list = list.filter(p =>
+                (p.client_name && p.client_name.toLowerCase().includes(search)) ||
+                (p.project_uid && p.project_uid.toLowerCase().includes(search)) ||
+                (p.location && p.location.toLowerCase().includes(search)) ||
+                (p.project_type && p.project_type.toLowerCase().includes(search))
+            );
+        }
+
+        projectsData = list;
+        renderProjectsTable(projectsData);
     }
 
     function renderProjectsTable(projects) {
@@ -1401,12 +1435,12 @@
     function setFilter(filter, el) {
         activeFilter = filter;
         document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
-        el.classList.add('active');
-        loadProjects();
+        if (el) el.classList.add('active');
+        applyFilterAndRender();
     }
 
     function handleSearch() {
-        loadProjects();
+        applyFilterAndRender();
     }
 
     async function loadNotifications() {
@@ -1730,6 +1764,15 @@
 
     async function updateProjectStatus(newStatus) {
         if (!currentProject) return;
+        const oldStatus = currentProject.status;
+        currentProject.status = newStatus;
+
+        // Optimistically update in memory and in select dropdown immediately (0 ms)
+        const select = document.getElementById('projStatusSelect');
+        if (select) select.value = newStatus;
+        const cached = allProjectsMaster.find(p => p.id === currentProject.id);
+        if (cached) cached.status = newStatus;
+
         try {
             const res = await fetch(`/api/architect/project/${currentProject.id}/status`, {
                 method: 'POST',
@@ -1738,19 +1781,33 @@
             });
             const data = await res.json();
             if (data.success) {
-                openProject(currentProject.id);
+                loadStats();
+            } else {
+                currentProject.status = oldStatus;
+                if (select) select.value = oldStatus;
+                if (cached) cached.status = oldStatus;
+                alert('Could not update status: ' + (data.error || 'Server error'));
             }
         } catch (e) {
             console.error('Update status error:', e);
+            currentProject.status = oldStatus;
+            if (select) select.value = oldStatus;
+            if (cached) cached.status = oldStatus;
         }
     }
 
     function switchSection(secId, el) {
         document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
-        el.classList.add('active');
+        if (el) {
+            el.classList.add('active');
+        } else {
+            const targetTab = document.querySelector(`.tab-item[onclick*="${secId}"]`);
+            if (targetTab) targetTab.classList.add('active');
+        }
 
         document.querySelectorAll('.workspace-section').forEach(s => s.style.display = 'none');
-        document.getElementById(`sec-${secId}`).style.display = 'block';
+        const sec = document.getElementById(`sec-${secId}`);
+        if (sec) sec.style.display = 'block';
     }
 
     async function downloadArchitectPDF() {
@@ -2183,37 +2240,51 @@
         await sendQuestionnaireToPhone(token, phoneToUse, name, canonicalUrl, 'projQLinkFeedback');
     }
 
-    async function sendQuestionnaireToPhone(token, phone, clientName, questUrl, feedbackId) {
+    function formatWhatsappNumber(phone) {
+        if (!phone) return '';
+        let digits = String(phone).replace(/\D/g, '');
+        while (digits.startsWith('0')) digits = digits.substring(1);
+        if (digits.length === 10 && ['6', '7', '8', '9'].includes(digits[0])) {
+            digits = '91' + digits;
+        }
+        return digits;
+    }
+
+    function sendQuestionnaireToPhone(token, phone, clientName, questUrl, feedbackId) {
         const feedbackEl = document.getElementById(feedbackId);
-        if (feedbackEl) feedbackEl.textContent = 'Opening WhatsApp...';
-
-        try {
-            const res = await fetch('/api/architect/send-questionnaire', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ token, phone, client_name: clientName })
-            });
-            const data = await res.json();
-
-            if (data.success && data.wa_url) {
-                window.open(data.wa_url, '_blank');
-                if (feedbackEl) {
-                    feedbackEl.textContent = '✓ WhatsApp opened with questionnaire link.';
-                    setTimeout(() => { feedbackEl.textContent = ''; }, 4000);
-                }
-            } else {
-                if (feedbackEl) {
-                    feedbackEl.textContent = data.error || 'Could not open WhatsApp.';
-                    setTimeout(() => { feedbackEl.textContent = ''; }, 4000);
-                }
-            }
-        } catch (e) {
-            console.error('Send to phone error:', e);
+        if (!phone) {
             if (feedbackEl) {
-                feedbackEl.textContent = 'Network error. Please copy the link manually.';
+                feedbackEl.textContent = 'No phone number found. Please enter a valid phone number.';
                 setTimeout(() => { feedbackEl.textContent = ''; }, 4000);
             }
+            return;
         }
+
+        const waNum = formatWhatsappNumber(phone);
+        const name = clientName || 'Client';
+        const url = questUrl || `${window.location.origin}/questionnaire/${token}`;
+        const message = `Hello ${name},\n\nPlease complete your Shameer Associates Residential Design Questionnaire using the link below:\n\n${url}\n\nThank you,\nShameer Associates`;
+        const waUrl = `https://wa.me/${waNum}?text=${encodeURIComponent(message)}`;
+
+        // Open immediately so browser popup blocker never intercepts it
+        const win = window.open(waUrl, '_blank');
+        if (!win || win.closed || typeof win.closed === 'undefined') {
+            if (feedbackEl) {
+                feedbackEl.innerHTML = `<a href="${waUrl}" target="_blank" style="color:var(--accent-gold); font-weight:600; text-decoration:underline;">Click here to open WhatsApp →</a>`;
+            }
+        } else {
+            if (feedbackEl) {
+                feedbackEl.textContent = '✓ WhatsApp chat opened. Click "Send" in WhatsApp to deliver the message.';
+                setTimeout(() => { feedbackEl.textContent = ''; }, 5000);
+            }
+        }
+
+        // Notify backend in background for audit logging
+        fetch('/api/architect/send-questionnaire', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ token, phone, client_name: name })
+        }).catch(err => console.warn('Background send log warning:', err));
     }
 
     // ============================================================

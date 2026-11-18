@@ -541,7 +541,12 @@ def get_architect_stats():
 def get_architect_projects():
     status_filter = request.args.get('status', 'all')
     search = request.args.get('search', '')
-    projects = architect_db.get_project_list(status_filter=status_filter, search=search)
+    include_all = request.args.get('include_archived', '0') == '1'
+    projects = architect_db.get_project_list(
+        status_filter=status_filter,
+        search=search,
+        include_all=include_all
+    )
     return jsonify({'success': True, 'projects': projects})
 
 

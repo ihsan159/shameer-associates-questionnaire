@@ -253,7 +253,7 @@ def get_dashboard_stats():
         return stats
 
 
-def get_project_list(status_filter=None, search=None, include_archived=False):
+def get_project_list(status_filter=None, search=None, include_archived=False, include_all=False):
     sql = '''
     SELECT p.*, u.full_name as assigned_architect_name,
            s.progress_percent, s.submitted_at
@@ -264,10 +264,11 @@ def get_project_list(status_filter=None, search=None, include_archived=False):
     '''
     params = []
 
-    if include_archived or status_filter == 'archived':
-        sql += " AND p.archived = 1"
-    else:
-        sql += " AND p.archived = 0"
+    if not include_all:
+        if include_archived or status_filter == 'archived':
+            sql += " AND p.archived = 1"
+        else:
+            sql += " AND p.archived = 0"
 
     STATUS_FILTER_MAP = {
         'new_submission': ['new_submission'],
@@ -794,6 +795,120 @@ def update_user(user_id, full_name=None, role=None, is_active=None):
 def get_full_project_detail(project_id):
     """Return everything needed for architect project detail view."""
     import database as db
+
+    if is_postgres():
+        try:
+            with get_db() as conn:
+                cursor = conn.cursor()
+                cursor.execute("""
+                    SELECT json_build_object(
+                        'project', (
+                            SELECT row_to_json(p_row) FROM (
+                                SELECT p.*, u.full_name as assigned_architect_name
+                                FROM projects p
+                                LEFT JOIN users u ON p.assigned_architect_id = u.id
+                                WHERE p.id = %(pid)s
+                            ) p_row
+                        ),
+                        'session', (
+                            SELECT row_to_json(s) FROM sessions s
+                            WHERE token = (SELECT session_token FROM projects WHERE id = %(pid)s)
+                        ),
+                        'answers', (
+                            SELECT COALESCE(json_agg(a), '[]'::json) FROM answers a
+                            WHERE session_token = (SELECT session_token FROM projects WHERE id = %(pid)s)
+                        ),
+                        'family_members', (
+                            SELECT COALESCE(json_agg(f), '[]'::json) FROM family_members f
+                            WHERE session_token = (SELECT session_token FROM projects WHERE id = %(pid)s)
+                        ),
+                        'dynamic_rooms', (
+                            SELECT COALESCE(json_agg(r), '[]'::json) FROM dynamic_rooms r
+                            WHERE session_token = (SELECT session_token FROM projects WHERE id = %(pid)s)
+                        ),
+                        'selected_visuals', (
+                            SELECT COALESCE(json_agg(v), '[]'::json) FROM selected_visuals v
+                            WHERE session_token = (SELECT session_token FROM projects WHERE id = %(pid)s)
+                        ),
+                        'uploads', (
+                            SELECT COALESCE(json_agg(u), '[]'::json) FROM uploads u
+                            WHERE session_token = (SELECT session_token FROM projects WHERE id = %(pid)s)
+                        ),
+                        'consultation', (
+                            SELECT row_to_json(cs) FROM consultations cs
+                            WHERE session_token = (SELECT session_token FROM projects WHERE id = %(pid)s)
+                        ),
+                        'notes', (
+                            SELECT COALESCE(json_agg(n_row), '[]'::json) FROM (
+                                SELECT an.*, u.full_name as author_name
+                                FROM architect_notes an
+                                LEFT JOIN users u ON an.author_id = u.id
+                                WHERE an.project_id = %(pid)s AND an.deleted_at IS NULL
+                                ORDER BY an.created_at DESC
+                            ) n_row
+                        ),
+                        'status_history', (
+                            SELECT COALESCE(json_agg(sh_row), '[]'::json) FROM (
+                                SELECT psh.*, u.full_name as changed_by_name
+                                FROM project_status_history psh
+                                LEFT JOIN users u ON psh.changed_by_id = u.id
+                                WHERE psh.project_id = %(pid)s
+                                ORDER BY psh.changed_at DESC
+                            ) sh_row
+                        ),
+                        'activity', (
+                            SELECT COALESCE(json_agg(act_row), '[]'::json) FROM (
+                                SELECT pa.*, u.full_name as actor_name
+                                FROM project_activity pa
+                                LEFT JOIN users u ON pa.actor_id = u.id
+                                WHERE pa.project_id = %(pid)s
+                                ORDER BY pa.occurred_at DESC
+                                LIMIT 50
+                            ) act_row
+                        ),
+                        'pdf_versions', (
+                            SELECT COALESCE(json_agg(pdf_row), '[]'::json) FROM (
+                                SELECT id, project_id, version_number, label, generated_at
+                                FROM pdf_versions
+                                WHERE project_id = %(pid)s
+                                ORDER BY version_number DESC
+                            ) pdf_row
+                        )
+                    ) as full_detail
+                """, {'pid': project_id})
+                row = cursor.fetchone()
+                if row and row.get('full_detail') and row['full_detail'].get('project'):
+                    detail = row['full_detail']
+                    proj = detail['project']
+                    session = detail.get('session') or {}
+
+                    ans_dict = {}
+                    for a in detail.get('answers') or []:
+                        try:
+                            val = json.loads(a.get('answer_json', '""'))
+                        except Exception:
+                            val = a.get('answer_json')
+                        ans_dict[a['question_id']] = val
+
+                    vis_dict = {}
+                    for v in detail.get('selected_visuals') or []:
+                        vis_dict[v.get('category', '')] = v
+
+                    proj['session'] = session
+                    proj['answers'] = ans_dict
+                    proj['family_members'] = detail.get('family_members') or []
+                    proj['dynamic_rooms'] = detail.get('dynamic_rooms') or []
+                    proj['selected_visuals'] = vis_dict
+                    proj['uploads'] = detail.get('uploads') or []
+                    proj['consultation'] = detail.get('consultation')
+                    proj['notes'] = detail.get('notes') or []
+                    proj['status_history'] = detail.get('status_history') or []
+                    proj['activity'] = detail.get('activity') or []
+                    proj['pdf_versions'] = detail.get('pdf_versions') or []
+                    return proj
+        except Exception as e:
+            import logging
+            logging.getLogger('architect_db').warning(f"Fast detail query failed, falling back: {e}")
 
     project = get_project_by_id(project_id)
     if not project:
