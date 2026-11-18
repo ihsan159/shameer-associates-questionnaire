@@ -1333,20 +1333,93 @@
 
     async handleFileUpload(files) {
       if (!files || files.length === 0 || !this.sessionToken) return;
-      this.updateSaveStatus('Uploading document...');
+      const MAX_UPLOAD_SIZE = 32 * 1024 * 1024; // 32 MB
 
       for (let i = 0; i < files.length; i++) {
-        const formData = new FormData();
-        formData.append('file', files[i]);
-        formData.append('category', 'site_document');
+        const file = files[i];
+
+        // 1. Client-side size validation
+        if (file.size > MAX_UPLOAD_SIZE) {
+          alert(`"${file.name}" exceeds the 32 MB maximum upload limit.`);
+          continue;
+        }
+
+        this.updateSaveStatus(`Preparing upload for "${file.name}"...`);
 
         try {
-          const res = await fetch(`/api/session/${this.sessionToken}/upload`, {
+          // 2. Prepare upload (request signed URL from Supabase Storage)
+          const prepRes = await fetch(`/api/session/${this.sessionToken}/upload/prepare`, {
             method: 'POST',
-            body: formData
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              filename: file.name,
+              size: file.size,
+              category: 'site_document'
+            })
           });
-          const data = await res.json();
-          if (data.success) {
+
+          const prepData = await prepRes.json();
+          if (!prepRes.ok || !prepData.success) {
+            throw new Error(prepData.error || 'Server rejected upload preparation.');
+          }
+
+          if (prepData.direct_upload && prepData.upload_url) {
+            // 3a. Direct PUT to Supabase Storage signed URL (bypasses serverless limits)
+            this.updateSaveStatus(`Uploading "${file.name}" directly to secure storage...`);
+            const uploadRes = await fetch(prepData.upload_url, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': file.type || 'application/octet-stream'
+              },
+              body: file
+            });
+
+            if (!uploadRes.ok) {
+              throw new Error(`Storage transfer failed with status ${uploadRes.status}`);
+            }
+
+            // 3b. Confirm upload registration in database
+            this.updateSaveStatus(`Registering "${file.name}"...`);
+            const confRes = await fetch(`/api/session/${this.sessionToken}/upload/confirm`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                file_id: prepData.file_id,
+                filename: file.name,
+                stored_name: prepData.stored_name,
+                size: file.size,
+                category: prepData.category || 'site_document'
+              })
+            });
+
+            const confData = await confRes.json();
+            if (!confRes.ok || !confData.success) {
+              throw new Error(confData.error || 'Database registration failed.');
+            }
+
+            if (!this.sessionData.uploads) this.sessionData.uploads = [];
+            this.sessionData.uploads.unshift({
+              file_id: confData.file_id,
+              original_filename: confData.filename,
+              file_size: confData.size
+            });
+          } else {
+            // 3c. Fallback to multipart form upload
+            this.updateSaveStatus(`Uploading "${file.name}"...`);
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('category', 'site_document');
+
+            const res = await fetch(`/api/session/${this.sessionToken}/upload`, {
+              method: 'POST',
+              body: formData
+            });
+
+            const data = await res.json();
+            if (!res.ok || !data.success) {
+              throw new Error(data.error || 'Upload failed.');
+            }
+
             if (!this.sessionData.uploads) this.sessionData.uploads = [];
             this.sessionData.uploads.unshift({
               file_id: data.file_id,
@@ -1356,6 +1429,8 @@
           }
         } catch (err) {
           console.error('File upload failed:', err);
+          this.updateSaveStatus(`Upload error: ${err.message || 'Transfer failed'}`);
+          alert(`Failed to upload "${file.name}":\n${err.message || 'An unknown error occurred.'}`);
         }
       }
 

@@ -16,8 +16,24 @@ env/
 # Database - contains client data
 shameer_questionnaire
 shameer_questionnaire.db
+shameer_questionnaire_pre_migration_backup.db
+*.db
 *.sqlite
 *.sqlite3
+
+# Backup files
+*.bak
+*.audit_fix_bak
+*.pre_vercel_bak
+
+# Archives and extraction artifacts
+*.zip
+shameer-associates-questionnaire/
+extracted_danish_highres/
+extracted_info/
+extracted_pdf_highres/
+static/references/kitchen_backup/
+WhatsApp Image*
 
 # Client uploaded files
 uploads/*
@@ -26,6 +42,18 @@ uploads/*
 # Generated/private files
 *.pdf
 
+# Logs and test outputs
+*.log
+test_run.log
+
+# Temporary audit and migration reports
+final_migration_code_audit.md
+final_migration_code_audit_v2.md
+migration_dry_run_report.md
+production_migration_report.md
+FINAL_PRODUCTION_READINESS_AUDIT.md
+FINAL_DEPLOYMENT_PREPARATION_REPORT.md
+
 # IDE
 .vscode/
 .idea/
@@ -33,6 +61,13 @@ uploads/*
 # OS
 .DS_Store
 Thumbs.db
+
+# Local migration and utility scripts
+migrate_to_supabase.py
+count_questions.py
+inspect_chapters.py
+verify_images.py
+supabase_schema.sql
 
 # Test/cache
 .pytest_cache/

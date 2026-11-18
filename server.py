@@ -11,15 +11,84 @@ import database
 import architect_db
 import auth
 import notify
+import storage
 from pdf_generator import generate_pdf_bytes, generate_architect_pdf_bytes
 
-app = Flask(__name__, static_folder='static', template_folder='templates')
-app.config['MAX_CONTENT_LENGTH'] = 32 * 1024 * 1024  # 32MB max upload
-app.secret_key = os.environ.get('SECRET_KEY', 'shameer_associates_secret_key_2026_architect')
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'uploads')
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+app = Flask(
+    __name__,
+    static_folder=os.path.join(BASE_DIR, 'static'),
+    template_folder=os.path.join(BASE_DIR, 'templates')
+)
+app.config['MAX_CONTENT_LENGTH'] = 32 * 1024 * 1024  # 32MB max upload
+
+# Production environment detection
+is_vercel = bool(os.environ.get('VERCEL'))
+is_production = bool(
+    os.environ.get('VERCEL')
+    or os.environ.get('FLASK_ENV') == 'production'
+    or os.environ.get('PRODUCTION')
+    or os.environ.get('ENVIRONMENT') == 'production'
+)
+
+# Production security: require SECRET_KEY in production, fail safely at startup if missing
+secret_key = os.environ.get('SECRET_KEY')
+if not secret_key:
+    if is_production:
+        raise RuntimeError("CRITICAL: SECRET_KEY environment variable is required in production environment.")
+    secret_key = 'shameer_associates_dev_secret_key_2026'
+
+app.secret_key = secret_key
+
+# Allowed upload extensions and MIME types whitelist
+ALLOWED_EXTENSIONS = {'pdf', 'dwg', 'dxf', 'png', 'jpg', 'jpeg', 'webp', 'doc', 'docx', 'zip'}
+MAX_UPLOAD_SIZE = 32 * 1024 * 1024  # 32 MB
+ALLOWED_MIME_TYPES = {
+    'application/pdf',
+    'image/png',
+    'image/jpeg',
+    'image/pjpeg',
+    'image/webp',
+    'application/msword',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'application/zip',
+    'application/x-zip-compressed',
+    'multipart/x-zip',
+    'image/vnd.dwg',
+    'image/x-dwg',
+    'application/acad',
+    'application/x-acad',
+    'application/autocad_dwg',
+    'application/dwg',
+    'application/x-dwg',
+    'application/dxf',
+    'application/x-dxf',
+    'application/octet-stream'
+}
+
+def allowed_file(filename):
+    if not filename or '.' not in filename:
+        return False
+    ext = filename.rsplit('.', 1)[1].lower()
+    return ext in ALLOWED_EXTENSIONS
+
+# Serverless-friendly upload directory (fallback to /tmp on Vercel/read-only systems)
+default_upload = '/tmp/uploads' if is_vercel else os.path.join(BASE_DIR, 'uploads')
+UPLOAD_FOLDER = os.environ.get('UPLOAD_FOLDER', default_upload)
+try:
+    os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+except Exception:
+    UPLOAD_FOLDER = '/tmp/uploads'
+    os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+# Production security session cookie settings
+app.config.update(
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SAMESITE='Lax',
+    SESSION_COOKIE_SECURE=bool(os.environ.get('VERCEL') or os.environ.get('SESSION_COOKIE_SECURE', '').lower() == 'true')
+)
 
 # Initialize DBs on start
 database.init_db()
@@ -31,13 +100,21 @@ auth.login_manager.init_app(app)
 
 def seed_default_architect():
     try:
-        user = architect_db.get_user_by_email("architect@shameerassociates.com")
+        default_email = os.environ.get("INITIAL_ARCHITECT_EMAIL", "architect@shameerassociates.com").strip().lower()
+        user = architect_db.get_user_by_email(default_email)
         if not user:
-            default_email = "architect@shameerassociates.com"
-            default_pass = "Architect123!"
-            p_hash = auth.hash_password(default_pass)
+            initial_pass = os.environ.get("INITIAL_ARCHITECT_PASSWORD")
+            if not initial_pass:
+                if is_production:
+                    print(f"[SEED] Notice: Production mode active without INITIAL_ARCHITECT_PASSWORD. Skipping automatic architect creation.")
+                    return
+                # Development/testing fallback only
+                initial_pass = "Architect123!"
+                print(f"[SEED] Notice: INITIAL_ARCHITECT_PASSWORD not set. Using dev fallback password in local/test environment.")
+
+            p_hash = auth.hash_password(initial_pass)
             architect_db.create_user(default_email, p_hash, "Lead Architect", "admin")
-            print(f"[SEED] Created default architect user: {default_email}")
+            print(f"[SEED] Created initial architect user: {default_email}")
     except Exception as e:
         print(f"[SEED] Error seeding architect user: {e}")
 
@@ -45,8 +122,8 @@ def seed_default_architect():
 seed_default_architect()
 
 # Load static schema & visuals into memory cache
-SCHEMA_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'questionnaire_schema.json')
-VISUALS_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'visual_references.json')
+SCHEMA_PATH = os.path.join(BASE_DIR, 'static', 'questionnaire_schema.json')
+VISUALS_PATH = os.path.join(BASE_DIR, 'static', 'visual_references.json')
 
 with open(SCHEMA_PATH, 'r', encoding='utf-8') as f:
     QUESTIONNAIRE_SCHEMA = json.load(f)
@@ -153,25 +230,93 @@ def save_visual(token):
     return jsonify({'success': True})
 
 
-@app.route('/api/session/<token>/upload', methods=['POST'])
-def upload_file(token):
-    if 'file' not in request.files:
-        return jsonify({'success': False, 'error': 'No file uploaded'}), 400
-    
-    file = request.files['file']
-    if file.filename == '':
-        return jsonify({'success': False, 'error': 'Empty filename'}), 400
+@app.route('/api/session/<token>/upload/prepare', methods=['POST'])
+def prepare_upload(token):
+    """Generate a signed upload URL to upload directly to Supabase Storage, bypassing Vercel payload limits."""
+    session_data = database.get_session_data(token)
+    if not session_data:
+        return jsonify({'success': False, 'error': 'Invalid session token'}), 404
 
-    orig_name = secure_filename(file.filename) or f"upload_{uuid.uuid4().hex[:8]}"
+    data = request.get_json(silent=True) or {}
+    filename = (data.get('filename') or '').strip()
+    if not filename or not allowed_file(filename):
+        return jsonify({
+            'success': False,
+            'error': f"File type not allowed. Allowed types: {', '.join(sorted(ALLOWED_EXTENSIONS))}"
+        }), 400
+
+    try:
+        size = int(data.get('size', 0))
+    except (TypeError, ValueError):
+        return jsonify({'success': False, 'error': 'Invalid file size format'}), 400
+
+    if size <= 0:
+        return jsonify({'success': False, 'error': 'File cannot be empty'}), 400
+
+    if size > MAX_UPLOAD_SIZE:
+        return jsonify({
+            'success': False,
+            'error': f"File size exceeds 32 MB limit ({size} bytes)"
+        }), 400
+
+    category = data.get('category', 'site_document')
     file_id = str(uuid.uuid4())
-    ext = os.path.splitext(orig_name)[1]
-    stored_name = f"{token}_{file_id}{ext}"
-    stored_path = os.path.join(app.config['UPLOAD_FOLDER'], stored_name)
-    file.save(stored_path)
+    storage_path = storage.build_storage_path(token, file_id, filename)
+    signed_upload_url = storage.create_signed_upload_url(storage_path)
 
-    file_size = os.path.getsize(stored_path)
-    category = request.form.get('category', 'site_document')
+    if signed_upload_url:
+        return jsonify({
+            'success': True,
+            'direct_upload': True,
+            'upload_url': signed_upload_url,
+            'file_id': file_id,
+            'stored_name': storage_path,
+            'filename': filename,
+            'category': category
+        })
+    else:
+        # Fallback to standard server upload endpoint
+        return jsonify({
+            'success': True,
+            'direct_upload': False,
+            'upload_endpoint': f"/api/session/{token}/upload",
+            'file_id': file_id,
+            'stored_name': f"{token}_{file_id}_{secure_filename(filename)}",
+            'filename': filename,
+            'category': category
+        })
 
+
+@app.route('/api/session/<token>/upload/confirm', methods=['POST'])
+def confirm_upload(token):
+    """Record file metadata after a direct client upload to Supabase Storage succeeds."""
+    session_data = database.get_session_data(token)
+    if not session_data:
+        return jsonify({'success': False, 'error': 'Invalid session token'}), 404
+
+    data = request.get_json(silent=True) or {}
+    file_id = data.get('file_id') or str(uuid.uuid4())
+    orig_name = (data.get('filename') or '').strip()
+    if not orig_name or not allowed_file(orig_name):
+        return jsonify({'success': False, 'error': 'Invalid or disallowed file type'}), 400
+
+    stored_name = (data.get('stored_name') or '').strip()
+    if not stored_name:
+        return jsonify({'success': False, 'error': 'stored_name is required'}), 400
+
+    # Ensure stored_name conforms to session namespace
+    if not (stored_name.startswith(f"sessions/{token}/") or stored_name.startswith(f"{token}_")):
+        return jsonify({'success': False, 'error': 'Invalid stored_name format or unauthorized path'}), 400
+
+    try:
+        file_size = int(data.get('size', 0))
+    except (TypeError, ValueError):
+        return jsonify({'success': False, 'error': 'Invalid size format'}), 400
+
+    if file_size <= 0 or file_size > MAX_UPLOAD_SIZE:
+        return jsonify({'success': False, 'error': 'File size must be between 1 byte and 32 MB'}), 400
+
+    category = data.get('category', 'site_document')
     database.record_upload(token, file_id, orig_name, stored_name, file_size, category)
 
     return jsonify({
@@ -180,6 +325,96 @@ def upload_file(token):
         'filename': orig_name,
         'size': file_size
     })
+
+
+@app.route('/api/session/<token>/upload', methods=['POST'])
+def upload_file(token):
+    """Fallback standard multipart upload handler."""
+    session_data = database.get_session_data(token)
+    if not session_data:
+        return jsonify({'success': False, 'error': 'Invalid session token'}), 404
+
+    if 'file' not in request.files:
+        return jsonify({'success': False, 'error': 'No file uploaded'}), 400
+    
+    file = request.files['file']
+    if not file.filename or file.filename == '':
+        return jsonify({'success': False, 'error': 'Empty filename'}), 400
+
+    if not allowed_file(file.filename):
+        return jsonify({
+            'success': False,
+            'error': f"File type not allowed. Allowed types: {', '.join(sorted(ALLOWED_EXTENSIONS))}"
+        }), 400
+
+    # Validate MIME type if present
+    content_type = (file.content_type or '').lower().split(';')[0].strip()
+    if content_type and content_type not in ALLOWED_MIME_TYPES:
+        return jsonify({'success': False, 'error': f"Disallowed MIME type: {content_type}"}), 400
+
+    orig_name = secure_filename(file.filename) or f"upload_{uuid.uuid4().hex[:8]}"
+    file_id = str(uuid.uuid4())
+    category = request.form.get('category', 'site_document')
+
+    # Read bytes to check actual size
+    file_bytes = file.read()
+    file_size = len(file_bytes)
+    if file_size <= 0:
+        return jsonify({'success': False, 'error': 'File cannot be empty'}), 400
+    if file_size > MAX_UPLOAD_SIZE:
+        return jsonify({'success': False, 'error': f"File size exceeds 32 MB limit ({file_size} bytes)"}), 400
+
+    # If Supabase Storage is configured, stream directly to bucket
+    if storage.is_storage_configured():
+        storage_path = storage.build_storage_path(token, file_id, orig_name)
+        storage_ct = content_type or 'application/octet-stream'
+        ok = storage.upload_file_bytes(storage_path, file_bytes, storage_ct)
+        if ok:
+            database.record_upload(token, file_id, orig_name, storage_path, file_size, category)
+            return jsonify({
+                'success': True,
+                'file_id': file_id,
+                'filename': orig_name,
+                'size': file_size,
+                'storage': 'supabase'
+            })
+
+    # Local disk fallback
+    ext = os.path.splitext(orig_name)[1]
+    stored_name = f"{token}_{file_id}{ext}"
+    stored_path = os.path.join(app.config['UPLOAD_FOLDER'], stored_name)
+    with open(stored_path, 'wb') as f:
+        f.write(file_bytes)
+
+    database.record_upload(token, file_id, orig_name, stored_name, file_size, category)
+
+    return jsonify({
+        'success': True,
+        'file_id': file_id,
+        'filename': orig_name,
+        'size': file_size,
+        'storage': 'local'
+    })
+
+
+@app.route('/api/architect/uploads/<path:stored_name>', methods=['GET'])
+@login_required
+@auth.require_role('architect', 'admin')
+def download_uploaded_file(stored_name):
+    """Securely download or view uploaded documents."""
+    # Check if stored in Supabase Storage
+    if storage.is_storage_configured() and stored_name.startswith('sessions/'):
+        signed_url = storage.create_signed_download_url(stored_name)
+        if signed_url:
+            return redirect(signed_url)
+
+    # Check local disk
+    safe_name = os.path.basename(stored_name)
+    local_path = os.path.join(app.config['UPLOAD_FOLDER'], safe_name)
+    if os.path.exists(local_path):
+        return send_from_directory(app.config['UPLOAD_FOLDER'], safe_name)
+
+    return "File not found", 404
 
 
 @app.route('/api/session/<token>/submit', methods=['POST'])
