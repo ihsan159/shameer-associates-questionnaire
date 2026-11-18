@@ -195,17 +195,30 @@ def get_or_create_project(session_token, client_name='', location='', project_ty
             return dict(row)
 
         uid = _generate_project_uid()
-        cursor.execute('''
-        INSERT INTO projects (project_uid, session_token, client_name, location, project_type)
-        VALUES (%s, %s, %s, %s, %s)
-        RETURNING id
-        ''', (uid, session_token, client_name, location, project_type))
-        res = cursor.fetchone()
-        project_id = res['id'] if res else cursor.lastrowid
-        conn.commit()
-
-        cursor.execute("SELECT * FROM projects WHERE id = %s", (project_id,))
-        return dict(cursor.fetchone())
+        if is_postgres():
+            cursor.execute('''
+            INSERT INTO projects (project_uid, session_token, client_name, location, project_type)
+            VALUES (%s, %s, %s, %s, %s)
+            ON CONFLICT (session_token) DO UPDATE 
+            SET client_name = COALESCE(NULLIF(EXCLUDED.client_name, ''), projects.client_name),
+                location = COALESCE(NULLIF(EXCLUDED.location, ''), projects.location),
+                project_type = COALESCE(NULLIF(EXCLUDED.project_type, ''), projects.project_type)
+            RETURNING id
+            ''', (uid, session_token, client_name, location, project_type))
+            res = cursor.fetchone()
+            project_id = res['id']
+            conn.commit()
+            cursor.execute("SELECT * FROM projects WHERE id = %s", (project_id,))
+            return dict(cursor.fetchone())
+        else:
+            cursor.execute('''
+            INSERT INTO projects (project_uid, session_token, client_name, location, project_type)
+            VALUES (%s, %s, %s, %s, %s)
+            ''', (uid, session_token, client_name, location, project_type))
+            project_id = cursor.lastrowid
+            conn.commit()
+            cursor.execute("SELECT * FROM projects WHERE id = %s", (project_id,))
+            return dict(cursor.fetchone())
 
 
 def get_project_by_id(project_id):
@@ -352,15 +365,18 @@ def delete_project_permanent(project_id, user_id=None):
             """, {'pid': project_id})
 
             if token:
-                cursor.execute("""
-                    DELETE FROM dynamic_rooms WHERE session_token = %(tok)s;
-                    DELETE FROM family_members WHERE session_token = %(tok)s;
-                    DELETE FROM selected_visuals WHERE session_token = %(tok)s;
-                    DELETE FROM uploads WHERE session_token = %(tok)s;
-                    DELETE FROM consultations WHERE session_token = %(tok)s;
-                    DELETE FROM answers WHERE session_token = %(tok)s;
-                    DELETE FROM sessions WHERE token = %(tok)s;
-                """, {'tok': token})
+                cursor.execute("SELECT COUNT(*) AS c FROM projects WHERE session_token = %s", (token,))
+                ref_count = cursor.fetchone()['c']
+                if ref_count == 0:
+                    cursor.execute("""
+                        DELETE FROM dynamic_rooms WHERE session_token = %(tok)s;
+                        DELETE FROM family_members WHERE session_token = %(tok)s;
+                        DELETE FROM selected_visuals WHERE session_token = %(tok)s;
+                        DELETE FROM uploads WHERE session_token = %(tok)s;
+                        DELETE FROM consultations WHERE session_token = %(tok)s;
+                        DELETE FROM answers WHERE session_token = %(tok)s;
+                        DELETE FROM sessions WHERE token = %(tok)s;
+                    """, {'tok': token})
         else:
             cursor.execute("DELETE FROM notifications WHERE project_id = %s", (project_id,))
             cursor.execute("DELETE FROM project_activity WHERE project_id = %s", (project_id,))
@@ -371,13 +387,17 @@ def delete_project_permanent(project_id, user_id=None):
             cursor.execute("DELETE FROM projects WHERE id = %s", (project_id,))
 
             if token:
-                cursor.execute("DELETE FROM dynamic_rooms WHERE session_token = %s", (token,))
-                cursor.execute("DELETE FROM family_members WHERE session_token = %s", (token,))
-                cursor.execute("DELETE FROM selected_visuals WHERE session_token = %s", (token,))
-                cursor.execute("DELETE FROM uploads WHERE session_token = %s", (token,))
-                cursor.execute("DELETE FROM consultations WHERE session_token = %s", (token,))
-                cursor.execute("DELETE FROM answers WHERE session_token = %s", (token,))
-                cursor.execute("DELETE FROM sessions WHERE token = %s", (token,))
+                cursor.execute("SELECT COUNT(*) AS c FROM projects WHERE session_token = %s", (token,))
+                row_c = cursor.fetchone()
+                ref_count = row_c['c'] if isinstance(row_c, dict) else row_c[0]
+                if ref_count == 0:
+                    cursor.execute("DELETE FROM dynamic_rooms WHERE session_token = %s", (token,))
+                    cursor.execute("DELETE FROM family_members WHERE session_token = %s", (token,))
+                    cursor.execute("DELETE FROM selected_visuals WHERE session_token = %s", (token,))
+                    cursor.execute("DELETE FROM uploads WHERE session_token = %s", (token,))
+                    cursor.execute("DELETE FROM consultations WHERE session_token = %s", (token,))
+                    cursor.execute("DELETE FROM answers WHERE session_token = %s", (token,))
+                    cursor.execute("DELETE FROM sessions WHERE token = %s", (token,))
         conn.commit()
     return True
 

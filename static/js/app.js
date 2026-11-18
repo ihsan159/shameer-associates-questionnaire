@@ -643,18 +643,18 @@
 
         case 'single-select':
           return `
-            <div class="space-y-2">
+            <div class="space-y-2" id="question-container-${q.id}">
               <label class="block text-xs font-bold tracking-wider text-brand-black uppercase">
                 ${q.label} ${q.required ? '<span class="text-red-500">*</span>' : ''} ${tooltipBtn}
               </label>
               <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
-                ${q.options.map(opt => {
+                ${q.options.map((opt, optIdx) => {
                   const isSelected = val === opt;
                   return `
-                    <div onclick="window.app.handleSingleSelect('${q.id}', '${this.escapeHtml(opt)}')" class="option-card cursor-pointer p-3.5 rounded border text-xs flex items-center justify-between ${isSelected ? 'selected border-brand-black bg-white font-semibold' : 'border-brand-border bg-brand-offwhite/50 hover:bg-white text-brand-slate'}">
+                    <div id="option-${q.id}-${optIdx}" data-val="${this.escapeHtml(opt)}" onclick="window.app.handleSingleSelect('${q.id}', '${this.escapeHtml(opt)}')" class="option-card cursor-pointer p-3.5 rounded border text-xs flex items-center justify-between ${isSelected ? 'selected border-brand-black bg-white font-semibold' : 'border-brand-border bg-brand-offwhite/50 hover:bg-white text-brand-slate'}">
                       <span>${opt}</span>
-                      <div class="w-4 h-4 rounded-full border flex items-center justify-center ml-2 flex-shrink-0 ${isSelected ? 'border-brand-black bg-brand-black text-white' : 'border-brand-border bg-white'}">
-                        ${isSelected ? '<i data-lucide="check" class="w-2.5 h-2.5"></i>' : ''}
+                      <div class="opt-check w-4 h-4 rounded-full border flex items-center justify-center ml-2 flex-shrink-0 ${isSelected ? 'border-brand-black bg-brand-black text-white' : 'border-brand-border bg-white'}">
+                        ${isSelected ? '<svg class="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>' : ''}
                       </div>
                     </div>
                   `;
@@ -666,18 +666,18 @@
         case 'multi-select':
           const currentList = Array.isArray(val) ? val : [];
           return `
-            <div class="space-y-2">
+            <div class="space-y-2" id="question-container-${q.id}">
               <label class="block text-xs font-bold tracking-wider text-brand-black uppercase">
                 ${q.label} ${tooltipBtn}
               </label>
               <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
-                ${q.options.map(opt => {
+                ${q.options.map((opt, optIdx) => {
                   const isSelected = currentList.includes(opt);
                   return `
-                    <div onclick="window.app.handleMultiSelect('${q.id}', '${this.escapeHtml(opt)}')" class="option-card cursor-pointer p-3.5 rounded border text-xs flex items-center justify-between ${isSelected ? 'selected border-brand-black bg-white font-semibold' : 'border-brand-border bg-brand-offwhite/50 hover:bg-white text-brand-slate'}">
+                    <div id="option-${q.id}-${optIdx}" data-val="${this.escapeHtml(opt)}" onclick="window.app.handleMultiSelect('${q.id}', '${this.escapeHtml(opt)}')" class="option-card cursor-pointer p-3.5 rounded border text-xs flex items-center justify-between ${isSelected ? 'selected border-brand-black bg-white font-semibold' : 'border-brand-border bg-brand-offwhite/50 hover:bg-white text-brand-slate'}">
                       <span>${opt}</span>
-                      <div class="w-4 h-4 rounded border flex items-center justify-center ml-2 flex-shrink-0 ${isSelected ? 'border-brand-black bg-brand-black text-white' : 'border-brand-border bg-white'}">
-                        ${isSelected ? '<i data-lucide="check" class="w-2.5 h-2.5"></i>' : ''}
+                      <div class="opt-check w-4 h-4 rounded border flex items-center justify-center ml-2 flex-shrink-0 ${isSelected ? 'border-brand-black bg-brand-black text-white' : 'border-brand-border bg-white'}">
+                        ${isSelected ? '<svg class="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>' : ''}
                       </div>
                     </div>
                   `;
@@ -862,16 +862,16 @@
       switch (q.type) {
         case 'single-select':
           return `
-            <div class="space-y-2">
+            <div class="space-y-2" id="room-q-container-${roomIdx}-${q.id}">
               <label class="block text-xs font-bold tracking-wider text-brand-black uppercase">${q.label}</label>
               <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
-                ${q.options.map(opt => {
+                ${q.options.map((opt, optIdx) => {
                   const isSelected = val === opt;
                   return `
-                    <div onclick="window.app.handleDynamicRoomSingleSelect(${roomIdx}, '${q.id}', '${this.escapeHtml(opt)}')" class="option-card cursor-pointer p-3.5 rounded border text-xs flex items-center justify-between ${isSelected ? 'selected border-brand-black bg-white font-semibold' : 'border-brand-border bg-brand-offwhite/50 hover:bg-white text-brand-slate'}">
+                    <div id="room-opt-${roomIdx}-${q.id}-${optIdx}" data-val="${this.escapeHtml(opt)}" onclick="window.app.handleDynamicRoomSingleSelect(${roomIdx}, '${q.id}', '${this.escapeHtml(opt)}')" class="option-card cursor-pointer p-3.5 rounded border text-xs flex items-center justify-between ${isSelected ? 'selected border-brand-black bg-white font-semibold' : 'border-brand-border bg-brand-offwhite/50 hover:bg-white text-brand-slate'}">
                       <span>${opt}</span>
-                      <div class="w-4 h-4 rounded-full border flex items-center justify-center ml-2 flex-shrink-0 ${isSelected ? 'border-brand-black bg-brand-black text-white' : 'border-brand-border bg-white'}">
-                        ${isSelected ? '<i data-lucide="check" class="w-2.5 h-2.5"></i>' : ''}
+                      <div class="opt-check w-4 h-4 rounded-full border flex items-center justify-center ml-2 flex-shrink-0 ${isSelected ? 'border-brand-black bg-brand-black text-white' : 'border-brand-border bg-white'}">
+                        ${isSelected ? '<svg class="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>' : ''}
                       </div>
                     </div>
                   `;
@@ -883,16 +883,16 @@
         case 'multi-select':
           const currentList = Array.isArray(val) ? val : [];
           return `
-            <div class="space-y-2">
+            <div class="space-y-2" id="room-q-container-${roomIdx}-${q.id}">
               <label class="block text-xs font-bold tracking-wider text-brand-black uppercase">${q.label}</label>
               <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
-                ${q.options.map(opt => {
+                ${q.options.map((opt, optIdx) => {
                   const isSelected = currentList.includes(opt);
                   return `
-                    <div onclick="window.app.handleDynamicRoomMultiSelect(${roomIdx}, '${q.id}', '${this.escapeHtml(opt)}')" class="option-card cursor-pointer p-3.5 rounded border text-xs flex items-center justify-between ${isSelected ? 'selected border-brand-black bg-white font-semibold' : 'border-brand-border bg-brand-offwhite/50 hover:bg-white text-brand-slate'}">
+                    <div id="room-opt-${roomIdx}-${q.id}-${optIdx}" data-val="${this.escapeHtml(opt)}" onclick="window.app.handleDynamicRoomMultiSelect(${roomIdx}, '${q.id}', '${this.escapeHtml(opt)}')" class="option-card cursor-pointer p-3.5 rounded border text-xs flex items-center justify-between ${isSelected ? 'selected border-brand-black bg-white font-semibold' : 'border-brand-border bg-brand-offwhite/50 hover:bg-white text-brand-slate'}">
                       <span>${opt}</span>
-                      <div class="w-4 h-4 rounded border flex items-center justify-center ml-2 flex-shrink-0 ${isSelected ? 'border-brand-black bg-brand-black text-white' : 'border-brand-border bg-white'}">
-                        ${isSelected ? '<i data-lucide="check" class="w-2.5 h-2.5"></i>' : ''}
+                      <div class="opt-check w-4 h-4 rounded border flex items-center justify-center ml-2 flex-shrink-0 ${isSelected ? 'border-brand-black bg-brand-black text-white' : 'border-brand-border bg-white'}">
+                        ${isSelected ? '<svg class="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>' : ''}
                       </div>
                     </div>
                   `;
@@ -919,7 +919,29 @@
         if (!this.sessionData.dynamic_rooms[roomIdx].answers) this.sessionData.dynamic_rooms[roomIdx].answers = {};
         this.sessionData.dynamic_rooms[roomIdx].answers[field] = value;
         this.saveDynamicRooms();
-        this.render();
+
+        // Instant 0ms DOM update
+        const container = document.getElementById(`room-q-container-${roomIdx}-${field}`);
+        if (container) {
+          const cards = container.querySelectorAll('.option-card');
+          cards.forEach(card => {
+            const val = card.getAttribute('data-val');
+            const check = card.querySelector('.opt-check');
+            if (val === value) {
+              card.className = 'option-card cursor-pointer p-3.5 rounded border text-xs flex items-center justify-between selected border-brand-black bg-white font-semibold';
+              if (check) {
+                check.className = 'opt-check w-4 h-4 rounded-full border flex items-center justify-center ml-2 flex-shrink-0 border-brand-black bg-brand-black text-white';
+                check.innerHTML = '<svg class="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+              }
+            } else {
+              card.className = 'option-card cursor-pointer p-3.5 rounded border text-xs flex items-center justify-between border-brand-border bg-brand-offwhite/50 hover:bg-white text-brand-slate';
+              if (check) {
+                check.className = 'opt-check w-4 h-4 rounded-full border flex items-center justify-center ml-2 flex-shrink-0 border-brand-border bg-white';
+                check.innerHTML = '';
+              }
+            }
+          });
+        }
       }
     }
 
@@ -928,14 +950,39 @@
         if (!this.sessionData.dynamic_rooms[roomIdx].answers) this.sessionData.dynamic_rooms[roomIdx].answers = {};
         let list = this.sessionData.dynamic_rooms[roomIdx].answers[field];
         if (!Array.isArray(list)) list = [];
-        if (list.includes(value)) {
+        const isRemoving = list.includes(value);
+        if (isRemoving) {
           list = list.filter(item => item !== value);
         } else {
           list.push(value);
         }
         this.sessionData.dynamic_rooms[roomIdx].answers[field] = list;
         this.saveDynamicRooms();
-        this.render();
+
+        // Instant 0ms DOM toggle
+        const container = document.getElementById(`room-q-container-${roomIdx}-${field}`);
+        if (container) {
+          const cards = container.querySelectorAll('.option-card');
+          cards.forEach(card => {
+            if (card.getAttribute('data-val') === value) {
+              const isSelected = !isRemoving;
+              const check = card.querySelector('.opt-check');
+              if (isSelected) {
+                card.className = 'option-card cursor-pointer p-3.5 rounded border text-xs flex items-center justify-between selected border-brand-black bg-white font-semibold';
+                if (check) {
+                  check.className = 'opt-check w-4 h-4 rounded border flex items-center justify-center ml-2 flex-shrink-0 border-brand-black bg-brand-black text-white';
+                  check.innerHTML = '<svg class="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+                }
+              } else {
+                card.className = 'option-card cursor-pointer p-3.5 rounded border text-xs flex items-center justify-between border-brand-border bg-brand-offwhite/50 hover:bg-white text-brand-slate';
+                if (check) {
+                  check.className = 'opt-check w-4 h-4 rounded border flex items-center justify-center ml-2 flex-shrink-0 border-brand-border bg-white';
+                  check.innerHTML = '';
+                }
+              }
+            }
+          });
+        }
       }
     }
 
@@ -976,7 +1023,7 @@
           </div>
 
           <!-- Gallery Grid -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div id="visual-gallery-${category}" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             ${items.map(item => {
               const isSelected = selectedStyle && (selectedStyle.style_id === item.id || selectedStyle.style_number === item.styleNumber);
               
@@ -1022,13 +1069,15 @@
               }
 
               return `
-                <div class="visual-card rounded-lg overflow-hidden bg-white border ${isSelected ? 'selected border-brand-black' : 'border-brand-border'} shadow-luxury flex flex-col justify-between">
+                <div id="visual-card-${category}-${item.id}" class="visual-card rounded-lg overflow-hidden bg-white border ${isSelected ? 'selected border-brand-black' : 'border-brand-border'} shadow-luxury flex flex-col justify-between transition-colors duration-150">
                   <div>
                     ${imgHtml}
                     <div class="p-4 space-y-2">
                       <div class="flex items-baseline justify-between">
                         <span class="text-[10px] font-bold text-brand-bronze uppercase tracking-widest">Style ${item.styleNumber}</span>
-                        ${isSelected ? '<span class="px-2 py-0.5 bg-brand-black text-white text-[9px] font-bold uppercase tracking-wider rounded-xs flex items-center space-x-1"><i data-lucide="check" class="w-3 h-3"></i><span>✓ SELECTED</span></span>' : ''}
+                        <div id="visual-badge-${category}-${item.id}">
+                          ${isSelected ? '<span class="px-2 py-0.5 bg-brand-black text-white text-[9px] font-bold uppercase tracking-wider rounded-xs flex items-center space-x-1"><svg class="w-3 h-3 inline-block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg><span>✓ SELECTED</span></span>' : ''}
+                        </div>
                       </div>
                       <h4 class="font-serif text-base font-bold text-brand-black">${item.styleName}</h4>
                       <p class="text-[11px] text-brand-muted leading-relaxed line-clamp-2">
@@ -1038,8 +1087,8 @@
                   </div>
 
                   <div class="p-4 pt-0">
-                    <button type="button" onclick="window.app.selectVisual('${category}', '${item.id}')" class="w-full py-2.5 px-3 text-xs font-bold tracking-wider uppercase rounded transition-colors flex items-center justify-center space-x-2 ${isSelected ? 'bg-brand-black text-white' : 'bg-brand-lightGray hover:bg-brand-black hover:text-white text-brand-black'}">
-                      <i data-lucide="check" class="w-3.5 h-3.5"></i>
+                    <button id="visual-btn-${category}-${item.id}" type="button" onclick="window.app.selectVisual('${category}', '${item.id}')" class="w-full py-2.5 px-3 text-xs font-bold tracking-wider uppercase rounded transition-colors flex items-center justify-center space-x-2 ${isSelected ? 'bg-brand-black text-white' : 'bg-brand-lightGray hover:bg-brand-black hover:text-white text-brand-black'}">
+                      <svg class="w-3.5 h-3.5 inline-block mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
                       <span>${isSelected ? 'Selected Reference' : 'Select Style'}</span>
                     </button>
                   </div>
@@ -1067,6 +1116,62 @@
         wardrobe_image_url: item.wardrobeImage || ''
       };
 
+      // 1. Instant 0ms DOM update for all style cards in this gallery
+      const gallery = document.getElementById(`visual-gallery-${category}`);
+      if (gallery) {
+        items.forEach(it => {
+          const card = document.getElementById(`visual-card-${category}-${it.id}`);
+          const badge = document.getElementById(`visual-badge-${category}-${it.id}`);
+          const btn = document.getElementById(`visual-btn-${category}-${it.id}`);
+          const isTarget = (it.id === styleId);
+
+          if (card) {
+            if (isTarget) {
+              card.classList.add('selected', 'border-brand-black');
+              card.classList.remove('border-brand-border');
+            } else {
+              card.classList.remove('selected', 'border-brand-black');
+              card.classList.add('border-brand-border');
+            }
+          }
+          if (badge) {
+            badge.innerHTML = isTarget 
+              ? '<span class="px-2 py-0.5 bg-brand-black text-white text-[9px] font-bold uppercase tracking-wider rounded-xs flex items-center space-x-1"><svg class="w-3 h-3 inline-block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg><span>✓ SELECTED</span></span>' 
+              : '';
+          }
+          if (btn) {
+            if (isTarget) {
+              btn.className = 'w-full py-2.5 px-3 text-xs font-bold tracking-wider uppercase rounded transition-colors flex items-center justify-center space-x-2 bg-brand-black text-white';
+              btn.innerHTML = '<svg class="w-3.5 h-3.5 inline-block mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg><span>Selected Reference</span>';
+            } else {
+              btn.className = 'w-full py-2.5 px-3 text-xs font-bold tracking-wider uppercase rounded transition-colors flex items-center justify-center space-x-2 bg-brand-lightGray hover:bg-brand-black hover:text-white text-brand-black';
+              btn.innerHTML = '<svg class="w-3.5 h-3.5 inline-block mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg><span>Select Style</span>';
+            }
+          }
+        });
+      }
+
+      // 2. Also update Lightbox if currently viewing
+      if (this.activeLightboxData && this.activeLightboxData.category === category) {
+        const selectBtn = document.getElementById('lightbox-select-btn');
+        const selectText = document.getElementById('lightbox-select-text');
+        const isCurrentInLightbox = (this.activeLightboxData.item.id === styleId);
+        if (selectBtn && selectText) {
+          if (isCurrentInLightbox) {
+            selectBtn.classList.add('bg-brand-black', 'text-white');
+            selectBtn.classList.remove('bg-white', 'text-brand-black');
+            selectText.textContent = '✓ Selected Reference';
+          } else {
+            selectBtn.classList.remove('bg-brand-black', 'text-white');
+            selectBtn.classList.add('bg-white', 'text-brand-black');
+            selectText.textContent = 'Select This Style';
+          }
+        }
+      }
+
+      this.updateSaveStatus('Saving changes...');
+
+      // 3. Background persistence - Zero UI freeze, zero DOM destruction
       try {
         await fetch(`/api/session/${this.sessionToken}/save_visual`, {
           method: 'POST',
@@ -1074,9 +1179,9 @@
           body: JSON.stringify({ category, style: item })
         });
         this.updateSaveStatus('All changes saved');
-        this.render();
       } catch (err) {
         console.error('Error saving visual selection:', err);
+        this.updateSaveStatus('Error saving change');
       }
     }
 
@@ -1449,20 +1554,67 @@
     handleSingleSelect(fieldId, value) {
       this.sessionData.answers[fieldId] = value;
       this.scheduleAutoSave();
-      this.render();
+
+      // Instant 0ms DOM update
+      const container = document.getElementById(`question-container-${fieldId}`);
+      if (container) {
+        const cards = container.querySelectorAll('.option-card');
+        cards.forEach(card => {
+          const val = card.getAttribute('data-val');
+          const check = card.querySelector('.opt-check');
+          if (val === value) {
+            card.className = 'option-card cursor-pointer p-3.5 rounded border text-xs flex items-center justify-between selected border-brand-black bg-white font-semibold';
+            if (check) {
+              check.className = 'opt-check w-4 h-4 rounded-full border flex items-center justify-center ml-2 flex-shrink-0 border-brand-black bg-brand-black text-white';
+              check.innerHTML = '<svg class="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+            }
+          } else {
+            card.className = 'option-card cursor-pointer p-3.5 rounded border text-xs flex items-center justify-between border-brand-border bg-brand-offwhite/50 hover:bg-white text-brand-slate';
+            if (check) {
+              check.className = 'opt-check w-4 h-4 rounded-full border flex items-center justify-center ml-2 flex-shrink-0 border-brand-border bg-white';
+              check.innerHTML = '';
+            }
+          }
+        });
+      }
     }
 
     handleMultiSelect(fieldId, value) {
       let currentList = this.sessionData.answers[fieldId];
       if (!Array.isArray(currentList)) currentList = [];
-      if (currentList.includes(value)) {
+      const isRemoving = currentList.includes(value);
+      if (isRemoving) {
         currentList = currentList.filter(item => item !== value);
       } else {
         currentList.push(value);
       }
       this.sessionData.answers[fieldId] = currentList;
       this.scheduleAutoSave();
-      this.render();
+
+      // Instant 0ms DOM toggle
+      const container = document.getElementById(`question-container-${fieldId}`);
+      if (container) {
+        const cards = container.querySelectorAll('.option-card');
+        cards.forEach(card => {
+          if (card.getAttribute('data-val') === value) {
+            const isSelected = !isRemoving;
+            const check = card.querySelector('.opt-check');
+            if (isSelected) {
+              card.className = 'option-card cursor-pointer p-3.5 rounded border text-xs flex items-center justify-between selected border-brand-black bg-white font-semibold';
+              if (check) {
+                check.className = 'opt-check w-4 h-4 rounded border flex items-center justify-center ml-2 flex-shrink-0 border-brand-black bg-brand-black text-white';
+                check.innerHTML = '<svg class="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+              }
+            } else {
+              card.className = 'option-card cursor-pointer p-3.5 rounded border text-xs flex items-center justify-between border-brand-border bg-brand-offwhite/50 hover:bg-white text-brand-slate';
+              if (check) {
+                check.className = 'opt-check w-4 h-4 rounded border flex items-center justify-center ml-2 flex-shrink-0 border-brand-border bg-white';
+                check.innerHTML = '';
+              }
+            }
+          }
+        });
+      }
     }
 
     // ========================================================
@@ -1607,11 +1759,12 @@
             </div>
 
             <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <button onclick="window.app.submitBrief()" class="w-full sm:w-auto px-12 py-4 bg-white hover:bg-brand-bronzeLight text-brand-black hover:text-white text-xs sm:text-sm font-bold tracking-[0.2em] uppercase rounded-sm shadow-xl transition-all flex items-center justify-center space-x-3">
+              <button id="btn-submit-brief" onclick="window.app.submitBrief()" class="w-full sm:w-auto px-12 py-4 bg-white hover:bg-brand-bronzeLight text-brand-black hover:text-white text-xs sm:text-sm font-bold tracking-[0.2em] uppercase rounded-sm shadow-xl transition-all flex items-center justify-center space-x-3 cursor-pointer">
                 <i data-lucide="send" class="w-4 h-4"></i>
-                <span>SUBMIT DESIGN QUESTIONNAIRE</span>
+                <span id="btn-submit-brief-text">SUBMIT DESIGN QUESTIONNAIRE</span>
               </button>
             </div>
+            <div id="submit-error-banner" class="hidden text-xs text-red-300 bg-red-950/60 border border-red-800 p-3 rounded max-w-lg mx-auto"></div>
           </div>
 
         </div>
@@ -1619,20 +1772,76 @@
     }
 
     async submitBrief() {
-      if (!this.sessionToken) return;
+      if (!this.sessionToken) {
+        alert('Missing session token. Please reload the questionnaire.');
+        return;
+      }
+
+      const btn = document.getElementById('btn-submit-brief');
+      const btnText = document.getElementById('btn-submit-brief-text');
+      const errorBanner = document.getElementById('submit-error-banner');
+
+      if (btn && btn.disabled) return;
+
+      if (btn) {
+        btn.disabled = true;
+        btn.classList.add('opacity-75', 'cursor-not-allowed');
+      }
+      if (btnText) {
+        btnText.innerHTML = `
+          <span class="inline-flex items-center space-x-2">
+            <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-brand-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+            </svg>
+            <span>SUBMITTING YOUR BRIEF...</span>
+          </span>
+        `;
+      }
+      if (errorBanner) errorBanner.classList.add('hidden');
+
+      // Guarantee any pending autosave completes first
+      await this.performAutoSave();
+
       try {
         const res = await fetch(`/api/session/${this.sessionToken}/submit`, {
           method: 'POST'
         });
+
+        if (!res.ok) {
+          const text = await res.text();
+          let msg = `Server returned status ${res.status}`;
+          try {
+            const parsed = JSON.parse(text);
+            msg = parsed.error || msg;
+          } catch (_) {}
+          throw new Error(msg);
+        }
+
         const data = await res.json();
         if (data.success) {
           this.sessionData.status = 'submitted';
           this.currentScreen = 'success';
           this.render();
           window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          throw new Error(data.error || 'Submission could not be completed.');
         }
       } catch (err) {
         console.error('Submission error:', err);
+        if (btn) {
+          btn.disabled = false;
+          btn.classList.remove('opacity-75', 'cursor-not-allowed');
+        }
+        if (btnText) {
+          btnText.textContent = 'SUBMIT DESIGN QUESTIONNAIRE';
+        }
+        if (errorBanner) {
+          errorBanner.textContent = 'Could not submit brief: ' + err.message + '. Please retry.';
+          errorBanner.classList.remove('hidden');
+        } else {
+          alert('Could not submit brief: ' + err.message);
+        }
       }
     }
 

@@ -102,43 +102,58 @@ _pg_pool = None
 
 def get_pg_pool():
     global _pg_pool
-    if _pg_pool is None:
+    if _pg_pool is None or getattr(_pg_pool, 'closed', False):
         import psycopg2.pool
         from psycopg2.extras import RealDictCursor
         url = os.environ.get('DATABASE_URL', '')
         if url.startswith('postgres://'):
             url = 'postgresql://' + url[len('postgres://'):]
-        _pg_pool = psycopg2.pool.ThreadedConnectionPool(
-            minconn=1,
-            maxconn=10,
-            dsn=url,
-            connect_timeout=10,
-            cursor_factory=RealDictCursor
-        )
+        for attempt in range(2):
+            try:
+                _pg_pool = psycopg2.pool.ThreadedConnectionPool(
+                    minconn=1,
+                    maxconn=10,
+                    dsn=url,
+                    connect_timeout=10,
+                    cursor_factory=RealDictCursor
+                )
+                break
+            except Exception:
+                if attempt == 1:
+                    raise
+                import time
+                time.sleep(0.3)
     return _pg_pool
 
 def get_db():
     """Factory function returning a unified DBConnection with context management."""
     if is_postgres():
-        pool = get_pg_pool()
-        conn = None
-        for _ in range(2):
-            try:
-                conn = pool.getconn()
-                if conn.closed:
-                    pool.putconn(conn, close=True)
-                    conn = None
-                    continue
-                conn.autocommit = False
-                return DBConnection(conn, is_pg=True, pool=pool)
-            except Exception:
-                if conn:
-                    try:
+        pool = None
+        try:
+            pool = get_pg_pool()
+        except Exception:
+            pool = None
+
+        if pool:
+            conn = None
+            for _ in range(2):
+                try:
+                    conn = pool.getconn()
+                    if conn.closed:
                         pool.putconn(conn, close=True)
-                    except Exception:
-                        pass
-                    conn = None
-        # Fallback to direct connect if pool is exhausted or reconnecting
+                        conn = None
+                        continue
+                    conn.autocommit = False
+                    return DBConnection(conn, is_pg=True, pool=pool)
+                except Exception:
+                    if conn:
+                        try:
+                            pool.putconn(conn, close=True)
+                        except Exception:
+                            pass
+                        conn = None
+
+        # Fallback to direct connect if pool is exhausted or connecting
         import psycopg2
         from psycopg2.extras import RealDictCursor
         url = os.environ.get('DATABASE_URL', '')
